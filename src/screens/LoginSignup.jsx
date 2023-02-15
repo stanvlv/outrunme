@@ -1,5 +1,9 @@
+import { Box, NativeBaseProvider } from "native-base"
+
 export default function LoginSignup() {
     return (
-        <Text>Hello</Text>
+        <NativeBaseProvider>
+        <Box>Hello</Box>
+        </NativeBaseProvider>
     )
 }
