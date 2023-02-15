@@ -4,6 +4,7 @@
  *
  * @format
  */
+import LoginSignup from './src/screens/LoginSignup';
 import {MapView} from 'react-native-maps';
 import {Button} from 'native-base';
 import {NavigationContainer} from '@react-navigation/native';
@@ -30,9 +31,12 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
+
+
+
 export default function App() {
   return <NavigationContainer>
-    
+    <LoginSignup />
   </NavigationContainer>;
 }
 
