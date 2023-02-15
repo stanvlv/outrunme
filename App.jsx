@@ -4,11 +4,14 @@
  *
  * @format
  */
-
+import {MapView} from "react-native-maps";
+import { Button } from "native-base"
+import { NavigationContainer } from '@react-navigation/native';
+import { NativeBaseProvider, Box } from "native-base";
 import React, {useState, useEffect } from 'react';
 import {PropsWithChildren} from 'react';
 import { Image } from 'react-native';
-import { Button, TextInput } from 'react-native';
+import { TextInput } from 'react-native';
 import {
   SafeAreaView,
   ScrollView,
@@ -84,43 +87,21 @@ function App() {
   const onChangePassword = password => setPassword(password);
 
   
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <View>
-      <Text style={styles.baseText} backgroundColor="#ff6600">
-        OutRun Me
-      </Text>
-      </View>
-      <View style={{ alignSelf: 'center', marginTop: 30 }}>
-        <Image 
-         source={require('./outrunme.png')}
-         style={{ width: 200, height: 250 }}
-        />
-      </View>
-      <Text style={styles.up}>UP FOR THE CHALLENGE?</Text>
-      <View style={styles.container}>
-      <TextInput 
-        placeholder='Email' 
-        value={text} 
-        style={styles.input} 
-        onChangeText={onChangeText} 
-      />
-      <TextInput 
-        placeholder='Password' 
-        value={password} 
-        style={styles.input} 
-        onChangeText={onChangePassword} 
-      />
-      <Button 
-        title="Signup / Login" 
-        color="#ff6600" 
-        onPress={() => setShowData(true)}
-      />
-      { showData && <DisplayData text={text} password={password} /> }
-    </View>
-  
-    </SafeAreaView>
-  );
+  return ( <NavigationContainer>
+    <NativeBaseProvider>
+      <Box>Hello world</Box>
+    
+    <Button>Native base</Button>
+    </NativeBaseProvider>
+    {/* <MapView
+    initialRegion={{
+      latitude: 37.78825,
+      longitude: -122.4324,
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421,
+    }}
+  /> */}
+    </NavigationContainer>);
 }
 
 const styles = StyleSheet.create({
