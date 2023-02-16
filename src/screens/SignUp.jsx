@@ -15,7 +15,15 @@ import {
   Text,
 } from 'native-base';
 
+
+
 export default function SignUp({navigation}) {
+
+
+
+
+
+  
   return (
     <NativeBaseProvider>
       <Center w="100%">
