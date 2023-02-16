@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 /**
  * Sample React Native App
  * https://github.com/facebook/react-native
@@ -23,7 +24,6 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
-
 import {
   Colors,
   DebugInstructions,
@@ -34,16 +34,24 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import SignUp from './src/screens/SignUp';
 import Login from './src/screens/Login';
+
+
+
+import {NativeBaseProvider, Box} from 'native-base';
+import React, {useState, useEffect} from 'react';
+import {PropsWithChildren} from 'react';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import BottomNavBar from './src/components/BottomNavBar';
+
+
+
 export default function App() {
-  const Stack = createNativeStackNavigator();
+  
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="SignUp" component={SignUp} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
+ 
+    <BottomNavBar />
+ ) 
+
 }
 
 const styles = StyleSheet.create({});
