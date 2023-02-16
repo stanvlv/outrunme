@@ -1,11 +1,12 @@
 // Screens
-import LoginSignup from '../screens/LoginSignup';
 import Home from '../screens/Home'
 import RunMap from '../screens/RunMap';
+import Login from '../screens/Login';
 
 import {NavigationContainer} from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import SignUp from '../screens/SignUp';
 
 // screen names
 const homeName = "Home"
@@ -14,12 +15,11 @@ const runName = 'Run'
 
 
 
-
 export default function BottomNavBar() {
 
   const Tab = createBottomTabNavigator();
   return (
-    <NavigationContainer>
+    <NavigationContainer independent={true}>
       <Tab.Navigator
         initialRouteName={homeName}
         screenOptions={({route}) => ({
@@ -38,7 +38,9 @@ export default function BottomNavBar() {
           },
         })}>
         <Tab.Screen name={homeName} component={Home} />
-        <Tab.Screen name={loginName} component={LoginSignup} />
+        <Tab.Screen name={loginName} options={{title: 'Login'}}>
+          {props => <Login {...props} SignUp={SignUp} />}
+        </Tab.Screen>
         <Tab.Screen name={runName} component={RunMap} />
       </Tab.Navigator>
     </NavigationContainer>

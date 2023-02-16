@@ -16,7 +16,7 @@ import {
 import React from 'react';
 import SignUp from './SignUp';
 
-export default function Login() {
+export default function Login({ navigation, SignUp }) {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [errors, setErrors] = React.useState({});
@@ -98,6 +98,9 @@ export default function Login() {
             <Button mt="2" colorScheme="indigo" onPress={onSubmit}>
               Sign in
             </Button>
+            <Button mt="2" colorScheme="indigo" onPress={onSubmit}>
+              Register
+            </Button>
             <HStack mt="6" justifyContent="center">
               <Text
                 fontSize="sm"
@@ -113,7 +116,7 @@ export default function Login() {
                   fontWeight: 'medium',
                   fontSize: 'sm',
                 }}
-                onPress={() => navigation.navigate('SignUp')}>
+                onPress={() => navigation.navigate('signUpName')}>
                 Sign Up
               </Link>
             </HStack>
