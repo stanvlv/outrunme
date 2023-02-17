@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "456724083654",
+    "firebase_url": "https://outrunme-dev-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "outrunme-dev",
+    "storage_bucket": "outrunme-dev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:456724083654:android:baac36f1ed9eae997db8c7",
+        "android_client_info": {
+          "package_name": "com.outrunme"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "456724083654-jlu3nsqdlhnhh2h4kkcfqf43u9vd3n1h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByUaCbbMUZzlxbu0pKG4JP-SprY-tE4I0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "456724083654-jlu3nsqdlhnhh2h4kkcfqf43u9vd3n1h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
