@@ -7,12 +7,13 @@ import {NavigationContainer} from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import SignUp from '../screens/SignUp';
+import FirebaseDatabase from '../screens/FirebaseDatabase';
 
 // screen names
 const homeName = "Home"
 const loginName = "Login"
 const runName = 'Run'
-
+const firebase = "Firebase"
 
 
 export default function BottomNavBar() {
@@ -42,6 +43,7 @@ export default function BottomNavBar() {
           {props => <Login {...props} SignUp={SignUp} />}
         </Tab.Screen>
         <Tab.Screen name={runName} component={RunMap} />
+        <Tab.Screen name={firebase} component={FirebaseDatabase} />
       </Tab.Navigator>
     </NavigationContainer>
   );

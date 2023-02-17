@@ -33,7 +33,7 @@ import MainScreenComponent from './src/screens/MainScreenComponent';
 import firebase from '@react-native-firebase/app';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-
+import { ScrollView } from 'native-base';
 
 
 export default function App() {
@@ -65,6 +65,7 @@ export default function App() {
 
   return (
     <MainScreenComponent />
+  
   );
 }
 

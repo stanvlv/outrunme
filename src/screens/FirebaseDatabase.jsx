@@ -5,13 +5,13 @@ import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 
 
-export default function FirebaseDatabase() {
+export default function FirebaseDatabase({ navigation }) {
    
    const [userr, setUserr] = useState()
         const userDocument = async () => {
        
             const user = await firestore().collection('users').doc('N5EmkSNHUyimvKqrtpWH').get();
-             console.log(user)
+             return user
          }
          useEffect(() => {
             userDocument().then(user => {
@@ -27,7 +27,7 @@ export default function FirebaseDatabase() {
     return (
         <NativeBaseProvider>
             <Box>firebase database</Box>
-            <Box>Name: </Box>
+            <Box>Name: {userr?.username} </Box>
         </NativeBaseProvider>
     )
 }
