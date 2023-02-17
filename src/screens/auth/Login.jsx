@@ -14,14 +14,13 @@ import {
   Text,
 } from 'native-base';
 import React from 'react';
-import SignUp from './SignUp';
 import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 GoogleSignin.configure({
   webClientId: '456724083654-jlu3nsqdlhnhh2h4kkcfqf43u9vd3n1h.apps.googleusercontent.com',
 });
-export default function Login({ navigation, SignUp }) {
+export default function Login({ navigation }) {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [errors, setErrors] = React.useState({});
@@ -45,25 +44,6 @@ export default function Login({ navigation, SignUp }) {
   // };
 
 
-  // create user with email and password
-  const createUser = () => {
-    auth()
-.createUserWithEmailAndPassword(`${email.name}`, `${password}`)
-.then(() => {
-console.log('User account created & signed in!');
-})
-.catch(error => {
-if (error.code === 'auth/email-already-in-use') {
-  console.log('That email address is already in use!');
-}
-
-if (error.code === 'auth/invalid-email') {
-  console.log('That email address is invalid!');
-}
-
-console.error(error);
-});
-}
 
 // login with email and password
 const loginUser = () => {
@@ -145,6 +125,7 @@ const logout = () => {
                 onChangeText={value => setPassword({...password, name: value})}
               />
               <Link
+              onPress={() => navigation.navigate('ForgotPassword')}
                 _text={{
                   fontSize: 'xs',
                   fontWeight: '500',
@@ -161,12 +142,10 @@ const logout = () => {
             <Button mt="2" colorScheme="indigo" onPress={signWithGoogle}>
               Signup with Google
             </Button>
-            <Button mt="2" colorScheme="indigo" onPress={createUser}>
+            {/* <Button mt="2" colorScheme="indigo" onPress={createUser}>
               Register
-            </Button>
-            <Button mt="2" colorScheme="indigo" onPress={logout}>
-              Logout
-            </Button>
+            </Button> */}
+            
             <HStack mt="6" justifyContent="center">
               <Text
                 fontSize="sm"
@@ -182,7 +161,7 @@ const logout = () => {
                   fontWeight: 'medium',
                   fontSize: 'sm',
                 }}
-                onPress={() => navigation.navigate('signUpName')}>
+                onPress={() => navigation.navigate('Register')}>
                 Sign Up
               </Link>
             </HStack>

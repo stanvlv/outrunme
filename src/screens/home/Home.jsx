@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, View, Text, ScrollView} from 'react-native';
 import {NativeBaseProvider} from 'native-base';
-import ChallengeItem from '../components/ChallengeItem';
+import ChallengeItem from '../../components/ChallengeItem';
 
 // Fetch Data
 
@@ -33,6 +33,7 @@ const CONTENT = [
 ];
 
 export default function Home({navigation}) {
+  
   return (
     <NativeBaseProvider>
       <View style={styles.container}>

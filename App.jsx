@@ -22,19 +22,28 @@ import 'react-native-gesture-handler';
 //   ReloadInstructions,
 // } from 'react-native/Libraries/NewAppScreen';
 import {NavigationContainer, useNavigation} from '@react-navigation/native';
-import SignUp from './src/screens/SignUp';
-import Login from './src/screens/Login';
 import React, {useEffect, useState} from 'react';
-import BottomNavBar from './src/components/BottomNavBar';
-import MainStackNavigator from './src/navigation/MainStackNavigator';
-import LoginApp from './src/components/LoginApp'
 import { Button, NativeBaseProvider } from 'native-base';
-import MainScreenComponent from './src/screens/MainScreenComponent';
+
 import firebase from '@react-native-firebase/app';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { ScrollView } from 'native-base';
+import AuthNavigator from './src/navigation/AuthNavigator';
+import BottomNavBar from './src/navigation/BottomNavBar';
 
+export const AppStateContext = React.createContext();
+
+const AppStateProvider = props => {
+  const { user } = props;
+  const contextValue = { user };
+
+  return (
+    <AppStateContext.Provider value={contextValue}>
+      {props.children}
+    </AppStateContext.Provider>
+  );
+};
 
 export default function App() {
 
@@ -57,15 +66,17 @@ export default function App() {
   
   if (initializing) return null;
 
-  if (!user) {
-    return (
-      <Login />
-    );
-  }
+ 
 
-  return (
-    <MainScreenComponent />
-  
+console.log(user + " this comes from app.jsx")
+
+  return ( <NativeBaseProvider>
+    <AppStateProvider user={user}>
+      <NavigationContainer>
+        {user ? <BottomNavBar /> : <AuthNavigator />}
+      </NavigationContainer>
+    </AppStateProvider>
+  </NativeBaseProvider>
   );
 }
 
