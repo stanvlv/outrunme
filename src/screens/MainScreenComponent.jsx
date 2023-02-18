@@ -1,11 +1,11 @@
-import { Box, NativeBaseProvider } from "native-base";
-import FirebaseDatabase from "./FirebaseDatabase";
-import BottomNavBar from "../components/BottomNavBar";
+import {Box, NativeBaseProvider} from 'native-base';
+import FirebaseDatabase from './FirebaseDatabase';
+import BottomNavBar from '../components/BottomNavBar';
 
 export default function MainScreenComponent() {
-    return (
-        <NativeBaseProvider>
-        <BottomNavBar />
-        </NativeBaseProvider>
-    )
+  return (
+    <NativeBaseProvider>
+      <BottomNavBar />
+    </NativeBaseProvider>
+  );
 }
