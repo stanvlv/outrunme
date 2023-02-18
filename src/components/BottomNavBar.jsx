@@ -1,23 +1,21 @@
 // Screens
-import Home from '../screens/Home'
+import Home from '../screens/Home';
 import RunMap from '../screens/RunMap';
 import Login from '../screens/Login';
 
 import {NavigationContainer} from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Ionicons from 'react-native-vector-icons/Ionicons'
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import SignUp from '../screens/SignUp';
 import FirebaseDatabase from '../screens/FirebaseDatabase';
 
 // screen names
-const homeName = "Home"
-const loginName = "Login"
-const runName = 'Run'
-const firebase = "Firebase"
-
+const homeName = 'Home';
+const loginName = 'Login';
+const runName = 'Run';
+const firebase = 'Firebase';
 
 export default function BottomNavBar() {
-
   const Tab = createBottomTabNavigator();
   return (
     <NavigationContainer independent={true}>
