@@ -1,7 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 
-export default function ChallengeItem({item, key}) {
+export default function ChallengeItem({
+  item,
+  key,
+  title,
+  userTime,
+  userKm,
+  otherTime,
+  otherKm,
+}) {
   const [layoutHeight, setLayoutHeight] = useState(0);
   const [isClicked, setIsClicked] = useState(false);
 
@@ -24,7 +32,10 @@ export default function ChallengeItem({item, key}) {
         activeOpacity={0.8}
         onPress={handleClick}
         style={styles.header}>
-        <Text style={styles.headerText}>{item.category_name}</Text>
+        <Text style={styles.headerText}>
+          {title} {item.challenged} on{' '}
+          {item.challenger_date.toDate().toLocaleDateString('en-US')}
+        </Text>
       </TouchableOpacity>
       <View
         style={{
@@ -32,14 +43,21 @@ export default function ChallengeItem({item, key}) {
           overflow: 'hidden',
         }}>
         {/*Details*/}
-        {item.subcategory.map((item, key) => (
+        {userTime && (
           <TouchableOpacity key={key} style={styles.content}>
-            <Text style={styles.text}>
-              {key}. {item.val}
-            </Text>
+            <Text style={styles.text}>your Stats</Text>
+            <Text style={styles.text}>time: {userTime} min</Text>
+            <Text style={styles.text}>distance: {userKm} km</Text>
             <View style={styles.separator} />
           </TouchableOpacity>
-        ))}
+        )}
+        {otherTime && (
+          <TouchableOpacity key={key} style={styles.content}>
+            <Text style={styles.text}>their Stats</Text>
+            <Text style={styles.text}>time: {otherTime} min</Text>
+            <Text style={styles.text}>distance: {otherKm} km</Text>
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );
