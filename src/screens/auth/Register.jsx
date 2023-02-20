@@ -26,21 +26,32 @@ export default function Register({ navigation }) {
   const [passwordRepeat, setPasswordRepeat] = React.useState('');
   const [errors, setErrors] = React.useState({});
 
-
+console.log(password.name)
+console.log(passwordRepeat.name)
   // create user with email and password
   const createUser = () => {
+
+    console.log(password.name + " from createUser")
+console.log(passwordRepeat.name + " from createUser")
+    if (password.name !== passwordRepeat.name) {
+      console.log(`Passwords don't match`)
+      return
+    } 
     auth()
       .createUserWithEmailAndPassword(`${email.name}`, `${password}`)
       .then((userCredential) => {
         console.log('User account created & signed in!');
         
+    // take the uid from the reg and get the users collection to make first post
         const { uid } = userCredential.user;
         const userRef = firestore().collection('users').doc(uid);
   
+
+    // if username exist somewhere in the collection it shows an error
         userRef.get().then((doc) => {
           if (doc.exists) {
-            console.log('Username already exists!');
-            return;
+            return console.log('Username already exists!');
+            
           }
   
           userRef.set({
