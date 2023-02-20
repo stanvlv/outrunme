@@ -1,39 +1,46 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {StyleSheet, View, Text, ScrollView} from 'react-native';
 import {NativeBaseProvider} from 'native-base';
-import ChallengeItem from '../../components/ChallengeItem';
+import ChallengeItem from '../components/ChallengeItem';
+import firestore from '@react-native-firebase/firestore';
 
 // Fetch Data
 
-const CONTENT = [
-  {
-    isExpanded: true,
-    category_name: 'Item 1',
-    subcategory: [
-      {id: 1, val: 'Sub Cat 1'},
-      {id: 3, val: 'Sub Cat 3'},
-    ],
-  },
-  {
-    isExpanded: true,
-    category_name: 'Item 5',
-    subcategory: [
-      {id: 13, val: 'Sub Cat 13'},
-      {id: 15, val: 'Sub Cat 5'},
-    ],
-  },
-  {
-    isExpanded: true,
-    category_name: 'Item 6',
-    subcategory: [
-      {id: 17, val: 'Sub Cat 17'},
-      {id: 18, val: 'Sub Cat 8'},
-    ],
-  },
-];
-
 export default function Home({navigation}) {
-  
+  const [challenged, setChallenged] = useState([]);
+  const [challenger, setChallenger] = useState([]);
+
+  const isChallengedDocument = async () => {
+    const isChallenged = firestore()
+      .collection('challenges')
+      .where('challenged', '==', 'User1')
+      .onSnapshot(post => {
+        const data = post.docs.map(doc => ({id: doc.id, ...doc.data()}));
+        setChallenged(data);
+      });
+    return () => user();
+  };
+  useEffect(() => {
+    isChallengedDocument();
+  }, []);
+  // console.log(challenged);
+
+  const isChallengerDocument = async () => {
+    const isChallenger = firestore()
+      .collection('challenges')
+      .where('challenger', '==', 'User1')
+      // .orderBy('challenger_time')
+      .onSnapshot(post => {
+        const data = post.docs.map(doc => ({id: doc.id, ...doc.data()}));
+        setChallenger(data);
+      });
+    return () => user();
+  };
+  useEffect(() => {
+    isChallengerDocument();
+  }, ['User1']);
+  // console.log(challenger);
+
   return (
     <NativeBaseProvider>
       <View style={styles.container}>
@@ -41,9 +48,69 @@ export default function Home({navigation}) {
           <Text style={styles.titleText}>My Challenges</Text>
         </View>
         <ScrollView>
-          {CONTENT.map((item, key) => (
-            <ChallengeItem key={item.category_name} item={item} />
-          ))}
+          <Text>Sent</Text>
+          {challenger
+            .filter(character => !character.finished)
+            .map((item, key) => (
+              <ChallengeItem
+                key={item.category_name}
+                item={item}
+                title={'you challenged'}
+                userTime={item.challenger_time}
+                userKm={item.challenger_km}
+              />
+            ))}
+        </ScrollView>
+        <ScrollView>
+          <Text>Received</Text>
+          {challenged
+            .filter(character => !character.finished)
+            .map((item, key) => (
+              <ChallengeItem
+                key={item.category_name}
+                item={item}
+                title={'you were challenged by'}
+                otherTime={item.challenger_time}
+                otherKm={item.challenger_km}
+              />
+            ))}
+        </ScrollView>
+        <ScrollView>
+          <Text>Finished</Text>
+          {challenged
+            .concat(challenger)
+            .filter(character => character.finished === true)
+            .map((item, key) => (
+              <ChallengeItem
+                key={item.category_name}
+                item={item}
+                title={
+                  item.challenger === 'User1'
+                    ? 'you challenged'
+                    : 'you were challenged by'
+                }
+                userTime={
+                  item.challenger === 'User1'
+                    ? item.challenger_time
+                    : item.challenged_time
+                }
+                userKm={
+                  item.challenger === 'User1'
+                    ? item.challenger_km
+                    : item.challenged_km
+                }
+                otherTime={
+                  item.challenger === 'User1'
+                    ? item.challenged_time
+                    : item.challenger_time
+                }
+                otherKm={
+                  item.challenger === 'User1'
+                    ? item.challenged_km
+                    : item.challenger_km
+                }
+              />
+            ))}
         </ScrollView>
       </View>
     </NativeBaseProvider>
