@@ -1,7 +1,7 @@
 // Screens
 import Home from '../screens/home/Home'
 import RunMap from '../screens/home/RunMap';
-import FirebaseDatabase from '../screens/home/FirebaseDatabase';
+import FirebaseDatabase from '../screens/home/Profile';
 
 import {NavigationContainer} from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';

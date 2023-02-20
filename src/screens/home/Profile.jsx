@@ -9,7 +9,8 @@ import { AppStateContext } from '../../../App';
 export default function FirebaseDatabase() {
   
     const { user } = useContext(AppStateContext)
-    console.log(user.uid)
+    console.log(user.uid + 'this comes from the profile component')
+
 
     const [userData, setUserData] = useState()
     useEffect(() => {
@@ -26,6 +27,7 @@ export default function FirebaseDatabase() {
         .catch(err => console.log(err))
     }, [user.uid])
 
+        console.log(userData)
  
 // logout the user
 const logout = () => {
@@ -38,6 +40,9 @@ const logout = () => {
     return (
         <NativeBaseProvider>
             <Box>Name: {userData?.username}</Box>
+            <Box>Runs: {userData?.runs}</Box>
+            <Box>Challenges Won: {userData?.challenges_won}</Box>
+            <Box>Challenges Lost: {userData?.challenges_lost}</Box>
         <Button onPress={logout}>Logout</Button>
       </NativeBaseProvider>
     )
