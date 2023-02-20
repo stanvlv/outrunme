@@ -34,7 +34,7 @@ export default function ChallengeItem({
         style={styles.header}>
         <Text style={styles.headerText}>
           {title} {item.challenged} on{' '}
-          {item.challenger_date.toDate().toLocaleDateString('en-US')}
+          {item.challenger_date?.toDate().toLocaleDateString('en-US')}
         </Text>
       </TouchableOpacity>
       <View

@@ -66,14 +66,18 @@ export default function App() {
   console.log(user + ' this comes from app.jsx object');
   console.log(user?.uid + ' this should be the uid that comes from app.jsx');
 
-  return (
-    <NativeBaseProvider>
-      <AppStateProvider user={user}>
-        <NavigationContainer>
-          {user ? <BottomNavBar /> : <AuthNavigator />}
-        </NavigationContainer>
-      </AppStateProvider>
-    </NativeBaseProvider>
+
+console.log(user + " this comes from app.jsx objssect")
+console.log(user?.uid + " this should be the uid that comes from app.jsx")
+
+  return ( <NativeBaseProvider>
+    <AppStateProvider user={user}>
+      <NavigationContainer>
+        {user ? <BottomNavBar /> : <AuthNavigator />}
+      </NavigationContainer>
+    </AppStateProvider>
+  </NativeBaseProvider>
+
   );
 }
 
