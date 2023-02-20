@@ -65,7 +65,7 @@ export default function App() {
 
  
 
-console.log(user + " this comes from app.jsx object")
+console.log(user + " this comes from app.jsx objssect")
 console.log(user?.uid + " this should be the uid that comes from app.jsx")
 
   return ( <NativeBaseProvider>

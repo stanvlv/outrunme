@@ -41,7 +41,7 @@ console.log(user + ' this comes from bottom navbar')
             return <Ionicons name={iconName} size={30} color={color} />;
           },
         })}>
-        <Tab.Screen name={homeName} component={Home} />
+        <Tab.Screen name={homeName} user={user} component={Home} />
         <Tab.Screen name={runName} component={RunMap} />
         <Tab.Screen name={firebase} user={user} component={FirebaseDatabase} /> 
         <Tab.Screen name={map} user={user} component={Map} />
