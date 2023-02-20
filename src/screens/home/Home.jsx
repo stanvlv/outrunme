@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {StyleSheet, View, Text, ScrollView} from 'react-native';
-import {NativeBaseProvider} from 'native-base';
-import ChallengeItem from '../components/ChallengeItem';
+import {NativeBaseProvider, Button, Flex, Spacer} from 'native-base';
+import ChallengeItem from '../../components/ChallengeItem';
 import firestore from '@react-native-firebase/firestore';
 
 // Fetch Data
@@ -9,6 +9,7 @@ import firestore from '@react-native-firebase/firestore';
 export default function Home({navigation}) {
   const [challenged, setChallenged] = useState([]);
   const [challenger, setChallenger] = useState([]);
+  const [selectedTab, setSelectedTab] = useState(1);
 
   const isChallengedDocument = async () => {
     const isChallenged = firestore()
@@ -41,77 +42,108 @@ export default function Home({navigation}) {
   }, ['User1']);
   // console.log(challenger);
 
+  const onPressSent = () => setSelectedTab('sent');
+
+  const onPressReceived = () => setSelectedTab('received');
+  const onPressFinished = () => setSelectedTab('finished');
+
   return (
     <NativeBaseProvider>
       <View style={styles.container}>
         <View style={{flexDirection: 'row', padding: 10}}>
           <Text style={styles.titleText}>My Challenges</Text>
         </View>
-        <ScrollView>
-          <Text>Sent</Text>
-          {challenger
-            .filter(character => !character.finished)
-            .map((item, key) => (
-              <ChallengeItem
-                key={item.category_name}
-                item={item}
-                title={'you challenged'}
-                userTime={item.challenger_time}
-                userKm={item.challenger_km}
-              />
-            ))}
-        </ScrollView>
-        <ScrollView>
-          <Text>Received</Text>
-          {challenged
-            .filter(character => !character.finished)
-            .map((item, key) => (
-              <ChallengeItem
-                key={item.category_name}
-                item={item}
-                title={'you were challenged by'}
-                otherTime={item.challenger_time}
-                otherKm={item.challenger_km}
-              />
-            ))}
-        </ScrollView>
-        <ScrollView>
-          <Text>Finished</Text>
-          {challenged
-            .concat(challenger)
-            .filter(character => character.finished === true)
-            .map((item, key) => (
-              <ChallengeItem
-                key={item.category_name}
-                item={item}
-                title={
-                  item.challenger === 'User1'
-                    ? 'you challenged'
-                    : 'you were challenged by'
-                }
-                userTime={
-                  item.challenger === 'User1'
-                    ? item.challenger_time
-                    : item.challenged_time
-                }
-                userKm={
-                  item.challenger === 'User1'
-                    ? item.challenger_km
-                    : item.challenged_km
-                }
-                otherTime={
-                  item.challenger === 'User1'
-                    ? item.challenged_time
-                    : item.challenger_time
-                }
-                otherKm={
-                  item.challenger === 'User1'
-                    ? item.challenged_km
-                    : item.challenger_km
-                }
-              />
-            ))}
-        </ScrollView>
+        <Flex direction="row">
+          <Button
+            style={{flex: 1}}
+            borderRadius="full"
+            colorScheme={selectedTab === 'sent' ? 'success' : 'warning'}
+            onPress={onPressSent}>
+            Sent
+          </Button>
+          <Button
+            style={{flex: 1}}
+            borderRadius="full"
+            colorScheme={selectedTab === 'received' ? 'success' : 'warning'}
+            onPress={onPressReceived}>
+            Received
+          </Button>
+          <Button
+            style={{flex: 1}}
+            borderRadius="full"
+            colorScheme={selectedTab === 'finished' ? 'success' : 'warning'}
+            onPress={onPressFinished}>
+            Finished
+          </Button>
+        </Flex>
+        {selectedTab === 'sent' && (
+          <ScrollView>
+            {challenger
+              .filter(character => !character.finished)
+              .map((item, key) => (
+                <ChallengeItem
+                  key={item.category_name}
+                  item={item}
+                  title={'you challenged'}
+                  userTime={item.challenger_time}
+                  userKm={item.challenger_km}
+                />
+              ))}
+          </ScrollView>
+        )}
+        {selectedTab === 'received' && (
+          <ScrollView>
+            {challenged
+              .filter(character => !character.finished)
+              .map((item, key) => (
+                <ChallengeItem
+                  key={item.category_name}
+                  item={item}
+                  title={'you were challenged by'}
+                  otherTime={item.challenger_time}
+                  otherKm={item.challenger_km}
+                />
+              ))}
+          </ScrollView>
+        )}
+        {selectedTab === 'finished' && (
+          <ScrollView>
+            {challenged
+              .concat(challenger)
+              .filter(character => character.finished === true)
+              .map((item, key) => (
+                <ChallengeItem
+                  key={item.category_name}
+                  item={item}
+                  title={
+                    item.challenger === 'User1'
+                      ? 'you challenged'
+                      : 'you were challenged by'
+                  }
+                  userTime={
+                    item.challenger === 'User1'
+                      ? item.challenger_time
+                      : item.challenged_time
+                  }
+                  userKm={
+                    item.challenger === 'User1'
+                      ? item.challenger_km
+                      : item.challenged_km
+                  }
+                  otherTime={
+                    item.challenger === 'User1'
+                      ? item.challenged_time
+                      : item.challenger_time
+                  }
+                  otherKm={
+                    item.challenger === 'User1'
+                      ? item.challenged_km
+                      : item.challenger_km
+                  }
+                />
+              ))}
+          </ScrollView>
+        )}
       </View>
     </NativeBaseProvider>
   );
