@@ -23,20 +23,20 @@ import 'react-native-gesture-handler';
 // } from 'react-native/Libraries/NewAppScreen';
 import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
-import { Button, NativeBaseProvider } from 'native-base';
+import {Button, NativeBaseProvider} from 'native-base';
 
 import firebase from '@react-native-firebase/app';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-import { ScrollView } from 'native-base';
+import {ScrollView} from 'native-base';
 import AuthNavigator from './src/navigation/AuthNavigator';
 import BottomNavBar from './src/navigation/BottomNavBar';
 
 export const AppStateContext = React.createContext();
 
 const AppStateProvider = props => {
-  const { user } = props;
-  const contextValue = { user };
+  const {user} = props;
+  const contextValue = {user};
 
   return (
     <AppStateContext.Provider value={contextValue}>
@@ -63,7 +63,9 @@ export default function App() {
 
   if (initializing) return null;
 
- 
+  console.log(user + ' this comes from app.jsx object');
+  console.log(user?.uid + ' this should be the uid that comes from app.jsx');
+
 
 console.log(user + " this comes from app.jsx objssect")
 console.log(user?.uid + " this should be the uid that comes from app.jsx")
@@ -75,6 +77,7 @@ console.log(user?.uid + " this should be the uid that comes from app.jsx")
       </NavigationContainer>
     </AppStateProvider>
   </NativeBaseProvider>
+
   );
 }
 
