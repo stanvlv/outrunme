@@ -10,7 +10,7 @@ export default function FirebaseDatabase() {
   
     const { user } = useContext(AppStateContext)
     console.log(user.uid + 'this comes from the profile component')
-
+    console.log(user)
 
     const [userData, setUserData] = useState()
     useEffect(() => {

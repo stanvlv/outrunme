@@ -1,8 +1,9 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {StyleSheet, View, Text, ScrollView} from 'react-native';
 import {NativeBaseProvider} from 'native-base';
-import ChallengeItem from '../components/ChallengeItem';
+import ChallengeItem from '../../components/ChallengeItem';
 import firestore from '@react-native-firebase/firestore';
+import { AppStateContext } from '../../../App';
 
 // Fetch Data
 
@@ -10,10 +11,32 @@ export default function Home({navigation}) {
   const [challenged, setChallenged] = useState([]);
   const [challenger, setChallenger] = useState([]);
 
+
+  const { user } = useContext(AppStateContext)
+    console.log(user.uid + 'this comes from the profile component')
+    console.log(user)
+
+    const [userData, setUserData] = useState()
+    useEffect(() => {
+        const userRef = firestore().collection('users').doc(user.uid)
+
+        userRef.get()
+        .then(doc => {
+            if(doc.exists) {
+                setUserData(doc.data().username)
+            } else {
+                console.log('Nothing found')
+            }
+        })
+        .catch(err => console.log(err))
+    }, [user.uid])
+
+        console.log(userData)
+
   const isChallengedDocument = async () => {
     const isChallenged = firestore()
       .collection('challenges')
-      .where('challenged', '==', 'User1')
+      .where('challenged', '==', `${userData}`)
       .onSnapshot(post => {
         const data = post.docs.map(doc => ({id: doc.id, ...doc.data()}));
         setChallenged(data);
@@ -22,13 +45,13 @@ export default function Home({navigation}) {
   };
   useEffect(() => {
     isChallengedDocument();
-  }, []);
+  }, [userData]);
   // console.log(challenged);
 
   const isChallengerDocument = async () => {
     const isChallenger = firestore()
       .collection('challenges')
-      .where('challenger', '==', 'User1')
+      .where('challenger', '==', `${userData}`)
       // .orderBy('challenger_time')
       .onSnapshot(post => {
         const data = post.docs.map(doc => ({id: doc.id, ...doc.data()}));
@@ -38,7 +61,7 @@ export default function Home({navigation}) {
   };
   useEffect(() => {
     isChallengerDocument();
-  }, ['User1']);
+  }, [userData]);
   // console.log(challenger);
 
   return (
