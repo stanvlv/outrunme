@@ -15,12 +15,13 @@ import {
 } from 'native-base';
 import React from 'react';
 import auth from '@react-native-firebase/auth';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 GoogleSignin.configure({
-  webClientId: '456724083654-jlu3nsqdlhnhh2h4kkcfqf43u9vd3n1h.apps.googleusercontent.com',
+  webClientId:
+    '456724083654-jlu3nsqdlhnhh2h4kkcfqf43u9vd3n1h.apps.googleusercontent.com',
 });
-export default function Login({ navigation }) {
+export default function Login({navigation}) {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [errors, setErrors] = React.useState({});
@@ -43,51 +44,49 @@ export default function Login({ navigation }) {
   //   validate() ? console.log('Submitted') : console.log('Validation Failed');
   // };
 
+  // login with email and password
+  const loginUser = () => {
+    auth()
+      .signInWithEmailAndPassword(`${email.name}`, `${password}`)
+      .then(() => {
+        console.log('User account signed in!');
+      })
+      .catch(error => {
+        if (error.code === 'auth/email-already-in-use') {
+          console.log('That email address is already in use!');
+        }
 
+        if (error.code === 'auth/invalid-email') {
+          console.log('That email address is invalid!');
+        }
 
-// login with email and password
-const loginUser = () => {
-  auth()
-  .signInWithEmailAndPassword(`${email.name}`, `${password}`)
-  .then(() => {
-  console.log('User account signed in!');
-  })
-  .catch(error => {
-  if (error.code === 'auth/email-already-in-use') {
-    console.log('That email address is already in use!');
+        console.error(error);
+      });
+  };
+
+  async function onGoogleButtonPress() {
+    // Check if your device supports Google Play
+    await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
+    // Get the users ID token
+    const {idToken} = await GoogleSignin.signIn();
+
+    // Create a Google credential with the token
+    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+    // Sign-in the user with the credential
+    return auth().signInWithCredential(googleCredential);
   }
-  
-  if (error.code === 'auth/invalid-email') {
-    console.log('That email address is invalid!');
-  }
-  
-  console.error(error);
-  });
-}
+  // signin with Google Account
+  const signWithGoogle = () => {
+    onGoogleButtonPress().then(() => console.log('Signed in with Google!'));
+  };
 
-async function onGoogleButtonPress() {
-  // Check if your device supports Google Play
-  await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-  // Get the users ID token
-  const { idToken } = await GoogleSignin.signIn();
-
-  // Create a Google credential with the token
-  const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-
-  // Sign-in the user with the credential
-  return auth().signInWithCredential(googleCredential);
-}
-// signin with Google Account
-const signWithGoogle = () => {
-  onGoogleButtonPress().then(() => console.log('Signed in with Google!'))
-}
-
-// logout the user
-const logout = () => {
-  auth()
-  .signOut()
-  .then(() => console.log('User signed out!'));
-}
+  // logout the user
+  const logout = () => {
+    auth()
+      .signOut()
+      .then(() => console.log('User signed out!'));
+  };
 
   return (
     <NativeBaseProvider>
@@ -103,7 +102,7 @@ const logout = () => {
             }}>
             Up for the challenge?
           </Heading>
-          
+
           <VStack space={3} mt="5">
             <FormControl isInvalid={'name' in errors}>
               <FormControl.Label>Email</FormControl.Label>
@@ -125,7 +124,7 @@ const logout = () => {
                 onChangeText={value => setPassword({...password, name: value})}
               />
               <Link
-              onPress={() => navigation.navigate('ForgotPassword')}
+                onPress={() => navigation.navigate('ForgotPassword')}
                 _text={{
                   fontSize: 'xs',
                   fontWeight: '500',
@@ -145,7 +144,7 @@ const logout = () => {
             {/* <Button mt="2" colorScheme="indigo" onPress={createUser}>
               Register
             </Button> */}
-            
+
             <HStack mt="6" justifyContent="center">
               <Text
                 fontSize="sm"
