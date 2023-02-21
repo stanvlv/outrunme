@@ -1,9 +1,10 @@
 import React, {useState, useEffect, useContext} from 'react';
 import {StyleSheet, View, Text, ScrollView} from 'react-native';
-import {NativeBaseProvider, Button, Flex, Spacer} from 'native-base';
+import {NativeBaseProvider, Button, Flex, Link} from 'native-base';
 import ChallengeItem from '../../components/ChallengeItem';
 import firestore from '@react-native-firebase/firestore';
-import { AppStateContext } from '../../../App';
+import {AppStateContext} from '../../../App';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 // Fetch Data
 
@@ -12,27 +13,27 @@ export default function Home({navigation}) {
   const [challenger, setChallenger] = useState([]);
   const [selectedTab, setSelectedTab] = useState(1);
 
+  const {user} = useContext(AppStateContext);
+  // console.log(user.uid + 'this comes from the profile component');
+  // console.log(user);
 
-  const { user } = useContext(AppStateContext)
-    console.log(user.uid + 'this comes from the profile component')
-    console.log(user)
+  const [userData, setUserData] = useState();
+  useEffect(() => {
+    const userRef = firestore().collection('users').doc(user.uid);
 
-    const [userData, setUserData] = useState()
-    useEffect(() => {
-        const userRef = firestore().collection('users').doc(user.uid)
+    userRef
+      .get()
+      .then(doc => {
+        if (doc.exists) {
+          setUserData(doc.data().username);
+        } else {
+          console.log('Nothing found');
+        }
+      })
+      .catch(err => console.log(err));
+  }, [user.uid]);
 
-        userRef.get()
-        .then(doc => {
-            if(doc.exists) {
-                setUserData(doc.data().username)
-            } else {
-                console.log('Nothing found')
-            }
-        })
-        .catch(err => console.log(err))
-    }, [user.uid])
-
-        console.log(userData)
+  // console.log(userData);
 
   const isChallengedDocument = async () => {
     const isChallenged = firestore()
@@ -66,9 +67,9 @@ export default function Home({navigation}) {
   // console.log(challenger);
 
   const onPressSent = () => setSelectedTab('sent');
-
   const onPressReceived = () => setSelectedTab('received');
   const onPressFinished = () => setSelectedTab('finished');
+  const onPressPlus = () => setSelectedTab('finished');
 
   return (
     <NativeBaseProvider>
@@ -112,6 +113,12 @@ export default function Home({navigation}) {
                   userKm={item.challenger_km}
                 />
               ))}
+            <Link
+              alignSelf="flex-end"
+              my="5"
+              onPress={() => navigation.navigate('FindUser')}>
+              <Ionicons name="add-circle" size={40} style={{color: 'green'}} />
+            </Link>
           </ScrollView>
         )}
         {selectedTab === 'received' && (
@@ -139,27 +146,27 @@ export default function Home({navigation}) {
                   key={item.category_name}
                   item={item}
                   title={
-                    item.challenger === 'User1'
+                    item.challenger === userData
                       ? 'you challenged'
                       : 'you were challenged by'
                   }
                   userTime={
-                    item.challenger === 'User1'
+                    item.challenger === userData
                       ? item.challenger_time
                       : item.challenged_time
                   }
                   userKm={
-                    item.challenger === 'User1'
+                    item.challenger === userData
                       ? item.challenger_km
                       : item.challenged_km
                   }
                   otherTime={
-                    item.challenger === 'User1'
+                    item.challenger === userData
                       ? item.challenged_time
                       : item.challenger_time
                   }
                   otherKm={
-                    item.challenger === 'User1'
+                    item.challenger === userData
                       ? item.challenged_km
                       : item.challenger_km
                   }
