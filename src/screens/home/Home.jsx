@@ -38,7 +38,8 @@ export default function Home({navigation}) {
   const isChallengedDocument = async () => {
     const isChallenged = firestore()
       .collection('challenges')
-      .where('challenged', '==', `${userData}`)
+      // .where('challenged', '==', `${userData}`)
+      .where('challenged', '==', `User1`)
       .onSnapshot(post => {
         const data = post.docs.map(doc => ({id: doc.id, ...doc.data()}));
         setChallenged(data);
@@ -69,7 +70,6 @@ export default function Home({navigation}) {
   const onPressSent = () => setSelectedTab('sent');
   const onPressReceived = () => setSelectedTab('received');
   const onPressFinished = () => setSelectedTab('finished');
-  const onPressPlus = () => setSelectedTab('finished');
 
   return (
     <NativeBaseProvider>
@@ -132,6 +132,8 @@ export default function Home({navigation}) {
                   title={'you were challenged by'}
                   otherTime={item.challenger_time}
                   otherKm={item.challenger_km}
+                  showButtons={true}
+                  navigation={navigation}
                 />
               ))}
           </ScrollView>

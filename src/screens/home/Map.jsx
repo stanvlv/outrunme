@@ -1,9 +1,12 @@
-import { Box, NativeBaseProvider } from "native-base";
+import {Box, Button, NativeBaseProvider} from 'native-base';
 
-export default function Map() {
-    return (
-        <NativeBaseProvider>
-            <Box>Hello from the Map Screen</Box>
-        </NativeBaseProvider>
-    )
+export default function Map({navigation}) {
+  return (
+    <NativeBaseProvider>
+      <Box>Map</Box>
+      <Box>Distance:</Box>
+      <Box>Time:</Box>
+      <Button>Start Run</Button>
+    </NativeBaseProvider>
+  );
 }

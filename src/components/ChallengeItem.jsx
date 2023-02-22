@@ -1,5 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
+import {
+  VStack,
+  Input,
+  NativeBaseProvider,
+  Button,
+  Link,
+  Box,
+} from 'native-base';
 
 export default function ChallengeItem({
   item,
@@ -9,6 +17,8 @@ export default function ChallengeItem({
   userKm,
   otherTime,
   otherKm,
+  showButtons,
+  navigation,
 }) {
   const [layoutHeight, setLayoutHeight] = useState(0);
   const [isClicked, setIsClicked] = useState(false);
@@ -57,6 +67,13 @@ export default function ChallengeItem({
             <Text style={styles.text}>time: {otherTime} min</Text>
             <Text style={styles.text}>distance: {otherKm} km</Text>
           </TouchableOpacity>
+        )}
+        {showButtons && (
+          <Link>
+            <Button onPress={() => navigation.navigate('Map')}>Accept</Button>
+
+            <Button>Reject</Button>
+          </Link>
         )}
       </View>
     </View>
