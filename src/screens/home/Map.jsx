@@ -47,7 +47,7 @@ export default function Map() {
 
   return (
     <NativeBaseProvider>
-      <Box>Hello from the Map Screen</Box>
+      <Box>You challenged </Box>
       {!position && (
         <Button onPress={() => requestGpsPermission()}>Turn on GPS</Button>
       )}
@@ -67,6 +67,7 @@ export default function Map() {
               }}
             />
           </Box>
+          <Button>Start</Button>
         </Box>
       )}
     </NativeBaseProvider>

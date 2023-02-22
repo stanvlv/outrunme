@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
+import firestore from '@react-native-firebase/firestore';
 import {
   VStack,
   Input,
@@ -17,8 +18,10 @@ export default function ChallengeItem({
   userKm,
   otherTime,
   otherKm,
+  nameTile,
   showButtons,
   navigation,
+  userData,
 }) {
   const [layoutHeight, setLayoutHeight] = useState(0);
   const [isClicked, setIsClicked] = useState(false);
@@ -35,6 +38,34 @@ export default function ChallengeItem({
     }
   }, [isClicked]);
 
+  const PostRejected = () =>
+    firestore()
+      .collection('challenged')
+      .doc(`${userData}`)
+      .collection('challenges')
+      .doc(`${item.id}`)
+      .update({
+        accepted: false,
+      });
+
+  const DeleteRejected = () => {
+    if (item.challenger) {
+      firestore()
+        .collection('challenged')
+        .doc(`${userData}`)
+        .collection('challenges')
+        .doc(`${item.id}`)
+        .delete();
+    } else {
+      firestore()
+        .collection('challenger')
+        .doc(`${userData}`)
+        .collection('challenges')
+        .doc(`${item.id}`)
+        .delete();
+    }
+  };
+
   return (
     <View>
       {/* Header */}
@@ -43,9 +74,12 @@ export default function ChallengeItem({
         onPress={handleClick}
         style={styles.header}>
         <Text style={styles.headerText}>
-          {title} {item.challenged} on{' '}
+          {title} {nameTile} on{' '}
           {item.challenger_date?.toDate().toLocaleDateString('en-US')}
         </Text>
+        {item.accepted === false && (
+          <Text style={{textAlign: 'right', color: 'red'}}>Rejected</Text>
+        )}
       </TouchableOpacity>
       <View
         style={{
@@ -68,12 +102,15 @@ export default function ChallengeItem({
             <Text style={styles.text}>distance: {otherKm} km</Text>
           </TouchableOpacity>
         )}
-        {showButtons && (
+        {showButtons && item.accepted !== false && (
           <Link>
             <Button onPress={() => navigation.navigate('Map')}>Accept</Button>
 
-            <Button>Reject</Button>
+            <Button onPress={PostRejected}>Reject</Button>
           </Link>
+        )}
+        {item.accepted === false && (
+          <Button onPress={DeleteRejected}>Delete</Button>
         )}
       </View>
     </View>

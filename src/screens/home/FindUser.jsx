@@ -1,7 +1,14 @@
 import React, {useState, useEffect, useContext} from 'react';
 import ProfileItem from '../../components/ProfileItem';
 import firestore from '@react-native-firebase/firestore';
-import {VStack, Input, NativeBaseProvider, Button, Link} from 'native-base';
+import {
+  VStack,
+  Input,
+  NativeBaseProvider,
+  Button,
+  Link,
+  View,
+} from 'native-base';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export default function FindUser({navigation}) {
@@ -37,12 +44,14 @@ export default function FindUser({navigation}) {
           onChangeText={value => setInput(value)}
         />
       </VStack>
-      <ProfileItem
-        username={userData.username}
-        runs={userData.runs}
-        challenges_won={userData.challenges_won}
-        challenges_lost={userData.challenges_lost}
-      />
+      {userData.username && (
+        <ProfileItem
+          username={userData.username}
+          runs={userData.runs}
+          challenges_won={userData.challenges_won}
+          challenges_lost={userData.challenges_lost}
+        />
+      )}
       {userData.username && (
         <Link alignSelf="flex-end" my="5">
           <Button
