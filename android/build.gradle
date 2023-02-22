@@ -2,14 +2,20 @@
 
 buildscript {
     ext {
-        buildToolsVersion = "33.0.0"
-        minSdkVersion = 21
-        compileSdkVersion = 33
-        targetSdkVersion = 33
+         buildToolsVersion = "33.0.0"
+         minSdkVersion = 21
+         compileSdkVersion = 33
+         targetSdkVersion = 33
 
+        // come from geolocation-service
+       // compileSdkVersion   = 28
+        // buildToolsVersion   = "28.0.3"
+        // minSdkVersion       = 16
+       // targetSdkVersion    = 28
         // We use NDK 23 which has both M1 support and is the side-by-side NDK version from AGP.
         ndkVersion = "23.1.7779620"
         googlePlayServicesAuthVersion = "19.2.0"
+        googlePlayServicesVersion      = "17.0.0" // comes from geolocation-service
     }
     repositories {
         google()
@@ -19,5 +25,7 @@ buildscript {
         classpath("com.android.tools.build:gradle:7.3.1")
         classpath("com.facebook.react:react-native-gradle-plugin")
         classpath 'com.google.gms:google-services:4.3.15'
+        classpath "com.google.android.gms:play-services-maps:18.0.0"
+        classpath "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:2.0.1"
     }
 }
