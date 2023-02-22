@@ -37,9 +37,10 @@ export default function Home({navigation}) {
 
   const isChallengedDocument = async () => {
     const isChallenged = firestore()
+      .collection('challenged')
+      .doc(`${userData}`)
       .collection('challenges')
-      // .where('challenged', '==', `${userData}`)
-      .where('challenged', '==', `User1`)
+      .orderBy('challenger_date', 'desc')
       .onSnapshot(post => {
         const data = post.docs.map(doc => ({id: doc.id, ...doc.data()}));
         setChallenged(data);
@@ -49,13 +50,13 @@ export default function Home({navigation}) {
   useEffect(() => {
     isChallengedDocument();
   }, [userData]);
-  // console.log(challenged);
-
+  console.log(challenged);
   const isChallengerDocument = async () => {
     const isChallenger = firestore()
+      .collection('challenger')
+      .doc(`${userData}`)
       .collection('challenges')
-      .where('challenger', '==', `${userData}`)
-      // .orderBy('challenger_time')
+
       .onSnapshot(post => {
         const data = post.docs.map(doc => ({id: doc.id, ...doc.data()}));
         setChallenger(data);
@@ -65,7 +66,6 @@ export default function Home({navigation}) {
   useEffect(() => {
     isChallengerDocument();
   }, [userData]);
-  // console.log(challenger);
 
   const onPressSent = () => setSelectedTab('sent');
   const onPressReceived = () => setSelectedTab('received');
@@ -111,6 +111,8 @@ export default function Home({navigation}) {
                   title={'you challenged'}
                   userTime={item.challenger_time}
                   userKm={item.challenger_km}
+                  nameTile={item.challenged}
+                  userData={userData}
                 />
               ))}
             <Link
@@ -130,10 +132,14 @@ export default function Home({navigation}) {
                   key={item.category_name}
                   item={item}
                   title={'you were challenged by'}
-                  otherTime={item.challenger_time}
-                  otherKm={item.challenger_km}
+                  otherTime={
+                    item.byTime === true ? item.challenger_time : '***'
+                  }
+                  otherKm={item.byTime === false ? item.challenger_km : '***'}
                   showButtons={true}
                   navigation={navigation}
+                  nameTile={item.challenger}
+                  userData={userData}
                 />
               ))}
           </ScrollView>
@@ -146,32 +152,30 @@ export default function Home({navigation}) {
               .map((item, key) => (
                 <ChallengeItem
                   key={item.category_name}
+                  userData={userData}
                   item={item}
                   title={
-                    item.challenger === userData
-                      ? 'you challenged'
-                      : 'you were challenged by'
+                    item.challenger
+                      ? 'you were challenged by'
+                      : 'you challenged'
                   }
                   userTime={
-                    item.challenger === userData
-                      ? item.challenger_time
-                      : item.challenged_time
-                  }
-                  userKm={
-                    item.challenger === userData
-                      ? item.challenger_km
-                      : item.challenged_km
-                  }
-                  otherTime={
-                    item.challenger === userData
+                    item.challenger
                       ? item.challenged_time
                       : item.challenger_time
                   }
-                  otherKm={
-                    item.challenger === userData
-                      ? item.challenged_km
-                      : item.challenger_km
+                  userKm={
+                    item.challenger ? item.challenged_km : item.challenger_km
                   }
+                  otherTime={
+                    item.challenger
+                      ? item.challenger_time
+                      : item.challenged_time
+                  }
+                  otherKm={
+                    item.challenger ? item.challenger_km : item.challenged_km
+                  }
+                  nameTile={item.challenger ? item.challenger : item.challenged}
                 />
               ))}
           </ScrollView>
