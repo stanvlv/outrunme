@@ -13,10 +13,11 @@ import Geolocation from 'react-native-geolocation-service';
 import ViewContainer from '../../components/ViewContainer';
 import firestore from '@react-native-firebase/firestore';
 import {getDistance} from 'geolib';
-
+import { useContext } from 'react';
+import {AppStateContext} from '../../../App';
 const LOCATION_UPDATE_INTERVAL = 5000; // 15 seconds
 
-export default function Map() {
+export default function Map({route}) {
   const [watchingLocation, setWatchingLocation] = useState(false);
   const [locationHistory, setLocationHistory] = useState([]);
   const [currentLocation, setCurrentLocation] = useState(null);
@@ -26,7 +27,34 @@ export default function Map() {
   const [timerId, setTimerId] = useState();
   const [distance, setDistance] = useState(0);
 
+  const [challenger, setChallenger] = useState('')
+  const [challenged, setChallenged] = useState('')
+
+  const {user, isChallenged, run} = useContext(AppStateContext);
+
+console.log(Object.values(run))
+
+const [userData, setUserData] = useState();
+useEffect(() => {
+  const userRef = firestore().collection('users').doc(user.uid); 
+
+  userRef
+    .get()
+    .then(doc => {
+      if (doc.exists) {
+        setUserData(doc.data());
+      } else {
+        console.log('Nothing found');
+      }
+    })
+    .catch(err => console.log(err));
+}, [user.uid]);
+  
+
+
   useEffect(() => {
+    setChallenger(run.challenger)
+    setChallenged(run.challenged)
     if (watchingLocation) {
       if (Platform.OS === 'android') {
         PermissionsAndroid.request(
@@ -95,6 +123,9 @@ export default function Map() {
       }
     }
 
+    
+
+
     return () => {
       if (watchId) {
         Geolocation.clearWatch(watchId);
@@ -125,6 +156,76 @@ export default function Map() {
     // setTimer(0)
     // setDistance(0)
     setTimerId(null);
+    console.log(challenger)
+    console.log(challenged)
+    
+    if(challenger === userData.username) {
+    firestore()
+    .collection('challenger')
+    .doc(challenger)
+    .collection('challenges')
+    .add({
+      challenged: challenged,
+      challenger_date: Date.now(),
+      challenger_km: distance,
+      challenger_time: timer,
+    })
+    .then((docRef) => {
+      console.log(docRef.id + ' this is for the docref')
+      console.log('I challenged somebody');
+      firestore()
+      .collection('challenged')
+      .doc(challenged)
+      .collection('challenges')
+      .doc(docRef.id)
+      .set({
+        challenger: challenger,
+        challenger_date: Date.now(),
+        challenger_km: distance,
+        challenger_time: timer,
+        
+      })
+      .then(res => console.log(res))
+      .catch(err => console.log(err))
+    }).catch(err => console.log(err + ' from outside'))
+
+   
+
+  } else if (challenged === userData.username) {
+      firestore()
+      .collection('challenger')
+      .doc(challenger)
+      .collection('challenges')
+      .doc(run.id)
+      .update({
+        accepted: true,        
+        challenged_date: Date.now(),
+        challenged_km: distance,
+        challenged_time: timer,
+        finished: true
+      })
+      .then(() => {
+        console.log('I accepted a challenge');
+      });
+  
+      firestore()
+      .collection('challenged')
+      .doc(challenged)
+      .collection('challenges')
+      .doc(run.id)
+      .update({
+        accepted: true,        
+        challenged_date: Date.now(),
+        challenged_km: distance,
+        challenged_time: timer,
+        finished: true
+      })
+      .then(() => {
+        console.log('i accepted a challenge');
+      });
+
+  }
+
   };
 
   const formatTime = timer => {
@@ -142,6 +243,8 @@ export default function Map() {
     return `${km} km ${hm}:${dm < 10 ? '0' : ''}${dm}`;
   };
 
+
+console.log(challenged + ' this should be my name when i press accept')
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentInsetAdjustmentBehavior="automatic">

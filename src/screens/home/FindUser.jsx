@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect} from 'react';
 import ProfileItem from '../../components/ProfileItem';
 import firestore from '@react-native-firebase/firestore';
 import {
@@ -10,10 +10,44 @@ import {
   View,
 } from 'native-base';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useContext } from 'react';
+import {AppStateContext} from '../../../App';
 
 export default function FindUser({navigation}) {
   const [input, setInput] = useState();
-  const [userData, setUserData] = useState({});
+  const [secondUser, setSecondUser] = useState({});
+
+  const {user, isChallenged, run, setRun} = useContext(AppStateContext);
+
+  const [userData, setUserData] = useState();
+  useEffect(() => {
+    const userRef = firestore().collection('users').doc(user.uid); 
+  
+    userRef
+      .get()
+      .then(doc => {
+        if (doc.exists) {
+          setUserData(doc.data());
+        } else {
+          console.log('Nothing found');
+        }
+      })
+      .catch(err => console.log(err));
+  }, [user.uid]);
+  
+
+
+  const onClick = () => {
+   setRun({
+    challenger: userData.username,
+    challenged: secondUser.username ,
+   })
+   
+   
+    navigation.navigate('Map', {secondUser})
+  }
+
+
 
   useEffect(() => {
     const userRef = firestore().collection('users');
@@ -24,7 +58,7 @@ export default function FindUser({navigation}) {
       .get()
       .then(collectionSnapshot => {
         collectionSnapshot.forEach(documentSnapshot => {
-          setUserData(documentSnapshot.data());
+          setSecondUser(documentSnapshot.data());
         });
       });
   }, [input]);
@@ -44,21 +78,21 @@ export default function FindUser({navigation}) {
           onChangeText={value => setInput(value)}
         />
       </VStack>
-      {userData.username && (
+      {secondUser.username && (
         <ProfileItem
-          username={userData.username}
-          runs={userData.runs}
-          challenges_won={userData.challenges_won}
-          challenges_lost={userData.challenges_lost}
+          username={secondUser.username}
+          runs={secondUser.runs}
+          challenges_won={secondUser.challenges_won}
+          challenges_lost={secondUser.challenges_lost}
         />
       )}
-      {userData.username && (
+      {secondUser.username && (
         <Link alignSelf="flex-end" my="5">
           <Button
-            onPress={() => navigation.navigate('Map')}
+            onPress={onClick}
             alignSelf="flex-end"
             width="40%">
-            Challenge {userData.username}{' '}
+            Challenge {secondUser.username}{' '}
           </Button>
         </Link>
       )}

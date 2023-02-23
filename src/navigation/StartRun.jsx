@@ -2,7 +2,9 @@ import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Map from '../screens/home/Map';
 const Stack = createNativeStackNavigator();
-export default function StartRun() {
+export default function StartRun({user}) {
+
+
   return (
     <Stack.Navigator
       initialRouteName="FindUser"
@@ -12,7 +14,7 @@ export default function StartRun() {
           backgroundColor: 'orange',
         },
       }}>
-      <Stack.Screen name="Map" component={Map} />
+      <Stack.Screen name="Map" component={Map} user={user} />
     </Stack.Navigator>
   );
 }
