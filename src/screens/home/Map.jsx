@@ -1,87 +1,186 @@
-import {Box, Button, NativeBaseProvider} from 'native-base';
+import React, {useState, useEffect} from 'react';
+import {
+  PermissionsAndroid,
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
-import {PermissionsAndroid} from 'react-native';
-import {useEffect, useState} from 'react';
-import MapView from 'react-native-maps';
-import {enableLatestRenderer} from 'react-native-maps/lib/MapView';
-import {StyleSheet} from 'react-native';
-import {View} from 'react-native';
+import ViewContainer from '../../components/ViewContainer';
+import firestore from '@react-native-firebase/firestore';
+
+const LOCATION_UPDATE_INTERVAL = 5000; // 15 seconds
 
 export default function Map() {
-  const [position, setPosition] = useState(null);
+  const [watchingLocation, setWatchingLocation] = useState(false);
+  const [locationHistory, setLocationHistory] = useState([]);
+  const [currentLocation, setCurrentLocation] = useState(null);
+  const [watchId, setWatchId] = useState();
+    const [latlng, setLatlng] = useState([])
+//   useEffect(() => {
+//     if (watchingLocation) {
+//       // ... watch location changes and update location state
+//       setStartTime(new Date());
+//     } else {
+//       setStartTime(null);
+//       setElapsedTime(null);
+//     }
+//   }, [watchingLocation]);
+
+//   useEffect(() => {
+//     if (startTime) {
+//       const interval = setInterval(() => {
+//         const now = new Date();
+//         const elapsedTime = Math.floor((now - startTime) / 1000 / 60);
+//         setElapsedTime(elapsedTime);
+//       }, 60000);
+//       return () => clearInterval(interval);
+//     }
+//   }, [startTime]);
 
   useEffect(() => {
-    const requestGpsPermission = async () => {
-      try {
-        const granted = await PermissionsAndroid.request(
+
+    if (watchingLocation) {
+      if (Platform.OS === 'android') {
+        PermissionsAndroid.request(
           PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        ).then(granted => {
+          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+            const watchId = Geolocation.watchPosition(
+              position => {
+               // console.log(position + 'here');
+                setCurrentLocation(position.coords);
+                setLocationHistory(locationHistory => [
+                  ...locationHistory,
+                  position,
+                ]);
+                setLatlng(prevLocation => {
+                   return [...prevLocation, {latitude: position.coords.latitude, longitude: position.coords.longitude}]
+                })
+              },
+              error => {
+                console.log(error);
+              },
+              {
+                enableHighAccuracy: true,
+                distanceFilter: 0,
+                interval: LOCATION_UPDATE_INTERVAL,
+                fastestInterval: LOCATION_UPDATE_INTERVAL,
+              },
+             
+            );
+           setWatchId(watchId)
+          }
+          
+        });
+      } else {
+        watchId = Geolocation.watchPosition(
+          position => {
+           //  console.log(position);
+            setCurrentLocation(position.coords);
+            setLocationHistory(locationHistory => [
+              ...locationHistory,
+              position,
+            ]);
+          },
+          error => {
+            console.log(error);
+          },
           {
-            title: 'Some text from the title',
-            message: 'Some message from the permission',
-            buttonNeutral: 'Ask Me Later',
-            buttonNegative: 'Cancel',
-            buttonPositive: 'OK',
+            enableHighAccuracy: true,
+            distanceFilter: 0,
+            interval: LOCATION_UPDATE_INTERVAL,
+            fastestInterval: LOCATION_UPDATE_INTERVAL,
           },
         );
-        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-          console.log('GPS permission granted');
-          Geolocation.getCurrentPosition(
-            position => {
-              setPosition(position.coords);
-            },
-            error => {
-              console.log(error.code, error.message);
-            },
-            {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
-          );
-        } else {
-          console.log('GPS permission denied');
-        }
-      } catch (error) {
-        console.log(error);
+      }
+    }
+
+    return () => {
+      if (watchId) {
+        Geolocation.clearWatch(watchId);
+        setWatchId(undefined)
+        console.log(watchId)
       }
     };
+  }, [watchingLocation]);
 
-    requestGpsPermission();
-  }, []);
+  const onStartWatching = () => {
+    setWatchingLocation(true);
+  };
+
+  const onStopWatching = () => {
+    setWatchingLocation(false);
+      Geolocation.clearWatch(watchId);
+    setWatchId(undefined)
+
+firestore()
+  .collection('challenger')
+  .doc(`${userData}`)
+  .collection('challenges')
+  .add({
+    name: 'Ada Lovelace',
+    age: 30,
+  })
+  .then(() => {
+    console.log('User added!');
+  });
+  };
 
   return (
-    <NativeBaseProvider>
-      <Box>Hello from the Map Screen</Box>
-      {!position && (
-        <Button onPress={() => requestGpsPermission()}>Turn on GPS</Button>
-      )}
-      {position && (
-        <Box>
-          <Box>Latitude: {position.latitude}</Box>
-          <Box>Longitude: {position.longitude}</Box>
-
-          <Box style={styles.container}>
-            <MapView
-              style={styles.map}
-              region={{
-                latitude: position.latitude,
-                longitude: position.longitude,
-                latitudeDelta: 0.015,
-                longitudeDelta: 0.0121,
-              }}
-            />
-          </Box>
-        </Box>
-      )}
-    </NativeBaseProvider>
+    <SafeAreaView style={styles.container}>
+      <ScrollView contentInsetAdjustmentBehavior="automatic">
+        <View style={styles.sectionContainer}>
+          <Text style={styles.sectionTitle}>Location History</Text>
+          {locationHistory.map((location, index) => (
+            <Text key={index}>
+              {location.coords.latitude}, {location.coords.longitude}
+            </Text>
+          ))}
+        </View>
+        <View style={styles.sectionContainer}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={onStartWatching}
+            // disabled={watchingLocation}
+            >
+            <Text style={styles.buttonText}>Start Watching</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={onStopWatching}
+            // disabled={!watchingLocation}
+            >
+            <Text style={styles.buttonText}>Stop Watching</Text>
+          </TouchableOpacity>
+        </View>
+       {latlng.length && currentLocation ? <ViewContainer latlng={latlng} currentLocation={currentLocation} /> : null}
+      </ScrollView>
+    </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
+    
   container: {
-    //    ...StyleSheet.absoluteFillObject, // this somehow sends the map down
-    height: 400,
-    width: 4000,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
+    flex: 1,
   },
-  map: {
-    ...StyleSheet.absoluteFillObject,
+  sectionContainer: {
+    marginTop: 32,
+    paddingHorizontal: 24,
   },
-});
+  sectionTitle: {
+    fontSize: 24,
+    fontWeight: '600',
+  },
+  button: {
+    backgroundColor: '#2196F3',
+    padding: 16,
+    marginVertical: 8,
+    borderRadius: 4,
+  }
+})
