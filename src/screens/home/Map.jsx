@@ -8,16 +8,19 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Box,
+  HStack,
 } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import ViewContainer from '../../components/ViewContainer';
 import firestore from '@react-native-firebase/firestore';
 import {getDistance} from 'geolib';
-import { useContext } from 'react';
+import {useContext} from 'react';
 import {AppStateContext} from '../../../App';
+import {Button} from 'native-base';
 const LOCATION_UPDATE_INTERVAL = 5000; // 15 seconds
 
-export default function Map({route}) {
+export default function Map({route, navigation}) {
   const [watchingLocation, setWatchingLocation] = useState(false);
   const [locationHistory, setLocationHistory] = useState([]);
   const [currentLocation, setCurrentLocation] = useState(null);
@@ -28,34 +31,35 @@ export default function Map({route}) {
   const [timerId, setTimerId] = useState();
   const [distance, setDistance] = useState(0);
 
-  const [challenger, setChallenger] = useState('')
-  const [challenged, setChallenged] = useState('')
+  const [challenger, setChallenger] = useState('');
+  const [challenged, setChallenged] = useState('');
 
-  const {user, isChallenged, run} = useContext(AppStateContext);
+  const {user, isChallenged, run, setRun} = useContext(AppStateContext);
 
-console.log(Object.values(run))
+  console.log(Object.values(run));
 
-const [userData, setUserData] = useState();
-useEffect(() => {
-  const userRef = firestore().collection('users').doc(user.uid); 
+  const [userData, setUserData] = useState();
 
-  userRef
-    .get()
-    .then(doc => {
-      if (doc.exists) {
-        setUserData(doc.data());
-      } else {
-        console.log('Nothing found');
-      }
-    })
-    .catch(err => console.log(err));
-}, [user.uid]);
-  
-
+  const [showChoice, setShowChoice] = useState(false);
 
   useEffect(() => {
-    setChallenger(run.challenger)
-    setChallenged(run.challenged)
+    const userRef = firestore().collection('users').doc(user.uid);
+
+    userRef
+      .get()
+      .then(doc => {
+        if (doc.exists) {
+          setUserData(doc.data());
+        } else {
+          console.log('Nothing found');
+        }
+      })
+      .catch(err => console.log(err));
+  }, [user.uid]);
+
+  useEffect(() => {
+    setChallenger(run.challenger);
+    setChallenged(run.challenged);
 
     if (watchingLocation) {
       if (Platform.OS === 'android') {
@@ -81,7 +85,6 @@ useEffect(() => {
                   ];
                 });
 
-
                 if (latlng.length) {
                   const mran = getDistance(latlng[latlng.length - 1], {
                     latitude: position.coords.latitude,
@@ -89,7 +92,6 @@ useEffect(() => {
                   });
                   console.log(mran);
                 }
-
               },
               error => {
                 console.log(error);
@@ -127,9 +129,6 @@ useEffect(() => {
       }
     }
 
-    
-
-
     return () => {
       if (watchId) {
         Geolocation.clearWatch(watchId);
@@ -161,77 +160,114 @@ useEffect(() => {
     // setTimer(0)
     // setDistance(0)
     setTimerId(null);
-    console.log(challenger)
-    console.log(challenged)
-    
-    if(challenger === userData.username) {
+    console.log(challenger);
+    console.log(challenged);
+
+    if (challenger === userData.username) {
+      setShowChoice(true);
+    } else if (challenged === userData.username) {
+      firestore()
+        .collection('challenger')
+        .doc(challenger)
+        .collection('challenges')
+        .doc(run.id)
+        .update({
+          accepted: true,
+          challenged_date: Date.now(),
+          challenged_km: distance,
+          challenged_time: timer,
+          finished: true,
+        })
+        .then(() => {
+          console.log('I accepted a challenge');
+        });
+
+      firestore()
+        .collection('challenged')
+        .doc(challenged)
+        .collection('challenges')
+        .doc(run.id)
+        .update({
+          accepted: true,
+          challenged_date: Date.now(),
+          challenged_km: distance,
+          challenged_time: timer,
+          finished: true,
+        })
+        .then(() => {
+          console.log('i accepted a challenge');
+          setRun({finished: true});
+          navigation.navigate('Home');
+        });
+    }
+  };
+  const PostTimeTrue = () =>
     firestore()
-    .collection('challenger')
-    .doc(challenger)
-    .collection('challenges')
-    .add({
-      challenged: challenged,
-      challenger_date: Date.now(),
-      challenger_km: distance,
-      challenger_time: timer,
-    })
-    .then((docRef) => {
-      console.log(docRef.id + ' this is for the docref')
-      console.log('I challenged somebody');
-      firestore()
-      .collection('challenged')
-      .doc(challenged)
-      .collection('challenges')
-      .doc(docRef.id)
-      .set({
-        challenger: challenger,
-        challenger_date: Date.now(),
-        challenger_km: distance,
-        challenger_time: timer,
-        
-      })
-      .then(res => console.log(res))
-      .catch(err => console.log(err))
-    }).catch(err => console.log(err + ' from outside'))
-
-   
-
-  } else if (challenged === userData.username) {
-      firestore()
       .collection('challenger')
       .doc(challenger)
       .collection('challenges')
-      .doc(run.id)
-      .update({
-        accepted: true,        
-        challenged_date: Date.now(),
-        challenged_km: distance,
-        challenged_time: timer,
-        finished: true
+      .add({
+        challenged: challenged,
+        challenger_date: Date.now(),
+        challenger_km: distance,
+        challenger_time: timer,
+        byTime: true,
       })
-      .then(() => {
-        console.log('I accepted a challenge');
-      });
-  
-      firestore()
-      .collection('challenged')
-      .doc(challenged)
+      .then(docRef => {
+        console.log(docRef.id + ' this is for the docref');
+        console.log('I challenged somebody');
+        firestore()
+          .collection('challenged')
+          .doc(challenged)
+          .collection('challenges')
+          .doc(docRef.id)
+          .set({
+            challenger: challenger,
+            challenger_date: Date.now(),
+            challenger_km: distance,
+            challenger_time: timer,
+            byTime: true,
+          })
+          .then(res => console.log(res))
+          .catch(err => console.log(err));
+        navigation.navigate('Home');
+        setShowChoice(false);
+      })
+      .catch(err => console.log(err + ' from outside'));
+
+  const PostTimeFalse = () =>
+    firestore()
+      .collection('challenger')
+      .doc(challenger)
       .collection('challenges')
-      .doc(run.id)
-      .update({
-        accepted: true,        
-        challenged_date: Date.now(),
-        challenged_km: distance,
-        challenged_time: timer,
-        finished: true
+      .add({
+        challenged: challenged,
+        challenger_date: Date.now(),
+        challenger_km: distance,
+        challenger_time: timer,
+        byTime: false,
       })
-      .then(() => {
-        console.log('i accepted a challenge');
-      });
-
-  }
-
-  };
+      .then(docRef => {
+        console.log(docRef.id + ' this is for the docref');
+        console.log('I challenged somebody');
+        firestore()
+          .collection('challenged')
+          .doc(challenged)
+          .collection('challenges')
+          .doc(docRef.id)
+          .set({
+            challenger: challenger,
+            challenger_date: Date.now(),
+            challenger_km: distance,
+            challenger_time: timer,
+            byTime: false,
+          })
+          .then(res => console.log(res))
+          .catch(err => console.log(err));
+        navigation.navigate('Home');
+        setShowChoice(false);
+      })
+      .catch(err => console.log(err + ' from outside'));
 
   const formatTime = timer => {
     const minutes = Math.floor(timer / 60);
@@ -246,11 +282,9 @@ useEffect(() => {
     const hm = Math.floor((distance - km * 1000) / 100); // get hundreds of meters
     const dm = Math.floor((distance - km * 1000 - hm * 100) / 10); // get tenths of meters
     return `${km} km ${hm}:${dm < 10 ? '0' : ''}${dm}`;
-
   };
 
-
-console.log(challenged + ' this should be my name when i press accept')
+  console.log(challenged + ' this should be my name when i press accept');
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentInsetAdjustmentBehavior="automatic">
@@ -264,26 +298,35 @@ console.log(challenged + ' this should be my name when i press accept')
             </Text>
           ))} */}
         </View>
-        <View style={styles.sectionContainer}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={onStartWatching}
-            // disabled={watchingLocation}
-          >
-            <Text style={styles.buttonText}>Start Watching</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={onStopWatching}
-            // disabled={!watchingLocation}
-          >
-            <Text style={styles.buttonText}>Stop Watching</Text>
-          </TouchableOpacity>
-        </View>
+        {showChoice === false && (
+          <View style={styles.sectionContainer}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={onStartWatching}
+              // disabled={watchingLocation}
+            >
+              <Text style={styles.buttonText}>Start Watching</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={onStopWatching}
+              // disabled={!watchingLocation}
+            >
+              <Text style={styles.buttonText}>Stop Watching</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+
         {latlng.length && currentLocation ? (
           <ViewContainer latlng={latlng} currentLocation={currentLocation} />
         ) : null}
       </ScrollView>
+      {showChoice === true && (
+        <View>
+          <Button onPress={PostTimeTrue}>Time</Button>
+          <Button onPress={PostTimeFalse}>Distance</Button>
+        </View>
+      )}
     </SafeAreaView>
   );
 }

@@ -9,7 +9,7 @@ import {
   Link,
   Box,
 } from 'native-base';
-import { useContext } from 'react';
+import {useContext} from 'react';
 import {AppStateContext} from '../../App';
 
 export default function ChallengeItem({
@@ -69,21 +69,18 @@ export default function ChallengeItem({
   };
 
   const onClick = () => {
-
     setRun({
-    challenger: nameTile,
-    challenged: userData,
-    ...item
-   })
-   
-    
-    
-    navigation.navigate('Map')
-  }
+      challenger: nameTile,
+      challenged: userData,
+      ...item,
+    });
 
-  const timestamp = item.challenger_date
-  const date = new Date(timestamp)
-  const formattedDate= date.toLocaleDateString()
+    navigation.navigate('Map');
+  };
+
+  const timestamp = item.challenger_date;
+  const date = new Date(timestamp);
+  const formattedDate = date.toLocaleDateString();
 
   return (
     <View>
@@ -93,8 +90,7 @@ export default function ChallengeItem({
         onPress={handleClick}
         style={styles.header}>
         <Text style={styles.headerText}>
-          {title} {nameTile} on{' '}
-          {formattedDate}
+          {title} {nameTile} on {formattedDate}
         </Text>
         {item.accepted === false && (
           <Text style={{textAlign: 'right', color: 'red'}}>Rejected</Text>

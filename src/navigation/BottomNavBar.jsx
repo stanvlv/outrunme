@@ -3,7 +3,6 @@ import Home from '../screens/home/Home';
 import FirebaseDatabase from '../screens/home/Profile';
 import Map from '../screens/home/Map';
 import FindUser from '../screens/home/FindUser';
-import RunFinished from '../screens/home/RunFinished';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -14,7 +13,6 @@ const homeName = 'Home';
 const firebase = 'Profile';
 const map = 'Map';
 const findUser = 'FindUser';
-const runFinal = 'RunFinal';
 
 export default function BottomNavBar({user}) {
   const Tab = createBottomTabNavigator();
@@ -31,8 +29,6 @@ export default function BottomNavBar({user}) {
             iconName = focused ? 'home' : 'home-outline';
           } else if (rn === firebase) {
             iconName = focused ? 'person' : 'person-outline';
-          } else if (rn === runFinal) {
-            iconName = focused ? 'settings' : 'settings-outline';
           } else if (rn === map) {
             iconName = focused ? 'walk' : 'walk-outline';
           }
@@ -43,7 +39,6 @@ export default function BottomNavBar({user}) {
       <Tab.Screen name={firebase} user={user} component={FirebaseDatabase} />
       <Tab.Screen name={map} user={user} component={Map} />
       <Tab.Screen name={findUser} user={user} component={FindUser} />
-      <Tab.Screen name={runFinal} user={user} component={RunFinished} />
     </Tab.Navigator>
   );
 }
