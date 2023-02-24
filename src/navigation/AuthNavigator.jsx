@@ -16,10 +16,10 @@ export default function AuthNavigator() {
 <Stack.Navigator initialRouteName='Login' screenOptions={{
     //  headerBackTitle: "Back", // only for IOS
      headerStyle: {
-        backgroundColor: "orange"}
+        backgroundColor: "#FEF6ED"}
         ,
         }}>
-        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Login" component={Login}  options={{ headerShown: false }} />
         <Stack.Screen name="Register" component={Register} />
         <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
         <Stack.Screen name='Home' component={BottomNavBar} />
