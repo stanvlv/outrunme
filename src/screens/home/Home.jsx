@@ -104,7 +104,7 @@ export default function Home({navigation}) {
           <ScrollView>
             {challenger
               .filter(character => !character.finished)
-              .map((item, key) => (
+              .map((item) => (
                 <ChallengeItem
                   key={item.category_name}
                   item={item}
@@ -149,7 +149,7 @@ export default function Home({navigation}) {
             {challenged
               .concat(challenger)
               .filter(character => character.finished === true)
-              .map((item, key) => (
+              .map((item) => (
                 <ChallengeItem
                   key={item.category_name}
                   userData={userData}
