@@ -23,6 +23,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import googleicon from '../../assets/googleicon.png';
 import {Image, ScrollView} from 'react-native';
 import {styles} from '../../styles/Style';
+import { KeyboardAvoidingView, Platform } from 'react-native';
 
 GoogleSignin.configure({
   webClientId:
@@ -93,6 +94,10 @@ export default function Login({navigation}) {
 
 
   return (
+    <KeyboardAvoidingView
+    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    style={{ flex: 1 }}
+  >
     <ScrollView style={{backgroundColor: styles.appColor.orange}}>
       <NativeBaseProvider>
         {/* {alert && (
@@ -148,7 +153,7 @@ export default function Login({navigation}) {
               </Text>
               </Heading >
 
-            <VStack space={3} mt="5">
+            <VStack space={3} mt="2">
               <FormControl isInvalid={'name' in errors}>
                 <FormControl.Label ><Text style={styles.textColor}>Email</Text></FormControl.Label>
                 <Input
@@ -225,6 +230,7 @@ export default function Login({navigation}) {
         </Center>
       </NativeBaseProvider>
     </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
