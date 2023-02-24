@@ -17,6 +17,7 @@ import {
 
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore'
+import { styles } from '../../styles/Style'
 
 export default function Register({ navigation }) {
 
@@ -85,8 +86,8 @@ console.log(passwordRepeat.name + " from createUser")
 
   
   return (
-    <NativeBaseProvider>
-      <Center w="100%">
+    <NativeBaseProvider >
+      <Center w="100%" style={{backgroundColor: styles.appColor.orange}}>
         <Box safeArea p="2" w="90%" maxW="290" py="8">
           <Heading
             size="lg"
@@ -94,23 +95,18 @@ console.log(passwordRepeat.name + " from createUser")
             _dark={{
               color: 'warmGray.50',
             }}
-            fontWeight="semibold">
-            Welcome
+            fontWeight="bold">
+            Welcome Challenger
           </Heading>
           <Heading
-            mt="1"
-            color="coolGray.600"
-            _dark={{
-              color: 'warmGray.200',
-            }}
-            fontWeight="medium"
-            size="xs">
+            style={styles.heading}>
             Sign up to continue!
           </Heading>
           <VStack space={3} mt="5">
           <FormControl isInvalid={'name' in errors}>
-              <FormControl.Label>Email</FormControl.Label>
+              <FormControl.Label><Text style={styles.textColor}>Email</Text></FormControl.Label>
               <Input
+              backgroundColor="#FEF6ED"
                 onChangeText={value => setEmail({...email, name: value})}
               />
               {'name' in errors ? (
@@ -122,27 +118,32 @@ console.log(passwordRepeat.name + " from createUser")
               )}
             </FormControl>
             <FormControl isInvalid={'name' in errors}>
-              <FormControl.Label>Username</FormControl.Label>
+              <FormControl.Label><Text style={styles.textColor}>Username</Text></FormControl.Label>
               <Input
+              backgroundColor="#FEF6ED"
                 onChangeText={value => setUsername({...username, name: value})}
               />
             </FormControl>
             <FormControl>
-              <FormControl.Label>Password</FormControl.Label>
+              <FormControl.Label><Text style={styles.textColor}>Password</Text></FormControl.Label>
               <Input
+              backgroundColor="#FEF6ED"
                 type="password"
                 onChangeText={value => setPassword({...password, name: value})}
               />
             </FormControl>
             <FormControl>
-              <FormControl.Label>Confirm Password</FormControl.Label>
+              <FormControl.Label><Text style={styles.textColor}>Confirm Password</Text></FormControl.Label>
               <Input
+              backgroundColor="#FEF6ED"
                 type="password"
                 onChangeText={value => setPasswordRepeat({...passwordRepeat, name: value})}
               />
             </FormControl>
-            <Button mt="2" colorScheme="indigo" onPress={createUser}>
+            <Button mt="2" style={styles.loginButton} onPress={createUser}>
+              <Text style={styles.loginButtonText}>
               Register
+              </Text>
             </Button>
           </VStack>
         </Box>
