@@ -18,9 +18,9 @@ return (
     >
       <Polyline 
       coordinates={latlng}
-      strokeColor='pink'
-      fillColor='pink'
-      strokeWidth={6}
+      strokeColor='#1A265A'
+      fillColor='#1A265A'
+      strokeWidth={8}
       />
     </MapView>
   </View>

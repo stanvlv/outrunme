@@ -42,6 +42,8 @@ export default function Map({route, navigation}) {
 
   const [showChoice, setShowChoice] = useState(false);
 
+  const [isRunning, setIsRunning] = useState(false)
+
   useEffect(() => {
     const userRef = firestore().collection('users').doc(user.uid);
 
@@ -269,6 +271,15 @@ export default function Map({route, navigation}) {
       })
       .catch(err => console.log(err + ' from outside'));
 
+      const handleClickForRun = () => {
+        if(isRunning) {
+          onStopWatching()
+        } else {
+          onStartWatching()
+        }
+        setIsRunning(!isRunning)
+      }
+
   const formatTime = timer => {
     const minutes = Math.floor(timer / 60);
     const remainingSeconds = timer % 60;
@@ -284,12 +295,10 @@ export default function Map({route, navigation}) {
     return `${km} km ${hm}:${dm < 10 ? '0' : ''}${dm}`;
   };
 
-  console.log(challenged + ' this should be my name when i press accept');
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentInsetAdjustmentBehavior="automatic">
         <View style={styles.sectionContainer}>
-          <Text style={styles.sectionTitle}>Location History</Text>
           <Text>Time: {formatTime(timer)}</Text>
           <Text>Distance: {formatDistance(distance)}</Text>
           {/* {locationHistory.map((location, index) => (
@@ -299,21 +308,11 @@ export default function Map({route, navigation}) {
           ))} */}
         </View>
         {showChoice === false && (
-          <View style={styles.sectionContainer}>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={onStartWatching}
-              // disabled={watchingLocation}
-            >
-              <Text style={styles.buttonText}>Start Watching</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={onStopWatching}
-              // disabled={!watchingLocation}
-            >
-              <Text style={styles.buttonText}>Stop Watching</Text>
-            </TouchableOpacity>
+          <View style={styles.theButtons}>
+            <Button
+        style={styles.button}
+        onPress={handleClickForRun}
+      >{isRunning ? 'Stop Running' : 'Start Running'}</Button>
           </View>
         )}
 
@@ -334,6 +333,7 @@ export default function Map({route, navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#FEF6ED'
   },
   sectionContainer: {
     marginTop: 32,
@@ -344,9 +344,18 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   button: {
-    backgroundColor: '#2196F3',
+    color: '#50A5B1',
     padding: 16,
     marginVertical: 8,
     borderRadius: 4,
   },
+  buttonText: {
+    color: '#FEF6ED'
+  },
+  theButtons: {
+ marginTop: 32,
+    paddingHorizontal: 24,
+    marginTop: 32,
+    width: 175
+  }
 });

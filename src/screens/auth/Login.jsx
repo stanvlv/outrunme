@@ -131,14 +131,14 @@ export default function Login({navigation}) {
             marginTop="1"
             size="lg"
             fontWeight="800"
-            color="#000"
+            color="#FEF6ED"
             _dark={{
               color: 'warmGray.50',
             }}>
             OutRun Me
           </Heading>
           <Image
-            source={require('../../assets/outrunmetrans.png')}
+            source={require('../../assets/outrunmetranswhite.png')}
             style={{
               width: 175,
               height: 175,
