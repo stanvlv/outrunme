@@ -33,8 +33,10 @@ export default function Map({route, navigation}) {
 
   const [challenger, setChallenger] = useState('');
   const [challenged, setChallenged] = useState('');
+  const [velocityChallenger, setVelocityChallenger] = useState();
+  const [velocityChallenged, setVelocityChallenged] = useState();
 
-  const {user, isChallenged, run, setRun} = useContext(AppStateContext);
+  const {user, run, setRun} = useContext(AppStateContext);
 
   console.log(Object.values(run));
 
@@ -195,12 +197,64 @@ export default function Map({route, navigation}) {
           finished: true,
         })
         .then(() => {
-          console.log('i accepted a challenge');
+          setVelocityChallenger(run.challenger_km / run.challenger_time);
+          setVelocityChallenged(distance / timer);
+          const increment = firestore.FieldValue.increment(1);
+          if (run.byTime === true) {
+            if (
+              velocityChallenger >= velocityChallenged ||
+              timer < run.challenger_time
+            ) {
+              firestore().collection('users').doc(user.uid).update({
+                challenges_lost: increment,
+                runs: increment,
+              });
+              firestore().collection('users').doc(run.challenger_id).update({
+                challenges_won: increment,
+                runs: increment,
+              });
+            } else {
+              firestore().collection('users').doc(user.uid).update({
+                challenges_won: increment,
+                runs: increment,
+              });
+              firestore().collection('users').doc(run.challenger_id).update({
+                challenges_lost: increment,
+                runs: increment,
+              });
+            }
+          } else {
+            if (
+              velocityChallenger >= velocityChallenged ||
+              distance < run.challenger_km
+            ) {
+              firestore().collection('users').doc(user.uid).update({
+                challenges_lost: increment,
+                runs: increment,
+              });
+              firestore().collection('users').doc(run.challenger_id).update({
+                challenges_won: increment,
+                runs: increment,
+              });
+            } else {
+              firestore().collection('users').doc(user.uid).update({
+                challenges_won: increment,
+                runs: increment,
+              });
+              firestore().collection('users').doc(run.challenger_id).update({
+                challenges_lost: increment,
+                runs: increment,
+              });
+            }
+          }
+
           setRun({finished: true});
           navigation.navigate('Home');
         });
     }
   };
+  console.log(user.uid);
+
   const PostTimeTrue = () =>
     firestore()
       .collection('challenger')
@@ -223,6 +277,7 @@ export default function Map({route, navigation}) {
           .doc(docRef.id)
           .set({
             challenger: challenger,
+            challenger_id: user.uid,
             challenger_date: Date.now(),
             challenger_km: distance,
             challenger_time: timer,
@@ -257,6 +312,7 @@ export default function Map({route, navigation}) {
           .doc(docRef.id)
           .set({
             challenger: challenger,
+            challenger_id: user.uid,
             challenger_date: Date.now(),
             challenger_km: distance,
             challenger_time: timer,
