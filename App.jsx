@@ -36,7 +36,9 @@ export const AppStateContext = React.createContext();
 
 const AppStateProvider = props => {
   const {user} = props;
-  const contextValue = {user};
+  const [isChallenged, setIsChallenged] =  useState(false)
+  const [run, setRun] =  useState(undefined)
+  const contextValue = {user, run, isChallenged, setIsChallenged, setRun};
 
   return (
     <AppStateContext.Provider value={contextValue}>

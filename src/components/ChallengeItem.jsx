@@ -9,6 +9,8 @@ import {
   Link,
   Box,
 } from 'native-base';
+import { useContext } from 'react';
+import {AppStateContext} from '../../App';
 
 export default function ChallengeItem({
   item,
@@ -25,7 +27,7 @@ export default function ChallengeItem({
 }) {
   const [layoutHeight, setLayoutHeight] = useState(0);
   const [isClicked, setIsClicked] = useState(false);
-
+  const {setRun} = useContext(AppStateContext);
   const handleClick = () => {
     setIsClicked(!isClicked);
   };
@@ -66,6 +68,23 @@ export default function ChallengeItem({
     }
   };
 
+  const onClick = () => {
+
+    setRun({
+    challenger: nameTile,
+    challenged: userData,
+    ...item
+   })
+   
+    
+    
+    navigation.navigate('Map')
+  }
+
+  const timestamp = item.challenger_date
+  const date = new Date(timestamp)
+  const formattedDate= date.toLocaleDateString()
+
   return (
     <View>
       {/* Header */}
@@ -75,7 +94,7 @@ export default function ChallengeItem({
         style={styles.header}>
         <Text style={styles.headerText}>
           {title} {nameTile} on{' '}
-          {item.challenger_date?.toDate().toLocaleDateString('en-US')}
+          {formattedDate}
         </Text>
         {item.accepted === false && (
           <Text style={{textAlign: 'right', color: 'red'}}>Rejected</Text>
@@ -104,7 +123,7 @@ export default function ChallengeItem({
         )}
         {showButtons && item.accepted !== false && (
           <Link>
-            <Button onPress={() => navigation.navigate('Map')}>Accept</Button>
+            <Button onPress={onClick}>Accept</Button>
 
             <Button onPress={PostRejected}>Reject</Button>
           </Link>
