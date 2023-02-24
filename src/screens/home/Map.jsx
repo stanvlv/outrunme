@@ -23,6 +23,7 @@ export default function Map({route}) {
   const [currentLocation, setCurrentLocation] = useState(null);
   const [watchId, setWatchId] = useState();
   const [latlng, setLatlng] = useState([]);
+
   const [timer, setTimer] = useState(0);
   const [timerId, setTimerId] = useState();
   const [distance, setDistance] = useState(0);
@@ -55,6 +56,7 @@ useEffect(() => {
   useEffect(() => {
     setChallenger(run.challenger)
     setChallenged(run.challenged)
+
     if (watchingLocation) {
       if (Platform.OS === 'android') {
         PermissionsAndroid.request(
@@ -79,6 +81,7 @@ useEffect(() => {
                   ];
                 });
 
+
                 if (latlng.length) {
                   const mran = getDistance(latlng[latlng.length - 1], {
                     latitude: position.coords.latitude,
@@ -86,6 +89,7 @@ useEffect(() => {
                   });
                   console.log(mran);
                 }
+
               },
               error => {
                 console.log(error);
@@ -151,6 +155,7 @@ useEffect(() => {
     setWatchingLocation(false);
     Geolocation.clearWatch(watchId);
     setWatchId(undefined);
+
     clearInterval(timerId);
 
     // setTimer(0)
@@ -241,6 +246,7 @@ useEffect(() => {
     const hm = Math.floor((distance - km * 1000) / 100); // get hundreds of meters
     const dm = Math.floor((distance - km * 1000 - hm * 100) / 10); // get tenths of meters
     return `${km} km ${hm}:${dm < 10 ? '0' : ''}${dm}`;
+
   };
 
 
