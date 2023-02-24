@@ -26,21 +26,21 @@ export default function Register({ navigation }) {
   const [passwordRepeat, setPasswordRepeat] = React.useState('');
   const [errors, setErrors] = React.useState({});
 
-console.log(password.name)
-console.log(passwordRepeat.name)
+// console.log(password.name)
+// console.log(passwordRepeat.name)
   // create user with email and password
   const createUser = () => {
 
     console.log(password.name + " from createUser")
 console.log(passwordRepeat.name + " from createUser")
     if (password.name !== passwordRepeat.name) {
-      console.log(`Passwords don't match`)
+      // console.log(`Passwords don't match`)
       return
     } 
     auth()
       .createUserWithEmailAndPassword(`${email.name}`, `${password}`)
       .then((userCredential) => {
-        console.log('User account created & signed in!');
+        // console.log('User account created & signed in!');
         
     // take the uid from the reg and get the users collection to make first post
         const { uid } = userCredential.user;
@@ -71,10 +71,10 @@ console.log(passwordRepeat.name + " from createUser")
       })
       .catch((error) => {
         if (error.code === 'auth/email-already-in-use') {
-          console.log('That email address is already in use!');
+          // console.log('That email address is already in use!');
         }
         else if (error.code === 'auth/invalid-email') {
-          console.log('That email address is invalid!');
+          // console.log('That email address is invalid!');
         }
         console.error(error);
       });

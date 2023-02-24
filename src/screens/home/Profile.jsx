@@ -9,8 +9,8 @@ import ProfileItem from '../../components/ProfileItem';
 
 export default function FirebaseDatabase() {
   const {user} = useContext(AppStateContext);
-  console.log(user.uid + 'this comes from the profile component');
-  console.log(user);
+  // console.log(user.uid + 'this comes from the profile component');
+  // console.log(user);
 
   const [userData, setUserData] = useState();
   useEffect(() => {
@@ -28,7 +28,7 @@ export default function FirebaseDatabase() {
       .catch(err => console.log(err));
   }, [user.uid]);
 
-  console.log(userData);
+  // console.log(userData);
 
   // logout the user
   const logout = () => {

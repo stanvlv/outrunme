@@ -56,7 +56,7 @@ export default function Home({navigation}) {
       .collection('challenger')
       .doc(`${userData}`)
       .collection('challenges')
-
+      .orderBy('challenger_date', 'desc')
       .onSnapshot(post => {
         const data = post.docs.map(doc => ({id: doc.id, ...doc.data()}));
         setChallenger(data);

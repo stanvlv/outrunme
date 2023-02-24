@@ -1,23 +1,22 @@
 // Screens
 import Home from '../screens/home/Home';
-import RunMap from '../screens/home/RunMap';
 import FirebaseDatabase from '../screens/home/Profile';
 import Map from '../screens/home/Map';
 import FindUser from '../screens/home/FindUser';
-
+import RunFinished from '../screens/home/RunFinished';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+// take the icons from https://oblador.github.io/react-native-vector-icons/
 
 // screen names
 const homeName = 'Home';
-const runName = 'Run';
-const firebase = 'Firebase';
+const firebase = 'Profile';
 const map = 'Map';
 const findUser = 'FindUser';
+const runFinal = 'RunFinal';
 
 export default function BottomNavBar({user}) {
-  console.log(user + ' this comes from bottom navbar');
   const Tab = createBottomTabNavigator();
   return (
     <Tab.Navigator
@@ -31,8 +30,8 @@ export default function BottomNavBar({user}) {
           if (rn === homeName) {
             iconName = focused ? 'home' : 'home-outline';
           } else if (rn === firebase) {
-            iconName = focused ? 'list' : 'list-outline';
-          } else if (rn === runName) {
+            iconName = focused ? 'person' : 'person-outline';
+          } else if (rn === runFinal) {
             iconName = focused ? 'settings' : 'settings-outline';
           } else if (rn === map) {
             iconName = focused ? 'walk' : 'walk-outline';
@@ -41,10 +40,10 @@ export default function BottomNavBar({user}) {
         },
       })}>
       <Tab.Screen name={homeName} user={user} component={Home} />
-      <Tab.Screen name={runName} component={RunMap} />
       <Tab.Screen name={firebase} user={user} component={FirebaseDatabase} />
       <Tab.Screen name={map} user={user} component={Map} />
       <Tab.Screen name={findUser} user={user} component={FindUser} />
+      <Tab.Screen name={runFinal} user={user} component={RunFinished} />
     </Tab.Navigator>
   );
 }

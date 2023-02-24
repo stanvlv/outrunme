@@ -12,10 +12,14 @@ import {
   Button,
   HStack,
   Text,
+  Alert,
+  IconButton,
+  CloseIcon,
 } from 'native-base';
 import React from 'react';
 import auth from '@react-native-firebase/auth';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 GoogleSignin.configure({
   webClientId:
@@ -25,6 +29,7 @@ export default function Login({navigation}) {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [errors, setErrors] = React.useState({});
+  const [alert, setAlert] = React.useState('');
 
   // const validate = () => {
   //   if (email.name === undefined) {
@@ -54,10 +59,12 @@ export default function Login({navigation}) {
       .catch(error => {
         if (error.code === 'auth/email-already-in-use') {
           console.log('That email address is already in use!');
+          setAlert('orange');
         }
 
         if (error.code === 'auth/invalid-email') {
           console.log('That email address is invalid!');
+          setAlert('red');
         }
 
         console.error(error);
@@ -90,6 +97,30 @@ export default function Login({navigation}) {
 
   return (
     <NativeBaseProvider>
+      {alert && (
+        <Box>
+          <Alert w="100%" status={alert === 'red' ? 'error' : 'warning'}>
+            <HStack flexShrink={1} space={2} justifyContent="space-between">
+              <HStack space={2} flexShrink={1}>
+                <Ionicons
+                  name="alert"
+                  size={30}
+                  color={alert === 'red' ? 'red' : 'orange'}
+                />
+                <Text fontSize="md" color="coolGray.800">
+                  {alert === 'red'
+                    ? 'That email address is invalid!'
+                    : 'That email address is already in use!'}
+                </Text>
+              </HStack>
+              <Button>
+                <Ionicons name="close" size={30} color="black" />
+              </Button>
+            </HStack>
+          </Alert>
+        </Box>
+      )}
+
       {/* Form for the email */}
       <Center w="100%">
         <Box safeArea p="2" py="8" w="90%" maxW="290">
