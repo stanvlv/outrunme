@@ -72,6 +72,11 @@ export default function ChallengeItem({
     setRun({
       challenger: nameTile,
       challenged: userData,
+      byTime: item.byTime,
+      // only to be used when user is the challenged:
+      challenger_id: item.challenger_id,
+      challenger_time: otherTime,
+      challenger_km: otherKm,
       ...item,
     });
 
