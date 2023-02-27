@@ -6,8 +6,6 @@ import firestore from '@react-native-firebase/firestore';
 import {useContext} from 'react';
 import {AppStateContext} from '../../../App';
 import ProfileItem from '../../components/ProfileItem';
-import { styles } from '../../styles/Style';
-import { View } from 'react-native';
 
 export default function FirebaseDatabase() {
   const {user} = useContext(AppStateContext);
@@ -30,6 +28,7 @@ export default function FirebaseDatabase() {
       .catch(err => console.log(err));
   }, [user.uid]);
 
+  // console.log(userData);
 
   // logout the user
   const logout = () => {
@@ -40,14 +39,13 @@ export default function FirebaseDatabase() {
 
   return (
     <NativeBaseProvider>
-      <View style={styles.screenColor}>
       <ProfileItem
         username={userData?.username}
         runs={userData?.runs}
         challenges_won={userData?.challenges_won}
         challenges_lost={userData?.challenges_lost}
-        logout={logout}
-      /></View>
+      />
+      <Button onPress={logout}>Logout</Button>
     </NativeBaseProvider>
   );
 }

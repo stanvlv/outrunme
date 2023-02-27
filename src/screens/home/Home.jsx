@@ -17,9 +17,9 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 export default function Home({navigation}) {
   const [challenged, setChallenged] = useState([]);
   const [challenger, setChallenger] = useState([]);
-  const [selectedTab, setSelectedTab] = useState(1);
+  const [selectedTab, setSelectedTab] = useState('received');
 
-  const {user} = useContext(AppStateContext);
+  const {user, run} = useContext(AppStateContext);
   // console.log(user.uid + 'this comes from the profile component');
   // console.log(user);
 
@@ -72,6 +72,12 @@ export default function Home({navigation}) {
   useEffect(() => {
     isChallengerDocument();
   }, [userData]);
+
+  useEffect(() => {
+    if (run?.finished === true) {
+      setSelectedTab('finished')
+    }
+  }, [run])
 
   const onPressSent = () => setSelectedTab('sent');
   const onPressReceived = () => setSelectedTab('received');

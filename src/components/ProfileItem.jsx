@@ -7,7 +7,6 @@ export default function ProfileItem({
   runs,
   challenges_won,
   challenges_lost,
-  logout
 }) {
 
 
@@ -20,7 +19,6 @@ export default function ProfileItem({
       <Box>Runs: {runs}</Box>
       <Box>Challenges Won: {challenges_won}</Box>
       <Box>Challenges Lost: {challenges_lost}</Box>
-      <Button onPress={logout}>Logout</Button>
     </NativeBaseProvider>
   );
 }
