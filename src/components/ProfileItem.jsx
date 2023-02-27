@@ -1,6 +1,6 @@
 import React from 'react';
 import {NativeBaseProvider, Box, Button} from 'native-base';
-import {styles} from '../styles/Style'
+
 
 export default function ProfileItem({
   username,

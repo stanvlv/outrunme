@@ -7,6 +7,7 @@ import {
   NativeBaseProvider,
   Button,
   Link,
+  Text,
   View,
 } from 'native-base';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -89,14 +90,15 @@ export default function FindUser({navigation}) {
         />
       )}
       {secondUser.username && (
-        <Link alignSelf="flex-end" my="5">
+        <View alignSelf="flex-end" my="5">
           <Button
             onPress={onClick}
-            alignSelf="flex-end"
-            width="40%">
-            Challenge {secondUser.username}{' '}
+            style={styles.challengeButton}>
+              <Text style={styles.buttonText}>
+            Challenge: {secondUser.username}{' '}
+            </Text>
           </Button>
-        </Link>
+        </View>
       )}
       </View>
     </NativeBaseProvider>

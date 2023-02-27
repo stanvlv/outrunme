@@ -31,6 +31,24 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#FEF6ED',
       },
+      logoutButton: {
+        backgroundColor: "#50A5B1",
+        width: 120,
+      },
+      buttonView: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+      buttonText: {
+        fontSize: 18,
+        fontWeight: 600,
+        color: '#FEF6ED'
+      },
+      challengeButton: {
+        backgroundColor: "#50A5B1",
+        maxHeight: 55,
+      }
       
 })
 
