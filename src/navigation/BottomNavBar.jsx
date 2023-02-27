@@ -1,18 +1,20 @@
 // Screens
 import Home from '../screens/home/Home';
-import Profile from '../screens/home/Profile';
+import FirebaseDatabase from '../screens/home/Profile';
+import Map from '../screens/home/Map';
 import FindUser from '../screens/home/FindUser';
 import Leaderboard from '../screens/home/Leaderboard';
 
-
+import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 // take the icons from https://oblador.github.io/react-native-vector-icons/
 
 // screen names
 const homeName = 'Challenges';
-const profile = 'Profile';
-const findUser = 'Search';
+const firebase = 'Profile';
+const map = 'Map';
+const findUser = 'FindUser';
 const chart = 'Leaderboard'
 
 export default function BottomNavBar({user}) {
@@ -36,8 +38,10 @@ export default function BottomNavBar({user}) {
 
           if (rn === homeName) {
             iconName = focused ? 'home' : 'home-outline';
-          } else if (rn === profile) {
+          } else if (rn === firebase) {
             iconName = focused ? 'person' : 'person-outline';
+          } else if (rn === map) {
+            iconName = focused ? 'walk' : 'walk-outline';
           } else if (rn === chart) {
             iconName = focused ? 'trophy' : 'trophy-outline'
           } else if (rn === findUser) {
@@ -47,9 +51,12 @@ export default function BottomNavBar({user}) {
         },
       })}>
       <Tab.Screen name={homeName} user={user} component={Home} />
+      
+     
       <Tab.Screen name={findUser} user={user} component={FindUser} />
+      <Tab.Screen name={map} user={user} component={Map} />
       <Tab.Screen name={chart} component={Leaderboard} />
-      <Tab.Screen name={profile} user={user} component={Profile} />
+      <Tab.Screen name={firebase} user={user} component={FirebaseDatabase} />
     </Tab.Navigator>
   );
 }
