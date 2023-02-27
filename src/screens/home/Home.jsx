@@ -56,7 +56,7 @@ export default function Home({navigation}) {
   useEffect(() => {
     isChallengedDocument();
   }, [userData]);
-  console.log(challenged);
+  // console.log(challenged);
   const isChallengerDocument = async () => {
     const isChallenger = firestore()
       .collection('challenger')
@@ -75,9 +75,9 @@ export default function Home({navigation}) {
 
   useEffect(() => {
     if (run?.finished === true) {
-      setSelectedTab('finished')
+      setSelectedTab('finished');
     }
-  }, [run])
+  }, [run]);
 
   const onPressSent = () => setSelectedTab('sent');
   const onPressReceived = () => setSelectedTab('received');
