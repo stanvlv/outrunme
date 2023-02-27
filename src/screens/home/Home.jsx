@@ -5,6 +5,7 @@ import ChallengeItem from '../../components/ChallengeItem';
 import firestore from '@react-native-firebase/firestore';
 import {AppStateContext} from '../../../App';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+
 // Fetch Data
 
 export default function Home({navigation}) {
@@ -80,7 +81,7 @@ export default function Home({navigation}) {
           <Button
             style={{flex: 1}}
             borderRadius="full"
-            colorScheme={selectedTab === 'sent' ? `${style=styles.activeButton}` : 'inactiveButton'}
+            colorScheme={selectedTab === 'sent' ? 'success' : 'warning'}
             onPress={onPressSent}>
             Sent
           </Button>
@@ -187,7 +188,6 @@ export default function Home({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FEF6ED'
   },
   titleText: {
     flex: 1,
@@ -218,11 +218,5 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
     backgroundColor: '#fff',
-  },
-  activeButton: {
-    color: '#50A5B1'
-  },
-  inactiveButton: {
-    color: '#1A265A'
   },
 });
