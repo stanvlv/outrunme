@@ -80,7 +80,7 @@ export default function Home({navigation}) {
   return (
     <NativeBaseProvider>
       <View style={styles.container}>
-        {/* <View style={{flexDirection: 'row', padding: 10}}></View> */}
+        <View style={{flexDirection: 'row', padding: 4}}></View>
 
         <View style={styles.topNavigation}>
           <TouchableOpacity
