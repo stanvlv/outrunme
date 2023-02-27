@@ -39,6 +39,8 @@ export default function Map({route, navigation}) {
   const {user, run, setRun} = useContext(AppStateContext);
 
 
+  console.log(Object.values(run))
+
   const [userData, setUserData] = useState();
 
   const [showChoice, setShowChoice] = useState(false);
@@ -60,7 +62,7 @@ export default function Map({route, navigation}) {
       .catch(err => console.log(err));
   }, [user.uid]);
 
-  if(run) {
+
   useEffect(() => {
     setChallenger(run.challenger);
     setChallenged(run.challenged);
@@ -141,7 +143,7 @@ export default function Map({route, navigation}) {
       }
     };
   }, [watchingLocation]);
-}
+
 
   const onStartWatching = () => {
     setWatchingLocation(true);
@@ -252,13 +254,13 @@ export default function Map({route, navigation}) {
           }
 
           setRun({finished: true});
-          navigation.navigate('Home');
+          navigation.navigate('Challenges');
         });
     }
   };
   console.log(user.uid);
 
-  const PostTimeTrue = () =>
+  const PostTimeTrue = () => {
     firestore()
       .collection('challenger')
       .doc(challenger)
@@ -288,11 +290,12 @@ export default function Map({route, navigation}) {
           })
           .then(res => console.log(res))
           .catch(err => console.log(err));
-        navigation.navigate('Home');
+        navigation.navigate('Challenges');
         setShowChoice(false);
       })
       .catch(err => console.log(err + ' from outside'));
 
+    }
   const PostTimeFalse = () =>
     firestore()
       .collection('challenger')
@@ -323,7 +326,7 @@ export default function Map({route, navigation}) {
           })
           .then(res => console.log(res))
           .catch(err => console.log(err));
-        navigation.navigate('Home');
+        navigation.navigate('Challenges');
         setShowChoice(false);
       })
       .catch(err => console.log(err + ' from outside'));
@@ -353,7 +356,7 @@ export default function Map({route, navigation}) {
   };
 
   return (<View style={styles.container}>
-    {run?.someProperty ? (
+    {Object.keys(run).length ? (
     <SafeAreaView style={styles.container}>
       <ScrollView contentInsetAdjustmentBehavior="automatic">
         <View style={styles.sectionContainer}>

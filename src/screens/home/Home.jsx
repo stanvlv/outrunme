@@ -1,5 +1,11 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {StyleSheet, View, Text, ScrollView, TouchableOpacity} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 import {NativeBaseProvider, Button, Flex, Link} from 'native-base';
 import ChallengeItem from '../../components/ChallengeItem';
 import firestore from '@react-native-firebase/firestore';
@@ -74,28 +80,46 @@ export default function Home({navigation}) {
   return (
     <NativeBaseProvider>
       <View style={styles.container}>
-        <View style={{flexDirection: 'row', padding: 10}}>
+        {/* <View style={{flexDirection: 'row', padding: 10}}></View> */}
+
+        <View style={styles.topNavigation}>
+          <TouchableOpacity
+            onPress={onPressSent}
+            style={selectedTab === 'sent' ? styles.activeTab : styles.tab}>
+            <Text
+              style={
+                selectedTab === 'sent' ? styles.activeText : styles.textTab
+              }>
+              Sent
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={onPressReceived}
+            style={selectedTab === 'received' ? styles.activeTab : styles.tab}>
+            <Text
+              style={
+                selectedTab === 'received' ? styles.activeText : styles.textTab
+              }>
+              Received
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={onPressFinished}
+            style={selectedTab === 'finished' ? styles.activeTab : styles.tab}>
+            <Text
+              style={
+                selectedTab === 'finished' ? styles.activeText : styles.textTab
+              }>
+              Finished
+            </Text>
+          </TouchableOpacity>
         </View>
-      
-          <View style={styles.topNavigation}>
-          <TouchableOpacity onPress={onPressSent} style={selectedTab === 'sent' ? styles.activeTab : styles.tab}>
-        <Text style={selectedTab === 'sent' ? styles.activeText : styles.textTab}>Sent</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={onPressReceived} style={selectedTab === 'received' ? styles.activeTab : styles.tab}>
-        <Text style={selectedTab === 'received' ? styles.activeText : styles.textTab}>Received</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={onPressFinished} style={selectedTab === 'finished' ? styles.activeTab : styles.tab}>
-        <Text style={selectedTab === 'finished' ? styles.activeText : styles.textTab}>Finished</Text>
-      </TouchableOpacity>
 
-
-          </View>
-       
         {selectedTab === 'sent' && (
           <ScrollView>
             {challenger
               .filter(character => !character.finished)
-              .map((item) => (
+              .map(item => (
                 <ChallengeItem
                   key={item.category_name}
                   item={item}
@@ -140,7 +164,7 @@ export default function Home({navigation}) {
             {challenged
               .concat(challenger)
               .filter(character => character.finished === true)
-              .map((item) => (
+              .map(item => (
                 <ChallengeItem
                   key={item.category_name}
                   userData={userData}
@@ -179,7 +203,7 @@ export default function Home({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FEF6ED'
+    backgroundColor: '#FEF6ED',
   },
   titleText: {
     flex: 1,
@@ -217,7 +241,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   inactiveButton: {
-    colorScheme: 'red'
+    colorScheme: 'red',
   },
   topNavigation: {
     flexDirection: 'row',
@@ -235,7 +259,6 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
     alignItems: 'center',
-    
   },
   activeTab: {
     flex: 1,
@@ -249,12 +272,10 @@ const styles = StyleSheet.create({
     color: '#F1600D',
     fontSize: 16,
     fontWeight: 'bold',
-    
   },
   textTab: {
     color: '#50A5B1',
     fontSize: 16,
     fontWeight: 'bold',
-    
   },
 });

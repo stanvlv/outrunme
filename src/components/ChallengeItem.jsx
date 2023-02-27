@@ -107,21 +107,21 @@ export default function ChallengeItem({
           overflow: 'hidden',
         }}>
         {/*Details*/}
-        {userTime && (
+        {userTime ? (
           <TouchableOpacity key={key} style={styles.content}>
             <Text style={styles.text}>your Stats</Text>
             <Text style={styles.text}>time: {userTime} min</Text>
             <Text style={styles.text}>distance: {userKm} km</Text>
             <View style={styles.separator} />
           </TouchableOpacity>
-        )}
-        {otherTime && (
+        ):null}
+        {otherTime ? (
           <TouchableOpacity key={key} style={styles.content}>
             <Text style={styles.text}>their Stats</Text>
             <Text style={styles.text}>time: {otherTime} min</Text>
             <Text style={styles.text}>distance: {otherKm} km</Text>
           </TouchableOpacity>
-        )}
+        ):null}
         {showButtons && item.accepted !== false && (
           <Link>
             <Button onPress={onClick}>Accept</Button>
@@ -153,18 +153,17 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 16,
     fontWeight: '500',
-    color: '#1A265A',
   },
   separator: {
     height: 0.5,
-    backgroundColor: '#1A265A',
+    backgroundColor: '#808080',
     width: '95%',
     marginLeft: 16,
     marginRight: 16,
   },
   text: {
     fontSize: 16,
-    color: '#1A265A',
+    color: '#606070',
     padding: 10,
   },
   content: {
