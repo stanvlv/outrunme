@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {StyleSheet, View, Text, ScrollView} from 'react-native';
+import {StyleSheet, View, Text, ScrollView, TouchableOpacity} from 'react-native';
 import {NativeBaseProvider, Button, Flex, Link} from 'native-base';
 import ChallengeItem from '../../components/ChallengeItem';
 import firestore from '@react-native-firebase/firestore';
@@ -75,31 +75,22 @@ export default function Home({navigation}) {
     <NativeBaseProvider>
       <View style={styles.container}>
         <View style={{flexDirection: 'row', padding: 10}}>
-          <Text style={styles.titleText}>My Challenges</Text>
         </View>
-        <Flex direction="row">
-          <Button
-            style={{flex: 1}}
-            borderRadius="full"
-            colorScheme={selectedTab === 'sent' ? 'success' : 'warning'}
-            onPress={onPressSent}>
-            Sent
-          </Button>
-          <Button
-            style={{flex: 1}}
-            borderRadius="full"
-            colorScheme={selectedTab === 'received' ? 'success' : 'warning'}
-            onPress={onPressReceived}>
-            Received
-          </Button>
-          <Button
-            style={{flex: 1}}
-            borderRadius="full"
-            colorScheme={selectedTab === 'finished' ? 'success' : 'warning'}
-            onPress={onPressFinished}>
-            Finished
-          </Button>
-        </Flex>
+      
+          <View style={styles.topNavigation}>
+          <TouchableOpacity onPress={onPressSent} style={selectedTab === 'sent' ? styles.activeTab : styles.tab}>
+        <Text style={selectedTab === 'sent' ? styles.activeText : styles.textTab}>Sent</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={onPressReceived} style={selectedTab === 'received' ? styles.activeTab : styles.tab}>
+        <Text style={selectedTab === 'received' ? styles.activeText : styles.textTab}>Received</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={onPressFinished} style={selectedTab === 'finished' ? styles.activeTab : styles.tab}>
+        <Text style={selectedTab === 'finished' ? styles.activeText : styles.textTab}>Finished</Text>
+      </TouchableOpacity>
+
+
+          </View>
+       
         {selectedTab === 'sent' && (
           <ScrollView>
             {challenger
@@ -188,6 +179,7 @@ export default function Home({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#FEF6ED'
   },
   titleText: {
     flex: 1,
@@ -218,5 +210,51 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
     backgroundColor: '#fff',
+  },
+  activeButton: {
+    color: '#007aff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  inactiveButton: {
+    colorScheme: 'red'
+  },
+  topNavigation: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#FEF6ED',
+    borderWidth: 1,
+    borderColor: '#FEF6ED',
+    borderRadius: 5,
+    overflow: 'hidden',
+    paddingBottom: 15,
+  },
+  tab: {
+    flex: 1,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    alignItems: 'center',
+    
+  },
+  activeTab: {
+    flex: 1,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    alignItems: 'center',
+    borderBottomWidth: 3,
+    borderBottomColor: '#F1600D',
+  },
+  activeText: {
+    color: '#F1600D',
+    fontSize: 16,
+    fontWeight: 'bold',
+    
+  },
+  textTab: {
+    color: '#50A5B1',
+    fontSize: 16,
+    fontWeight: 'bold',
+    
   },
 });

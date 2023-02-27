@@ -25,13 +25,13 @@ export default function BottomNavBar({user}) {
       screenOptions={({route}) => ({
         headerTintColor: '#FEF6ED',
         headerStyle: {
-          backgroundColor: '#F1600D',
+          backgroundColor: '#50A5B1',
         },
         // headerShown: false, // this can remove the header on top of each screen
-        tabBarActiveTintColor: '#F1600D',
+        tabBarActiveTintColor: '#50A5B1',
         tabBarInactiveTintColor: '#1A265A',
-        tabBarStyle: '#FEF6ED',
-        
+        tabBarStyle: '#50A5B1',
+        tabBarShowLabel: false, 
         tabBarIcon: ({focused, color, size}) => {
           let iconName;
           let rn = route.name;
@@ -41,7 +41,7 @@ export default function BottomNavBar({user}) {
           } else if (rn === firebase) {
             iconName = focused ? 'person' : 'person-outline';
           } else if (rn === map) {
-            iconName = focused ? 'walk' : 'walk-outline';
+            iconName = focused ? 'map' : 'map-outline';
           } else if (rn === chart) {
             iconName = focused ? 'trophy' : 'trophy-outline'
           } else if (rn === findUser) {

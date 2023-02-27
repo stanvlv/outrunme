@@ -38,7 +38,6 @@ export default function Map({route, navigation}) {
 
   const {user, run, setRun} = useContext(AppStateContext);
 
-  console.log(Object.values(run));
 
   const [userData, setUserData] = useState();
 
@@ -61,6 +60,7 @@ export default function Map({route, navigation}) {
       .catch(err => console.log(err));
   }, [user.uid]);
 
+  if(run) {
   useEffect(() => {
     setChallenger(run.challenger);
     setChallenged(run.challenged);
@@ -141,6 +141,7 @@ export default function Map({route, navigation}) {
       }
     };
   }, [watchingLocation]);
+}
 
   const onStartWatching = () => {
     setWatchingLocation(true);
@@ -351,7 +352,8 @@ export default function Map({route, navigation}) {
     return `${km} km ${hm}:${dm < 10 ? '0' : ''}${dm}`;
   };
 
-  return (
+  return (<View style={styles.container}>
+    {run?.someProperty ? (
     <SafeAreaView style={styles.container}>
       <ScrollView contentInsetAdjustmentBehavior="automatic">
         <View style={styles.sectionContainer}>
@@ -383,6 +385,12 @@ export default function Map({route, navigation}) {
         </View>
       )}
     </SafeAreaView>
+  ) : ( <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <Text>Go and find a user to challenge</Text>
+    <Button onPress={() => { navigation.navigate('FindUser')}}>Find a user</Button>
+    </View>
+    )
+}</View>
   );
 }
 

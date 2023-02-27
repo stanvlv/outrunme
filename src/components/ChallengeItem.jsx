@@ -153,17 +153,18 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 16,
     fontWeight: '500',
+    color: '#1A265A',
   },
   separator: {
     height: 0.5,
-    backgroundColor: '#808080',
+    backgroundColor: '#1A265A',
     width: '95%',
     marginLeft: 16,
     marginRight: 16,
   },
   text: {
     fontSize: 16,
-    color: '#606070',
+    color: '#1A265A',
     padding: 10,
   },
   content: {
