@@ -12,7 +12,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 // screen names
 const homeName = 'Challenges';
 const profile = 'Profile';
-const findUser = 'FindUser';
+const findUser = 'Search';
 const chart = 'Leaderboard'
 
 export default function BottomNavBar({user}) {
@@ -39,7 +39,7 @@ export default function BottomNavBar({user}) {
           } else if (rn === profile) {
             iconName = focused ? 'person' : 'person-outline';
           } else if (rn === chart) {
-            iconName = focused ? 'stats-chart' : 'stats-chart-outline'
+            iconName = focused ? 'trophy' : 'trophy-outline'
           } else if (rn === findUser) {
             iconName = focused ? 'search' : 'search-outline'
           }

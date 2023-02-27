@@ -27,6 +27,11 @@ const styles = StyleSheet.create({
         fontSize: 16
         
       },
+      screenColor: {
+        flex: 1,
+        backgroundColor: '#FEF6ED',
+      },
+      
 })
 
 export { styles }

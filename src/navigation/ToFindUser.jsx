@@ -13,7 +13,7 @@ export default function ToFindUser({user}) {
           backgroundColor: 'orange',
         },
       }}>
-      <Stack.Screen name="FindUser" component={FindUser} user={user} />
+      <Stack.Screen name="Search" component={FindUser} user={user} />
     </Stack.Navigator>
   );
 }

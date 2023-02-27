@@ -12,6 +12,7 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useContext } from 'react';
 import {AppStateContext} from '../../../App';
+import { styles } from '../../styles/Style'
 
 export default function FindUser({navigation}) {
   const [input, setInput] = useState();
@@ -64,8 +65,9 @@ export default function FindUser({navigation}) {
   }, [input]);
 
   return (
-    <NativeBaseProvider>
-      <VStack w="100%" space={5} alignSelf="center">
+    <NativeBaseProvider >
+      <View style={styles.screenColor}>
+      <VStack w="100%" space={5} alignSelf="center" >
         {/* <Heading fontSize="lg">Material</Heading> */}
         <Input
           placeholder="Find someone to challenge"
@@ -96,6 +98,7 @@ export default function FindUser({navigation}) {
           </Button>
         </Link>
       )}
+      </View>
     </NativeBaseProvider>
   );
 }
