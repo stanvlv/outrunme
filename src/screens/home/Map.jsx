@@ -12,12 +12,13 @@ import {
   HStack,
 } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
-import ViewContainer from '../../components/ViewContainer';
+import ViewContainer from '../../components/MapContainer';
 import firestore from '@react-native-firebase/firestore';
 import {getDistance} from 'geolib';
 import {useContext} from 'react';
 import {AppStateContext} from '../../../App';
 import {Button} from 'native-base';
+
 const LOCATION_UPDATE_INTERVAL = 5000; // 15 seconds
 
 export default function Map({route, navigation}) {
@@ -362,11 +363,6 @@ export default function Map({route, navigation}) {
         <View style={styles.sectionContainer}>
           <Text>Time: {formatTime(timer)}</Text>
           <Text>Distance: {formatDistance(distance)}</Text>
-          {/* {locationHistory.map((location, index) => (
-            <Text key={index}>
-              {location.coords.latitude}, {location.coords.longitude}
-            </Text>
-          ))} */}
         </View>
         {showChoice === false && (
           <View style={styles.theButtons}>
@@ -383,14 +379,17 @@ export default function Map({route, navigation}) {
       </ScrollView>
       {showChoice === true && (
         <View>
-          <Button onPress={PostTimeTrue}>Time</Button>
-          <Button onPress={PostTimeFalse}>Distance</Button>
+        <Text style={styles.customText}>Challenge your opponent by:</Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', paddingBottom: 20 }}>
+          <Button style={styles.logoutButton} onPress={PostTimeTrue}>TIME</Button>
+          <Button style={styles.logoutButton} onPress={PostTimeFalse}>DISTANCE</Button>
         </View>
+      </View>
       )}
     </SafeAreaView>
   ) : ( <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-    <Text>Go and find a user to challenge</Text>
-    <Button onPress={() => { navigation.navigate('FindUser')}}>Find a user</Button>
+    <Text style={styles.customText}>Challenge someone to start a run</Text>
+    <Button style={styles.logoutButton} onPress={() => { navigation.navigate('FindUser')}}>Seek a challenger</Button>
     </View>
     )
 }</View>
@@ -405,6 +404,7 @@ const styles = StyleSheet.create({
   sectionContainer: {
     marginTop: 32,
     paddingHorizontal: 24,
+    
   },
   sectionTitle: {
     fontSize: 24,
@@ -420,9 +420,19 @@ const styles = StyleSheet.create({
     color: '#FEF6ED'
   },
   theButtons: {
- marginTop: 32,
+    marginTop: 32,
     paddingHorizontal: 24,
     marginTop: 32,
     width: 175
+  },
+  logoutButton: {
+    backgroundColor: "#50A5B1",
+    width: 150,
+  },
+  customText: {
+    color: '#1A265A',
+    fontSize: 22,
+    fontWeight: '600',
+    paddingBottom: 20,
   }
 });

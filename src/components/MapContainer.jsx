@@ -31,10 +31,11 @@ return (
 const styles = StyleSheet.create({
     
     containerMap: {
+      display: 'flex',
     //   ...StyleSheet.absoluteFillObject,
-      height: 400,
-      width: 400,
-      justifyContent: 'flex-end',
+      height: 275,
+      width: 275,
+      justifyContent: 'space-between',
       alignItems: 'center',
     },
     map: {
