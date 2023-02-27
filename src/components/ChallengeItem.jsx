@@ -27,7 +27,7 @@ export default function ChallengeItem({
 }) {
   const [layoutHeight, setLayoutHeight] = useState(0);
   const [isClicked, setIsClicked] = useState(false);
-  const {setRun} = useContext(AppStateContext);
+  const {setRun, user} = useContext(AppStateContext);
   const handleClick = () => {
     setIsClicked(!isClicked);
   };
@@ -40,7 +40,7 @@ export default function ChallengeItem({
     }
   }, [isClicked]);
 
-  const PostRejected = () =>
+  const PostRejected = () => {
     firestore()
       .collection('challenged')
       .doc(`${userData}`)
@@ -49,6 +49,16 @@ export default function ChallengeItem({
       .update({
         accepted: false,
       });
+    // Add a lost challenge on user profile
+    const increment = firestore.FieldValue.increment(1);
+    firestore().collection('users').doc(user.uid).update({
+      challenges_lost: increment,
+    });
+    // Add a win challenge on challenger profile
+    firestore().collection('users').doc(item.challenger_id).update({
+      challenges_won: increment,
+    });
+  };
 
   const DeleteRejected = () => {
     if (item.challenger) {
@@ -114,14 +124,14 @@ export default function ChallengeItem({
             <Text style={styles.text}>distance: {userKm} km</Text>
             <View style={styles.separator} />
           </TouchableOpacity>
-        ):null}
+        ) : null}
         {otherTime ? (
           <TouchableOpacity key={key} style={styles.content}>
             <Text style={styles.text}>their Stats</Text>
             <Text style={styles.text}>time: {otherTime} min</Text>
             <Text style={styles.text}>distance: {otherKm} km</Text>
           </TouchableOpacity>
-        ):null}
+        ) : null}
         {showButtons && item.accepted !== false && (
           <Link>
             <Button onPress={onClick}>Accept</Button>
