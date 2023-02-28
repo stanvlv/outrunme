@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, TouchableOpacity} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import {
   VStack,
@@ -8,9 +8,13 @@ import {
   Button,
   Link,
   Box,
+  HStack,
+  Text,
+  Center,
 } from 'native-base';
 import {useContext} from 'react';
 import {AppStateContext} from '../../App';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function ChallengeItem({
   item,
@@ -21,9 +25,12 @@ export default function ChallengeItem({
   otherTime,
   otherKm,
   nameTile,
-  showButtons,
+  selectedTab,
   navigation,
   userData,
+  sent,
+  byTime,
+  winner,
 }) {
   const [layoutHeight, setLayoutHeight] = useState(0);
   const [isClicked, setIsClicked] = useState(false);
@@ -93,31 +100,234 @@ export default function ChallengeItem({
     navigation.navigate('Map');
   };
 
-  const timestamp = item.challenger_date;
-  const date = new Date(timestamp);
-  const formattedDate = date.toLocaleDateString();
+  const date = new Date(item.challenger_date);
+  const numb = date.getDay();
+
+  if (numb === 0) {
+    weekDay = 'Sun.';
+  } else if (numb === 1) {
+    weekDay = 'Mon.';
+  } else if (numb === 2) {
+    weekDay = 'Tue.';
+  } else if (numb === 3) {
+    weekDay = 'Wed.';
+  } else if (numb === 4) {
+    weekDay = 'Thu.';
+  } else if (numb === 5) {
+    weekDay = 'Fri.';
+  } else if (numb === 6) {
+    weekDay = 'Sat.';
+  }
+  const convertTime = time => {
+    const dt = new Date(time);
+    const hr = dt.getUTCHours();
+    const m = '0' + dt.getUTCMinutes();
+    return hr + ':' + m.slice(-2);
+  };
+
+  const finalTime = convertTime(item.challenger_date);
+  const RunTime = convertTime(otherTime);
+  const convUserTime = convertTime(userTime);
 
   return (
     <View>
-      {/* Header */}
       <TouchableOpacity
         activeOpacity={0.8}
         onPress={handleClick}
         style={styles.header}>
-        <Text style={styles.headerText}>
-          {title} {nameTile} on {formattedDate}
-        </Text>
-        {item.accepted === false && (
-          <Text style={{textAlign: 'right', color: 'red'}}>Rejected</Text>
+        {/* Header */}
+
+        <VStack space={5}>
+          <HStack justifyContent="space-between">
+            <HStack alignItems="center">
+              {selectedTab === 'finished' && (
+                <HStack w="51%" justifyContent="flex-end">
+                  <Text style={styles.headerText} mx="2">
+                    {userData}
+                  </Text>
+                </HStack>
+              )}
+              {sent ? (
+                <MaterialCommunityIcons
+                  name="sword-cross"
+                  size={50}
+                  style={winner ? {color: '#50A5B1'} : {color: '#F1600D'}}
+                />
+              ) : (
+                <MaterialCommunityIcons
+                  name="shield-sword"
+                  size={50}
+                  style={winner ? {color: '#50A5B1'} : {color: '#F1600D'}}
+                />
+              )}
+              <Text style={styles.headerText} mx="2">
+                {nameTile}
+              </Text>
+            </HStack>
+
+            <Text style={styles.date}>
+              {weekDay}
+              {finalTime}
+            </Text>
+          </HStack>
+
+          <HStack justifyContent="space-between" alignItems="flex-end" ml="2">
+            {otherKm === '***' && (
+              <HStack p="0.5" alignItems="center" style={styles.fillBlue}>
+                <MaterialCommunityIcons
+                  name="timer-outline"
+                  size={32}
+                  style={styles.colorWhite}
+                />
+                <Text px="1" style={styles.colorWhite}>
+                  {RunTime}
+                </Text>
+              </HStack>
+            )}
+            {otherTime === '***' && (
+              <HStack alignItems="center" style={styles.fillBlue}>
+                <MaterialCommunityIcons
+                  name="map-marker-distance"
+                  size={30}
+                  style={styles.colorWhite}
+                />
+                <Text px="1" style={styles.colorWhite}>
+                  {otherKm} Km
+                </Text>
+              </HStack>
+            )}
+
+            {selectedTab === 'received' && item.accepted !== false && (
+              <HStack>
+                <Button mx="5" style={styles.buttonAccept} onPress={onClick}>
+                  <Text style={styles.colorBlue}>Accept</Text>
+                </Button>
+                <Button style={styles.buttonDecline} onPress={PostRejected}>
+                  <Text style={styles.colorOrange}>Decline</Text>
+                </Button>
+              </HStack>
+            )}
+          </HStack>
+        </VStack>
+        {/*   {item.accepted === false && (
+              <Text style={styles.rejected}>Rejected</Text>
+            )} */}
+        {/* distance and time labels on sent */}
+
+        {selectedTab === 'sent' && (
+          <HStack mt="2" justifyContent="center" alignItems="center">
+            <HStack
+              px="0.5"
+              mx="2"
+              alignItems="center"
+              style={byTime ? styles.fillBlue : styles.borderBlue}>
+              <MaterialCommunityIcons
+                name="timer-outline"
+                size={30}
+                style={byTime ? styles.colorWhite : styles.colorBlue}
+              />
+              <Text
+                px="1"
+                style={byTime ? styles.colorWhite : styles.colorBlue}>
+                {convUserTime}
+              </Text>
+            </HStack>
+            <HStack
+              mx="2"
+              alignItems="center"
+              style={byTime ? styles.borderBlue : styles.fillBlue}>
+              <MaterialCommunityIcons
+                name="map-marker-distance"
+                size={30}
+                style={byTime ? styles.colorBlue : styles.colorWhite}
+              />
+              <Text
+                px="1"
+                style={byTime ? styles.colorBlue : styles.colorWhite}>
+                {userKm} Km
+              </Text>
+            </HStack>
+          </HStack>
+        )}
+
+        {selectedTab === 'finished' && (
+          <VStack>
+            <HStack mt="2" justifyContent="center" alignItems="center">
+              <HStack
+                px="0.5"
+                mx="2"
+                alignItems="center"
+                style={byTime ? styles.fillBlue : styles.borderBlue}>
+                <MaterialCommunityIcons
+                  name="timer-outline"
+                  size={30}
+                  style={byTime ? styles.colorWhite : styles.colorBlue}
+                />
+                <Text
+                  px="1"
+                  style={byTime ? styles.colorWhite : styles.colorBlue}>
+                  {convUserTime}
+                </Text>
+              </HStack>
+              <HStack
+                px="0.5"
+                mx="2"
+                alignItems="center"
+                style={byTime ? styles.fillBlue : styles.borderBlue}>
+                <MaterialCommunityIcons
+                  name="timer-outline"
+                  size={30}
+                  style={byTime ? styles.colorWhite : styles.colorBlue}
+                />
+                <Text
+                  px="1"
+                  style={byTime ? styles.colorWhite : styles.colorBlue}>
+                  {RunTime}
+                </Text>
+              </HStack>
+            </HStack>
+            <HStack mt="2" justifyContent="center" alignItems="center">
+              <HStack
+                mx="2"
+                alignItems="center"
+                style={byTime ? styles.borderBlue : styles.fillBlue}>
+                <MaterialCommunityIcons
+                  name="map-marker-distance"
+                  size={30}
+                  style={byTime ? styles.colorBlue : styles.colorWhite}
+                />
+                <Text
+                  px="1"
+                  style={byTime ? styles.colorBlue : styles.colorWhite}>
+                  {userKm} km
+                </Text>
+              </HStack>
+              <HStack
+                mx="2"
+                alignItems="center"
+                style={byTime ? styles.borderBlue : styles.fillBlue}>
+                <MaterialCommunityIcons
+                  name="map-marker-distance"
+                  size={30}
+                  style={byTime ? styles.colorBlue : styles.colorWhite}
+                />
+                <Text
+                  px="1"
+                  style={byTime ? styles.colorBlue : styles.colorWhite}>
+                  {otherKm} Km
+                </Text>
+              </HStack>
+            </HStack>
+          </VStack>
         )}
       </TouchableOpacity>
-      <View
+      {/* <View
         style={{
           height: layoutHeight,
           overflow: 'hidden',
-        }}>
-        {/*Details*/}
-        {userTime ? (
+        }}> */}
+      {/*Details*/}
+      {/* {userTime ? (
           <TouchableOpacity key={key} style={styles.content}>
             <Text style={styles.text}>your Stats</Text>
             <Text style={styles.text}>time: {userTime} min</Text>
@@ -142,7 +352,7 @@ export default function ChallengeItem({
         {item.accepted === false && (
           <Button onPress={DeleteRejected}>Delete</Button>
         )}
-      </View>
+      </View> */}
     </View>
   );
 }
@@ -157,11 +367,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   header: {
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#FEF6ED',
     padding: 20,
+    borderTopColor: '#50A5B1',
+    borderTopWidth: 0.5,
   },
   headerText: {
-    fontSize: 16,
+    fontSize: 25,
     fontWeight: '500',
   },
   separator: {
@@ -180,5 +392,68 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
     backgroundColor: '#fff',
+  },
+
+  date: {
+    textAlign: 'right',
+    fontSize: 12,
+  },
+
+  timeKm: {
+    fontSize: 19,
+  },
+
+  // time and distance labels:
+
+  colorBlue: {
+    color: '#50A5B1',
+  },
+
+  fillBlue: {
+    borderColor: '#50A5B1',
+    borderWidth: 2,
+    borderRadius: 7,
+    backgroundColor: '#50A5B1',
+  },
+
+  borderBlue: {
+    borderColor: '#50A5B1',
+    borderWidth: 2,
+    borderRadius: 7,
+  },
+
+  colorWhite: {
+    color: 'white',
+  },
+
+  colorOrange: {
+    color: '#F1600D',
+  },
+
+  buttonDecline: {
+    marginTop: 2,
+    backgroundColor: 'transparent',
+    padding: 7,
+    borderColor: '#F1600D',
+    borderWidth: 2,
+    borderRadius: 7,
+  },
+
+  buttonAccept: {
+    marginTop: 2,
+    backgroundColor: 'transparent',
+    padding: 7,
+    borderColor: '#50A5B1',
+    borderWidth: 2,
+    borderRadius: 7,
+  },
+
+  colorWhite: {
+    color: 'white',
+  },
+
+  rejected: {
+    fontSize: 18,
+    color: '#F1600D',
   },
 });
