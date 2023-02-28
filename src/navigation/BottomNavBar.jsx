@@ -31,7 +31,7 @@ export default function BottomNavBar({user}) {
         tabBarActiveTintColor: '#50A5B1',
         tabBarInactiveTintColor: '#1A265A',
         tabBarStyle: '#50A5B1',
-        tabBarShowLabel: false, 
+        tabBarShowLabel: false,
         tabBarIcon: ({focused, color, size}) => {
           let iconName;
           let rn = route.name;
@@ -47,7 +47,7 @@ export default function BottomNavBar({user}) {
           } else if (rn === search) {
             iconName = focused ? 'search' : 'search-outline'
           }
-          return <Ionicons name={iconName} size={30} color='#F1600D' />;
+          return <Ionicons name={iconName} size={30} color="#F1600D" />;
         },
       })}>
       <Tab.Screen name={homeName} user={user} component={Home} />
