@@ -8,23 +8,32 @@ const styles = StyleSheet.create({
         blue: '#1A265A',
       },
       loginButton: {
-        marginTop: 2,
         backgroundColor: '#FEF6ED',
-        width: 115,
-        marginLeft: 15,
+        borderWidth: 1,
+        borderColor: '#80808040',
+        marginTop: 6,
+      },
+      googleButton: {
+        marginTop: 25,
+        backgroundColor: '#FEF6ED',
+        width: '47%',
+        borderWidth: 1,
+        borderColor: '#80808040'
       },
       loginButtonText: {
-        color: '#50A5B1',
-        fontSize: 18
+        color: '#F1600D',
+        fontSize: 16,
+        fontWeight: 700,
+        letterSpacing: 3
       },
       textColor: {
-        color: '#fff',
+        color: '#1A265A',
       },
       heading: {
        
-        fontWeight: "600",
-        color: "#fff",
-        fontSize: 16
+        fontWeight: "800",
+        color: "#F1600D",
+        fontSize: 18
         
       },
       screenColor: {

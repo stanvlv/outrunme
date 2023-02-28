@@ -2,7 +2,7 @@
 import Home from '../screens/home/Home';
 import FirebaseDatabase from '../screens/home/Profile';
 import Map from '../screens/home/Map';
-import FindUser from '../screens/home/FindUser';
+import Search from '../screens/home/Search';
 import Leaderboard from '../screens/home/Leaderboard';
 
 import {NavigationContainer} from '@react-navigation/native';
@@ -14,7 +14,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 const homeName = 'Challenges';
 const firebase = 'Profile';
 const map = 'Map';
-const findUser = 'FindUser';
+const search = 'Search';
 const chart = 'Leaderboard'
 
 export default function BottomNavBar({user}) {
@@ -44,7 +44,7 @@ export default function BottomNavBar({user}) {
             iconName = focused ? 'map' : 'map-outline';
           } else if (rn === chart) {
             iconName = focused ? 'trophy' : 'trophy-outline'
-          } else if (rn === findUser) {
+          } else if (rn === search) {
             iconName = focused ? 'search' : 'search-outline'
           }
           return <Ionicons name={iconName} size={30} color='#F1600D' />;
@@ -53,7 +53,7 @@ export default function BottomNavBar({user}) {
       <Tab.Screen name={homeName} user={user} component={Home} />
       
      
-      <Tab.Screen name={findUser} user={user} component={FindUser} />
+      <Tab.Screen name={search} user={user} component={Search} />
       <Tab.Screen name={map} user={user} component={Map} />
       <Tab.Screen name={chart} component={Leaderboard} />
       <Tab.Screen name={firebase} user={user} component={FirebaseDatabase} />

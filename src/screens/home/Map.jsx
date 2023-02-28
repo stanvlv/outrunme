@@ -19,7 +19,7 @@ import {useContext} from 'react';
 import {AppStateContext} from '../../../App';
 import {Button} from 'native-base';
 
-const LOCATION_UPDATE_INTERVAL = 5000; // 15 seconds
+const LOCATION_UPDATE_INTERVAL = 15000; // 15 seconds
 
 export default function Map({route, navigation}) {
   const [watchingLocation, setWatchingLocation] = useState(false);
@@ -389,7 +389,7 @@ export default function Map({route, navigation}) {
     </SafeAreaView>
   ) : ( <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
     <Text style={styles.customText}>Challenge someone to start a run</Text>
-    <Button style={styles.logoutButton} onPress={() => { navigation.navigate('FindUser')}}>Seek a challenger</Button>
+    <Button style={styles.logoutButton} onPress={() => { navigation.navigate('Search')}}>Seek a challenger</Button>
     </View>
     )
 }</View>

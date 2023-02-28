@@ -98,7 +98,7 @@ export default function Login({navigation}) {
     behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     style={{ flex: 1 }}
   >
-    <ScrollView style={{backgroundColor: styles.appColor.orange}}>
+    <ScrollView >
       <NativeBaseProvider>
         {/* {alert && (
         <Box>
@@ -127,36 +127,24 @@ export default function Login({navigation}) {
         {/* Form for the email */}
 
         <Center w="100%">
-          <Heading
-            marginTop="1"
-            size="lg"
-            fontWeight="800"
-            color="#FEF6ED"
-            _dark={{
-              color: 'warmGray.50',
-            }}>
-            OutRun Me
-          </Heading>
+          
           <Image
-            source={require('../../assets/outrunmetranswhite.png')}
+            source={require('../../assets/isitgood.png')}
             style={{
-              width: 175,
-              height: 175,
+              width: 250,
+              height: 230,
               backgroundColor: 'transparent',
               resizeMode: 'contain',
             }}
           />
-          <Box safeArea p="2" py="8" w="90%" maxW="290">
-            <Heading style={styles.heading}
-              ><Text style={styles.textColor}>
-              Up for the challenge?
-              </Text>
-              </Heading >
+          <Box safeArea p="2" py="0" w="90%" maxW="290">
+           
 
-            <VStack space={3} mt="2">
+            <VStack space={0} >
               <FormControl isInvalid={'name' in errors}>
                 <FormControl.Label ><Text style={styles.textColor}>Email</Text></FormControl.Label>
                 <Input
+                placeholder='Enter email'
                 backgroundColor="#FEF6ED"
                   onChangeText={value => setEmail({...email, name: value})}
                 />
@@ -171,12 +159,19 @@ export default function Login({navigation}) {
               <FormControl>
                 <FormControl.Label><Text style={styles.textColor}>Password</Text></FormControl.Label>
                 <Input
+                placeholder='Enter password'
                  backgroundColor="#FEF6ED"
                   type="password"
                   onChangeText={value =>
                     setPassword({...password, name: value})
                   }
                 />
+               
+              </FormControl>
+              <Box style={{display: 'flex', flexDirection: 'column'}}>
+                <Button style={styles.loginButton} onPress={loginUser}>
+                 <Text style={styles.loginButtonText}> LOGIN </Text>
+                </Button>
                 <Link
                   onPress={() => navigation.navigate('ForgotPassword')}
                   _text={{
@@ -185,28 +180,35 @@ export default function Login({navigation}) {
                     color: '#1A265A',
                   }}
                   alignSelf="flex-end"
-                  mt="1">
+                  mt="0">
                   Forget Password?
                 </Link>
-              </FormControl>
-              <Box style={{display: 'flex', flexDirection: 'row'}}>
-                <Button style={styles.loginButton} onPress={loginUser}>
-                 <Text style={styles.loginButtonText}> Sign in </Text>
-                </Button>
-                <Button style={styles.loginButton}>
+                <Text style={{borderBottomColor: 'black', borderBottomWidth: 0.5, borderBottomColor: '#F1600D'}}></Text>
+        
+               <Box style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around', gap: 5}}>
+                
+               <Button style={styles.googleButton}>
+ 
                   <Image
                     source={require('../../assets/googleicon.png')}
                     style={{width: 30, height: 30}}
                     onPress={signWithGoogle}
                   />
                 </Button>
+                <Button style={styles.googleButton}>
+                  <Image
+                    source={require('../../assets/facebooktrans.png')}
+                    style={{width: 30, height: 30}}
+                  />
+                </Button>
+                </Box>
               </Box>
 
               {/* <Button mt="2" colorScheme="indigo" onPress={createUser}>
               Register
             </Button> */}
 
-              <HStack mt="6" justifyContent="center">
+              <HStack mt="5" justifyContent="center">
                 <Text
                   fontSize="sm"
                   color="coolGray.800"
@@ -217,7 +219,7 @@ export default function Login({navigation}) {
                 </Text>
                 <Link
                   _text={{
-                    color: '#fff',
+                    color: '#F1600D',
                     fontWeight: 'medium',
                     fontSize: 'sm',
                   }}

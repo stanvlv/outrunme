@@ -48,9 +48,13 @@ export default function FirebaseDatabase() {
         challenges_lost={userData?.challenges_lost}
       />
       <View style={styles.buttonView}>
-      <Button style={styles.logoutButton} onPress={logout}><Text style={styles.buttonText}>Logout</Text></Button>
+      
       </View>
-      </View>
+     
+     <View style={{alignItems: 'center', marginBottom: 20}}>
+    <Button style={styles.logoutButton} onPress={logout}><Text style={styles.buttonText}>Logout</Text></Button>
+    </View>
+    </View>
     </NativeBaseProvider>
   );
 }
