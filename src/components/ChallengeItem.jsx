@@ -28,7 +28,6 @@ export default function ChallengeItem({
   const [layoutHeight, setLayoutHeight] = useState(0);
   const [isClicked, setIsClicked] = useState(false);
   const {setRun, user} = useContext(AppStateContext);
-  const {setRun} = useContext(AppStateContext);
   
   const handleClick = () => {
     setIsClicked(!isClicked);

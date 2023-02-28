@@ -20,7 +20,7 @@ export default function ProfileItem({
       <Image size={100} borderRadius={50} source={{ uri: "https://wallpaperaccess.com/full/317501.jpg"}} alt="Avatar" />
   
     
-      <Text style={{fontSize: 24, fontWeight: 'bold'}}>{username}</Text>
+      <Text style={{fontSize: 20, fontWeight: 'bold'}}>{username}</Text>
     
   </Box>
   <Box style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginTop: 25}}>
