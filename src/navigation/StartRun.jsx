@@ -7,7 +7,7 @@ export default function StartRun({user}) {
 
   return (
     <Stack.Navigator
-      initialRouteName="FindUser"
+      initialRouteName="Search"
       screenOptions={{
         //  headerBackTitle: "Back", // only for IOS
         headerStyle: {

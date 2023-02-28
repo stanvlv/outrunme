@@ -12,13 +12,14 @@ import {
   HStack,
 } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
-import ViewContainer from '../../components/ViewContainer';
+import ViewContainer from '../../components/MapContainer';
 import firestore from '@react-native-firebase/firestore';
 import {getDistance} from 'geolib';
 import {useContext} from 'react';
 import {AppStateContext} from '../../../App';
 import {Button} from 'native-base';
-const LOCATION_UPDATE_INTERVAL = 5000; // 15 seconds
+
+const LOCATION_UPDATE_INTERVAL = 15000; // 15 seconds
 
 export default function Map({route, navigation}) {
   const [watchingLocation, setWatchingLocation] = useState(false);
@@ -38,13 +39,14 @@ export default function Map({route, navigation}) {
 
   const {user, run, setRun} = useContext(AppStateContext);
 
-  // console.log(Object.values(run));
+
+  console.log(Object.values(run))
 
   const [userData, setUserData] = useState();
 
   const [showChoice, setShowChoice] = useState(false);
 
-  const [isRunning, setIsRunning] = useState(false);
+  const [isRunning, setIsRunning] = useState(false)
 
   useEffect(() => {
     const userRef = firestore().collection('users').doc(user.uid);
@@ -60,6 +62,7 @@ export default function Map({route, navigation}) {
       })
       .catch(err => console.log(err));
   }, [user.uid]);
+
 
   useEffect(() => {
     setChallenger(run.challenger);
@@ -94,7 +97,7 @@ export default function Map({route, navigation}) {
                     latitude: position.coords.latitude,
                     longitude: position.coords.longitude,
                   });
-                  // console.log(mran);
+                  console.log(mran);
                 }
               },
               error => {
@@ -137,10 +140,11 @@ export default function Map({route, navigation}) {
       if (watchId) {
         Geolocation.clearWatch(watchId);
         setWatchId(undefined);
-        // console.log(watchId);
+        console.log(watchId);
       }
     };
   }, [watchingLocation]);
+
 
   const onStartWatching = () => {
     setWatchingLocation(true);
@@ -154,82 +158,6 @@ export default function Map({route, navigation}) {
     setTimerId(timerId);
   };
 
-  // if user is winner
-  const onWin = () => {
-    firestore()
-      .collection('challenger')
-      .doc(challenger)
-      .collection('challenges')
-      .doc(run.id)
-      .update({
-        accepted: true,
-        challenged_date: Date.now(),
-        challenged_km: distance,
-        challenged_time: timer,
-        finished: true,
-        winner: false,
-      })
-      .then(() => {
-        // console.log('I accepted a challenge');
-      });
-
-    firestore()
-      .collection('challenged')
-      .doc(challenged)
-      .collection('challenges')
-      .doc(run.id)
-      .update({
-        accepted: true,
-        challenged_date: Date.now(),
-        challenged_km: distance,
-        challenged_time: timer,
-        finished: true,
-        winner: true,
-      })
-      .then(() => {
-        setRun({finished: true});
-        navigation.navigate('Challenges');
-      });
-  };
-
-  // if user is loser
-  const onLoss = () => {
-    firestore()
-      .collection('challenger')
-      .doc(challenger)
-      .collection('challenges')
-      .doc(run.id)
-      .update({
-        accepted: true,
-        challenged_date: Date.now(),
-        challenged_km: distance,
-        challenged_time: timer,
-        finished: true,
-        winner: true,
-      })
-      .then(() => {
-        // console.log('I accepted a challenge');
-      });
-
-    firestore()
-      .collection('challenged')
-      .doc(challenged)
-      .collection('challenges')
-      .doc(run.id)
-      .update({
-        accepted: true,
-        challenged_date: Date.now(),
-        challenged_km: distance,
-        challenged_time: timer,
-        finished: true,
-        winner: false,
-      })
-      .then(() => {
-        setRun({finished: true});
-        navigation.navigate('Challenges');
-      });
-  };
-
   const onStopWatching = () => {
     setWatchingLocation(false);
     Geolocation.clearWatch(watchId);
@@ -240,75 +168,98 @@ export default function Map({route, navigation}) {
     // setTimer(0)
     // setDistance(0)
     setTimerId(null);
-    // console.log(challenger);
-    // console.log(challenged);
+    console.log(challenger);
+    console.log(challenged);
 
     if (challenger === userData.username) {
-      // if we are the challenger show the option buttons
       setShowChoice(true);
     } else if (challenged === userData.username) {
-      setVelocityChallenger(run.challenger_km / run.challenger_time);
-      setVelocityChallenged(distance / timer);
+      firestore()
+        .collection('challenger')
+        .doc(challenger)
+        .collection('challenges')
+        .doc(run.id)
+        .update({
+          accepted: true,
+          challenged_date: Date.now(),
+          challenged_km: distance,
+          challenged_time: timer,
+          finished: true,
+        })
+        .then(() => {
+          console.log('I accepted a challenge');
+        });
 
-      const increment = firestore.FieldValue.increment(1);
-      if (run.byTime === true) {
-        if (
-          // if we are challenged by time and we lose:
-          velocityChallenger >= velocityChallenged ||
-          timer < run.challenger_time
-        ) {
-          onLoss();
-          firestore().collection('users').doc(user.uid).update({
-            challenges_lost: increment,
-            runs: increment,
-          });
-          firestore().collection('users').doc(run.challenger_id).update({
-            challenges_won: increment,
-            runs: increment,
-          });
-        } else {
-          // if we are challenged by time and we win:
-          onWin();
-          firestore().collection('users').doc(user.uid).update({
-            challenges_won: increment,
-            runs: increment,
-          });
-          firestore().collection('users').doc(run.challenger_id).update({
-            challenges_lost: increment,
-            runs: increment,
-          });
-        }
-      } else {
-        if (
-          // if we are challenged by distance and we lose:
-          velocityChallenger >= velocityChallenged ||
-          distance < run.challenger_km
-        ) {
-          onLoss();
-          firestore().collection('users').doc(user.uid).update({
-            challenges_lost: increment,
-            runs: increment,
-          });
-          firestore().collection('users').doc(run.challenger_id).update({
-            challenges_won: increment,
-            runs: increment,
-          });
-        } else {
-          // if we are challenged by distance and we win:
-          onWin();
-          firestore().collection('users').doc(user.uid).update({
-            challenges_won: increment,
-            runs: increment,
-          });
-          firestore().collection('users').doc(run.challenger_id).update({
-            challenges_lost: increment,
-            runs: increment,
-          });
-        }
-      }
+      firestore()
+        .collection('challenged')
+        .doc(challenged)
+        .collection('challenges')
+        .doc(run.id)
+        .update({
+          accepted: true,
+          challenged_date: Date.now(),
+          challenged_km: distance,
+          challenged_time: timer,
+          finished: true,
+        })
+        .then(() => {
+          setVelocityChallenger(run.challenger_km / run.challenger_time);
+          setVelocityChallenged(distance / timer);
+          const increment = firestore.FieldValue.increment(1);
+          if (run.byTime === true) {
+            if (
+              velocityChallenger >= velocityChallenged ||
+              timer < run.challenger_time
+            ) {
+              firestore().collection('users').doc(user.uid).update({
+                challenges_lost: increment,
+                runs: increment,
+              });
+              firestore().collection('users').doc(run.challenger_id).update({
+                challenges_won: increment,
+                runs: increment,
+              });
+            } else {
+              firestore().collection('users').doc(user.uid).update({
+                challenges_won: increment,
+                runs: increment,
+              });
+              firestore().collection('users').doc(run.challenger_id).update({
+                challenges_lost: increment,
+                runs: increment,
+              });
+            }
+          } else {
+            if (
+              velocityChallenger >= velocityChallenged ||
+              distance < run.challenger_km
+            ) {
+              firestore().collection('users').doc(user.uid).update({
+                challenges_lost: increment,
+                runs: increment,
+              });
+              firestore().collection('users').doc(run.challenger_id).update({
+                challenges_won: increment,
+                runs: increment,
+              });
+            } else {
+              firestore().collection('users').doc(user.uid).update({
+                challenges_won: increment,
+                runs: increment,
+              });
+              firestore().collection('users').doc(run.challenger_id).update({
+                challenges_lost: increment,
+                runs: increment,
+              });
+            }
+          }
+
+          setRun({finished: true});
+          navigation.navigate('Challenges');
+        });
     }
   };
-  // console.log(user.uid);
+  console.log(user.uid);
 
   const PostTimeTrue = () => {
     firestore()
@@ -323,8 +274,8 @@ export default function Map({route, navigation}) {
         byTime: true,
       })
       .then(docRef => {
-        // console.log(docRef.id + ' this is for the docref');
-        // console.log('I challenged somebody');
+        console.log(docRef.id + ' this is for the docref');
+        console.log('I challenged somebody');
         firestore()
           .collection('challenged')
           .doc(challenged)
@@ -338,13 +289,14 @@ export default function Map({route, navigation}) {
             challenger_time: timer,
             byTime: true,
           })
-          // .then(res => console.log(res))
+          .then(res => console.log(res))
           .catch(err => console.log(err));
         navigation.navigate('Challenges');
         setShowChoice(false);
       })
       .catch(err => console.log(err + ' from outside'));
-  };
+
+    }
   const PostTimeFalse = () =>
     firestore()
       .collection('challenger')
@@ -358,8 +310,8 @@ export default function Map({route, navigation}) {
         byTime: false,
       })
       .then(docRef => {
-        // console.log(docRef.id + ' this is for the docref');
-        // console.log('I challenged somebody');
+        console.log(docRef.id + ' this is for the docref');
+        console.log('I challenged somebody');
         firestore()
           .collection('challenged')
           .doc(challenged)
@@ -373,21 +325,21 @@ export default function Map({route, navigation}) {
             challenger_time: timer,
             byTime: false,
           })
-          // .then(res => console.log(res))
+          .then(res => console.log(res))
           .catch(err => console.log(err));
         navigation.navigate('Challenges');
         setShowChoice(false);
       })
       .catch(err => console.log(err + ' from outside'));
 
-  const handleClickForRun = () => {
-    if (isRunning) {
-      onStopWatching();
-    } else {
-      onStartWatching();
-    }
-    setIsRunning(!isRunning);
-  };
+      const handleClickForRun = () => {
+        if(isRunning) {
+          onStopWatching()
+        } else {
+          onStartWatching()
+        }
+        setIsRunning(!isRunning)
+      }
 
   const formatTime = timer => {
     const minutes = Math.floor(timer / 60);
@@ -404,65 +356,55 @@ export default function Map({route, navigation}) {
     return `${km} km ${hm}:${dm < 10 ? '0' : ''}${dm}`;
   };
 
-  return (
-    <View style={styles.container}>
-      {Object.keys(run).length ? (
-        <SafeAreaView style={styles.container}>
-          <ScrollView contentInsetAdjustmentBehavior="automatic">
-            <View style={styles.sectionContainer}>
-              <Text>Time: {formatTime(timer)}</Text>
-              <Text>Distance: {formatDistance(distance)}</Text>
-              {/* {locationHistory.map((location, index) => (
-            <Text key={index}>
-              {location.coords.latitude}, {location.coords.longitude}
-            </Text>
-          ))} */}
-            </View>
-            {showChoice === false && (
-              <View style={styles.theButtons}>
-                <Button style={styles.button} onPress={handleClickForRun}>
-                  {isRunning ? 'Stop Running' : 'Start Running'}
-                </Button>
-              </View>
-            )}
-
-            {latlng.length && currentLocation ? (
-              <ViewContainer
-                latlng={latlng}
-                currentLocation={currentLocation}
-              />
-            ) : null}
-          </ScrollView>
-          {showChoice === true && (
-            <View>
-              <Button onPress={PostTimeTrue}>Time</Button>
-              <Button onPress={PostTimeFalse}>Distance</Button>
-            </View>
-          )}
-        </SafeAreaView>
-      ) : (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Text>Go and find a user to challenge</Text>
-          <Button
-            onPress={() => {
-              navigation.navigate('FindUser');
-            }}>
-            Find a user
-          </Button>
+  return (<View style={styles.container}>
+    {Object.keys(run).length ? (
+    <SafeAreaView style={styles.container}>
+      <ScrollView contentInsetAdjustmentBehavior="automatic">
+        <View style={styles.sectionContainer}>
+          <Text>Time: {formatTime(timer)}</Text>
+          <Text>Distance: {formatDistance(distance)}</Text>
         </View>
+        {showChoice === false && (
+          <View style={styles.theButtons}>
+            <Button
+        style={styles.button}
+        onPress={handleClickForRun}
+      >{isRunning ? 'Stop Running' : 'Start Running'}</Button>
+          </View>
+        )}
+
+        {latlng.length && currentLocation ? (
+          <ViewContainer latlng={latlng} currentLocation={currentLocation} />
+        ) : null}
+      </ScrollView>
+      {showChoice === true && (
+        <View>
+        <Text style={styles.customText}>Challenge your opponent by:</Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', paddingBottom: 20 }}>
+          <Button style={styles.logoutButton} onPress={PostTimeTrue}>TIME</Button>
+          <Button style={styles.logoutButton} onPress={PostTimeFalse}>DISTANCE</Button>
+        </View>
+      </View>
       )}
+    </SafeAreaView>
+  ) : ( <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <Text style={styles.customText}>Challenge someone to start a run</Text>
+    <Button style={styles.logoutButton} onPress={() => { navigation.navigate('Search')}}>Seek a challenger</Button>
     </View>
+    )
+}</View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FEF6ED',
+    backgroundColor: '#FEF6ED'
   },
   sectionContainer: {
     marginTop: 32,
     paddingHorizontal: 24,
+    
   },
   sectionTitle: {
     fontSize: 24,
@@ -475,12 +417,22 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
   buttonText: {
-    color: '#FEF6ED',
+    color: '#FEF6ED'
   },
   theButtons: {
     marginTop: 32,
     paddingHorizontal: 24,
     marginTop: 32,
-    width: 175,
+    width: 175
   },
+  logoutButton: {
+    backgroundColor: "#50A5B1",
+    width: 150,
+  },
+  customText: {
+    color: '#1A265A',
+    fontSize: 22,
+    fontWeight: '600',
+    paddingBottom: 20,
+  }
 });
