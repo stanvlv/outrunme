@@ -19,7 +19,7 @@ import {useContext} from 'react';
 import {AppStateContext} from '../../../App';
 import {Button} from 'native-base';
 
-const LOCATION_UPDATE_INTERVAL = 15000; // 15 seconds
+const LOCATION_UPDATE_INTERVAL = 5000; // 15 seconds
 
 export default function Map({route, navigation}) {
   const [watchingLocation, setWatchingLocation] = useState(false);
@@ -64,6 +64,19 @@ export default function Map({route, navigation}) {
   }, [user.uid]);
 
 
+  
+
+  useEffect(() => {
+    // this effect runs whenever the `latlng` array changes
+    if (latlng.length >= 2) {
+      const lastLatLng = latlng[latlng.length - 2];
+      const currentLatLng = latlng[latlng.length - 1];
+      const mran = getDistance(lastLatLng, currentLatLng);
+      setDistance(prevDistance => prevDistance + mran);
+    }
+  }, [latlng]);
+
+
   useEffect(() => {
     setChallenger(run.challenger);
     setChallenged(run.challenged);
@@ -91,14 +104,14 @@ export default function Map({route, navigation}) {
                     },
                   ];
                 });
-
-                if (latlng.length) {
-                  const mran = getDistance(latlng[latlng.length - 1], {
-                    latitude: position.coords.latitude,
-                    longitude: position.coords.longitude,
-                  });
-                  console.log(mran);
-                }
+                // if (latlng.length) {
+                //   const mran = getDistance(latlng[latlng.length - 1], {
+                //     latitude: position.coords.latitude,
+                //     longitude: position.coords.longitude,
+                //   });
+                //   setDistance(prevDistance => prevDistance + mran);
+                //   console.log(distance + ` this is supposed to be the distance in meters`)
+                // }
               },
               error => {
                 console.log(error);
@@ -158,6 +171,7 @@ export default function Map({route, navigation}) {
     setTimerId(timerId);
   };
 
+  
   const onStopWatching = () => {
     setWatchingLocation(false);
     Geolocation.clearWatch(watchId);
@@ -353,8 +367,12 @@ export default function Map({route, navigation}) {
     const km = Math.floor(distance / 1000); // get km
     const hm = Math.floor((distance - km * 1000) / 100); // get hundreds of meters
     const dm = Math.floor((distance - km * 1000 - hm * 100) / 10); // get tenths of meters
-    return `${km} km ${hm}:${dm < 10 ? '0' : ''}${dm}`;
+    return `${km}:${hm}${dm} km`;
   };
+
+
+  console.log(`This should be the distance before the return  : ` + distance)
+  console.log(formatDistance(distance) + ` this is before the return with a function`)
 
   return (
   <View style={styles.container}>
