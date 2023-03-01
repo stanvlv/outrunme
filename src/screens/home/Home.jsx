@@ -143,7 +143,7 @@ export default function Home({navigation}) {
               ))}
           </ScrollView>
         )}
-        {selectedTab === 'sent' && (
+        {/* {selectedTab === 'sent' && (
           <Link
             style={styles.plusIcon}
             alignSelf="flex-end"
@@ -151,7 +151,7 @@ export default function Home({navigation}) {
             onPress={() => navigation.navigate('Search')}>
             <Ionicons name="add-circle" size={70} style={{color: '#F1600D'}} />
           </Link>
-        )}
+        )} */}
         {selectedTab === 'received' && (
           <ScrollView>
             {challenged

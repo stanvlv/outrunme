@@ -72,7 +72,6 @@ export default function Map({route, navigation}) {
       .catch(err => console.log(err));
   }, [user.uid]);
 
-
   useEffect(() => {
     // this effect runs whenever the `latlng` array changes
     if (latlng.length >= 2) {
@@ -82,7 +81,6 @@ export default function Map({route, navigation}) {
       setDistance(prevDistance => prevDistance + mran);
     }
   }, [latlng]);
-
 
   useEffect(() => {
     setChallenger(run.challenger);
@@ -177,7 +175,6 @@ export default function Map({route, navigation}) {
     setTimerId(timerId);
   };
 
-  
   const onStopWatching = () => {
     setWatchingLocation(false);
     Geolocation.clearWatch(watchId);
@@ -285,7 +282,7 @@ export default function Map({route, navigation}) {
   };
   console.log(user.uid);
 
-  console.log(latlng + ` this will be saved for coordinates`)
+  console.log(latlng + ` this will be saved for coordinates`);
   const PostTimeTrue = () => {
     firestore()
       .collection('challenger')
@@ -412,42 +409,13 @@ export default function Map({route, navigation}) {
       {/* Show Map */}
       {currentLocation ? (
         <HStack justifyContent="center">
-
-    return `${km}:${hm}${dm} km`;
-  };
-
-
-  console.log(`This should be the distance before the return  : ` + distance)
-  console.log(formatDistance(distance) + ` this is before the return with a function`)
-
-  return (
-  <View style={styles.container}>
-    {Object.keys(run).length ? (
-    <SafeAreaView style={styles.container}>
-      <ScrollView contentInsetAdjustmentBehavior="automatic">
-        <View style={styles.sectionContainer}>
-          <Text>Time: {formatTime(timer)}</Text>
-          <Text>Distance: {formatDistance(distance)}</Text>
-        </View>
-        {showChoice === false && (
-          <View style={styles.theButtons}>
-            <Button
-        style={styles.button}
-        onPress={handleClickForRun}
-      >{isRunning ? 'Stop Running' : 'Start Running'}</Button>
-          </View>
-        )}
-
-        {latlng.length && currentLocation ? (
-
           <ViewContainer latlng={latlng} currentLocation={currentLocation} />
         </HStack>
       ) : null}
-
       {Object.keys(run).length ? (
         <SafeAreaView style={styles.container}>
           <ScrollView contentInsetAdjustmentBehavior="automatic">
-            {/* Show Run Data */}
+           
             {run.byTime ? (
               <VStack>
                 <TimerItem timer={timer} byTime={run.byTime} />
@@ -495,7 +463,6 @@ export default function Map({route, navigation}) {
                 <TimerItem timer={timer} byTime={run.byTime} />
               </VStack>
             )}
-
             {showChoice === false && (
               <HStack style={styles.theButtons} mx="auto">
                 <Button style={styles.button} onPress={handleClickForRun}>
@@ -542,11 +509,6 @@ export default function Map({route, navigation}) {
           </Button>
         </View>
       )}
-    </SafeAreaView>
-  ) : ( <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-    <Text style={styles.customText}>Challenge someone to start a run</Text>
-    {/* style={styles.logoutButton} */}
-    <Button  colorScheme='warning' onPress={() => { navigation.navigate('Search')}}>Search</Button>
     </View>
   );
 }
