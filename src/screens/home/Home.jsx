@@ -87,7 +87,6 @@ export default function Home({navigation}) {
     <NativeBaseProvider>
       <View style={styles.container}>
         <View style={{flexDirection: 'row', padding: 4}}></View>
-
         <View style={styles.topNavigation}>
           <TouchableOpacity
             onPress={onPressSent}
@@ -120,7 +119,6 @@ export default function Home({navigation}) {
             </Text>
           </TouchableOpacity>
         </View>
-
         {selectedTab === 'sent' && (
           <ScrollView>
             {challenger
@@ -134,15 +132,21 @@ export default function Home({navigation}) {
                   userKm={item.challenger_km}
                   nameTile={item.challenged}
                   userData={userData}
+                  sent={true}
+                  selectedTab={'sent'}
+                  byTime={item.byTime}
                 />
               ))}
-            <Link
-              alignSelf="flex-end"
-              my="5"
-              onPress={() => navigation.navigate('FindUser')}>
-              <Ionicons name="add-circle" size={40} style={{color: 'green'}} />
-            </Link>
           </ScrollView>
+        )}
+        {selectedTab === 'sent' && (
+          <Link
+            style={styles.plusIcon}
+            alignSelf="flex-end"
+            my="5"
+            onPress={() => navigation.navigate('FindUser')}>
+            <Ionicons name="add-circle" size={70} style={{color: '#F1600D'}} />
+          </Link>
         )}
         {selectedTab === 'received' && (
           <ScrollView>
@@ -157,7 +161,7 @@ export default function Home({navigation}) {
                     item.byTime === true ? item.challenger_time : '***'
                   }
                   otherKm={item.byTime === false ? item.challenger_km : '***'}
-                  showButtons={true}
+                  selectedTab={'received'}
                   navigation={navigation}
                   nameTile={item.challenger}
                   userData={userData}
@@ -199,6 +203,9 @@ export default function Home({navigation}) {
                     item.challenger ? item.challenger_km : item.challenged_km
                   }
                   nameTile={item.challenger ? item.challenger : item.challenged}
+                  sent={item.challenger ? true : false}
+                  selectedTab={'finished'}
+                  winner={item.winner}
                 />
               ))}
           </ScrollView>
@@ -285,5 +292,12 @@ const styles = StyleSheet.create({
     color: '#50A5B1',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+
+  plusIcon: {
+    position: 'absolute',
+    left: '50%',
+    transform: [{translateX: -32}],
+    bottom: 0,
   },
 });
