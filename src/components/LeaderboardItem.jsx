@@ -20,10 +20,11 @@ import {color} from 'native-base/lib/typescript/theme/styled-system';
 export default function LeaderboardItem({
   place,
   wins,
-  loses,
+  losses,
   runs,
   username,
   key,
+  navigation
 }) {
   const {user} = useContext(AppStateContext);
   const [userData, setUserData] = useState();
@@ -43,7 +44,7 @@ export default function LeaderboardItem({
   }, [user.uid]);
 
   return (
-    <Center>
+    <Center>     
       <HStack
         key={key}
         alignItems="center"
@@ -52,12 +53,14 @@ export default function LeaderboardItem({
         w="98%"
         justifyContent="space-between"
         style={username === userData?.username ? styles.userBorder : ''}>
+          <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
         <HStack alignItems="center">
           <Text fontSize="md">{place}. </Text>
-          <Text fontSize="lg" bold>
-            {username}
+            <Text fontSize="lg" bold>
+        {username}
           </Text>
         </HStack>
+        </TouchableOpacity>
         <HStack>
           <HStack mx="2">
             <Ionicons name="trophy" size={23} />
@@ -65,14 +68,16 @@ export default function LeaderboardItem({
           </HStack>
           <HStack mx="2">
             <Ionicons name="close-circle" size={23} />
-            <Text fontSize="md">{loses}</Text>
+            <Text fontSize="md">{losses}</Text>
           </HStack>
           <HStack mx="2">
             <Ionicons name="walk" size={23} />
             <Text fontSize="md">{runs}</Text>
           </HStack>
         </HStack>
-      </HStack>
+     
+      </HStack> 
+        
     </Center>
   );
 }

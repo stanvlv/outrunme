@@ -14,6 +14,7 @@ export default function FirebaseDatabase() {
   // console.log(user);
 
   const [userData, setUserData] = useState();
+  
   useEffect(() => {
     const userRef = firestore().collection('users').doc(user.uid);
 
@@ -52,7 +53,8 @@ export default function FirebaseDatabase() {
       </View>
      
      <View style={{alignItems: 'center', marginBottom: 20}}>
-    <Button style={styles.logoutButton} onPress={logout}><Text style={styles.buttonText}>Logout</Text></Button>
+     {/* style={styles.logoutButton} */}
+    <Button colorScheme='warning' onPress={logout}><Text style={styles.buttonText}>Logout</Text></Button>
     </View>
     </View>
     </NativeBaseProvider>
