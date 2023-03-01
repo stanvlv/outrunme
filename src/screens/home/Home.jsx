@@ -11,6 +11,7 @@ import ChallengeItem from '../../components/ChallengeItem';
 import firestore from '@react-native-firebase/firestore';
 import {AppStateContext} from '../../../App';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import FinishedChallenges from '../../components/FinishedChallenges';
 
 // Fetch Data
 
@@ -83,6 +84,9 @@ export default function Home({navigation}) {
   const onPressReceived = () => setSelectedTab('received');
   const onPressFinished = () => setSelectedTab('finished');
 
+  
+ 
+ 
   return (
     <NativeBaseProvider>
       <View style={styles.container}>
@@ -175,7 +179,7 @@ export default function Home({navigation}) {
               .concat(challenger)
               .filter(character => character.finished === true)
               .map(item => (
-                <ChallengeItem
+                <FinishedChallenges
                   key={item.category_name}
                   userData={userData}
                   winColor={item.winner ? '#2CD034' : '#D0342C'}
@@ -198,10 +202,12 @@ export default function Home({navigation}) {
                   otherKm={
                     item.challenger ? item.challenger_km : item.challenged_km
                   }
+                  coordinates={
+                    item.challenger ? item.challenger_coordinates : item.challenged_coordinates
+                  }
                   nameTile={item.challenger ? item.challenger : item.challenged}
                   sent={item.challenger ? true : false}
                   selectedTab={'finished'}
-                  winner={item.winner}
                 />
               ))}
           </ScrollView>

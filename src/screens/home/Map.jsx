@@ -29,7 +29,7 @@ import {AppStateContext} from '../../../App';
 import TimerItem from '../../components/TimerItem';
 import DistanceItem from '../../components/DistanceItem';
 
-const LOCATION_UPDATE_INTERVAL = 15000; // 15 seconds
+const LOCATION_UPDATE_INTERVAL = 5000; // 15 seconds
 
 export default function Map({route, navigation}) {
   const [watchingLocation, setWatchingLocation] = useState(false);
@@ -72,6 +72,18 @@ export default function Map({route, navigation}) {
       .catch(err => console.log(err));
   }, [user.uid]);
 
+
+  useEffect(() => {
+    // this effect runs whenever the `latlng` array changes
+    if (latlng.length >= 2) {
+      const lastLatLng = latlng[latlng.length - 2];
+      const currentLatLng = latlng[latlng.length - 1];
+      const mran = getDistance(lastLatLng, currentLatLng);
+      setDistance(prevDistance => prevDistance + mran);
+    }
+  }, [latlng]);
+
+
   useEffect(() => {
     setChallenger(run.challenger);
     setChallenged(run.challenged);
@@ -99,14 +111,14 @@ export default function Map({route, navigation}) {
                     },
                   ];
                 });
-
-                if (latlng.length) {
-                  const mran = getDistance(latlng[latlng.length - 1], {
-                    latitude: position.coords.latitude,
-                    longitude: position.coords.longitude,
-                  });
-                  console.log(mran);
-                }
+                // if (latlng.length) {
+                //   const mran = getDistance(latlng[latlng.length - 1], {
+                //     latitude: position.coords.latitude,
+                //     longitude: position.coords.longitude,
+                //   });
+                //   setDistance(prevDistance => prevDistance + mran);
+                //   console.log(distance + ` this is supposed to be the distance in meters`)
+                // }
               },
               error => {
                 console.log(error);
@@ -165,6 +177,7 @@ export default function Map({route, navigation}) {
     setTimerId(timerId);
   };
 
+  
   const onStopWatching = () => {
     setWatchingLocation(false);
     Geolocation.clearWatch(watchId);
@@ -192,6 +205,7 @@ export default function Map({route, navigation}) {
           challenged_km: distance,
           challenged_time: timer,
           finished: true,
+          challenged_coordinates: latlng,
         })
         .then(() => {
           console.log('I accepted a challenge');
@@ -208,6 +222,7 @@ export default function Map({route, navigation}) {
           challenged_km: distance,
           challenged_time: timer,
           finished: true,
+          challenged_coordinates: latlng,
         })
         .then(() => {
           setVelocityChallenger(run.challenger_km / run.challenger_time);
@@ -270,6 +285,7 @@ export default function Map({route, navigation}) {
   };
   console.log(user.uid);
 
+  console.log(latlng + ` this will be saved for coordinates`)
   const PostTimeTrue = () => {
     firestore()
       .collection('challenger')
@@ -281,6 +297,7 @@ export default function Map({route, navigation}) {
         challenger_km: distance,
         challenger_time: timer,
         byTime: true,
+        challenger_coordinates: latlng,
       })
       .then(docRef => {
         console.log(docRef.id + ' this is for the docref');
@@ -297,6 +314,7 @@ export default function Map({route, navigation}) {
             challenger_km: distance,
             challenger_time: timer,
             byTime: true,
+            challenger_coordinates: latlng,
           })
           .then(res => console.log(res))
           .catch(err => console.log(err));
@@ -318,6 +336,7 @@ export default function Map({route, navigation}) {
         challenger_km: distance,
         challenger_time: timer,
         byTime: false,
+        challenger_coordinates: latlng,
       })
       .then(docRef => {
         console.log(docRef.id + ' this is for the docref');
@@ -334,6 +353,7 @@ export default function Map({route, navigation}) {
             challenger_km: distance,
             challenger_time: timer,
             byTime: false,
+            challenger_coordinates: latlng,
           })
           .then(res => console.log(res))
           .catch(err => console.log(err));
@@ -379,6 +399,7 @@ export default function Map({route, navigation}) {
     const km = Math.floor(distance / 1000); // get km
     const hm = Math.floor((distance - km * 1000) / 100); // get hundreds of meters
     const dm = Math.floor((distance - km * 1000 - hm * 100) / 10); // get tenths of meters
+
     return `${km}.${hm}${dm} km`;
   };
 
@@ -391,6 +412,34 @@ export default function Map({route, navigation}) {
       {/* Show Map */}
       {currentLocation ? (
         <HStack justifyContent="center">
+
+    return `${km}:${hm}${dm} km`;
+  };
+
+
+  console.log(`This should be the distance before the return  : ` + distance)
+  console.log(formatDistance(distance) + ` this is before the return with a function`)
+
+  return (
+  <View style={styles.container}>
+    {Object.keys(run).length ? (
+    <SafeAreaView style={styles.container}>
+      <ScrollView contentInsetAdjustmentBehavior="automatic">
+        <View style={styles.sectionContainer}>
+          <Text>Time: {formatTime(timer)}</Text>
+          <Text>Distance: {formatDistance(distance)}</Text>
+        </View>
+        {showChoice === false && (
+          <View style={styles.theButtons}>
+            <Button
+        style={styles.button}
+        onPress={handleClickForRun}
+      >{isRunning ? 'Stop Running' : 'Start Running'}</Button>
+          </View>
+        )}
+
+        {latlng.length && currentLocation ? (
+
           <ViewContainer latlng={latlng} currentLocation={currentLocation} />
         </HStack>
       ) : null}
@@ -493,6 +542,11 @@ export default function Map({route, navigation}) {
           </Button>
         </View>
       )}
+    </SafeAreaView>
+  ) : ( <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <Text style={styles.customText}>Challenge someone to start a run</Text>
+    {/* style={styles.logoutButton} */}
+    <Button  colorScheme='warning' onPress={() => { navigation.navigate('Search')}}>Search</Button>
     </View>
   );
 }
