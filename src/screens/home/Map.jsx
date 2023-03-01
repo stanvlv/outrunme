@@ -199,6 +199,7 @@ export default function Map({route, navigation}) {
           challenged_km: distance,
           challenged_time: timer,
           finished: true,
+          challenged_coordinates: latlng,
         })
         .then(() => {
           console.log('I accepted a challenge');
@@ -215,6 +216,7 @@ export default function Map({route, navigation}) {
           challenged_km: distance,
           challenged_time: timer,
           finished: true,
+          challenged_coordinates: latlng,
         })
         .then(() => {
           setVelocityChallenger(run.challenger_km / run.challenger_time);
@@ -275,6 +277,7 @@ export default function Map({route, navigation}) {
   };
   console.log(user.uid);
 
+  console.log(latlng + ` this will be saved for coordinates`)
   const PostTimeTrue = () => {
     firestore()
       .collection('challenger')
@@ -286,6 +289,7 @@ export default function Map({route, navigation}) {
         challenger_km: distance,
         challenger_time: timer,
         byTime: true,
+        challenger_coordinates: latlng,
       })
       .then(docRef => {
         console.log(docRef.id + ' this is for the docref');
@@ -302,6 +306,7 @@ export default function Map({route, navigation}) {
             challenger_km: distance,
             challenger_time: timer,
             byTime: true,
+            challenger_coordinates: latlng,
           })
           .then(res => console.log(res))
           .catch(err => console.log(err));
@@ -322,6 +327,7 @@ export default function Map({route, navigation}) {
         challenger_km: distance,
         challenger_time: timer,
         byTime: false,
+        challenger_coordinates: latlng,
       })
       .then(docRef => {
         console.log(docRef.id + ' this is for the docref');
@@ -338,6 +344,7 @@ export default function Map({route, navigation}) {
             challenger_km: distance,
             challenger_time: timer,
             byTime: false,
+            challenger_coordinates: latlng,
           })
           .then(res => console.log(res))
           .catch(err => console.log(err));
