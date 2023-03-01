@@ -148,7 +148,7 @@ export default function Home({navigation}) {
             style={styles.plusIcon}
             alignSelf="flex-end"
             my="5"
-            onPress={() => navigation.navigate('FindUser')}>
+            onPress={() => navigation.navigate('Search')}>
             <Ionicons name="add-circle" size={70} style={{color: '#F1600D'}} />
           </Link>
         )}
@@ -182,14 +182,10 @@ export default function Home({navigation}) {
                 <FinishedChallenges
                   key={item.category_name}
                   userData={userData}
-                  winColor={item.winner ? '#2CD034' : "#D0342C"}
+                  winColor={item.winner ? '#2CD034' : '#D0342C'}
                   winner={item.winner}
                   item={item}
-                  title={
-                    item.challenger
-                      ? 'challenged by'
-                      : 'you challenged'
-                  }
+                  title={item.challenger ? 'challenged by' : 'you challenged'}
                   userTime={
                     item.challenger
                       ? item.challenged_time

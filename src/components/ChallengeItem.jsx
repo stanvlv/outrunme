@@ -124,20 +124,17 @@ export default function ChallengeItem({
     const hr = dt.getUTCHours();
     const m = '0' + dt.getUTCMinutes();
     const s = '0' + dt.getSeconds();
-
     return hr + ':' + m.slice(-2) + ':' + s.slice(-2);
   };
 
-  const finalTime = convertTime(item.challenger_date);
-  const RunTime = convertTime(otherTime);
-  const convUserTime = convertTime(userTime);
-
   const formatTime = timer => {
+    const hours = Math.floor(timer / 120);
     const minutes = Math.floor(timer / 60);
     const remainingSeconds = timer % 60;
+    const hoursStr = String(hours).padStart(1, '0');
     const minutesStr = String(minutes).padStart(2, '0');
     const secondsStr = String(remainingSeconds).padStart(2, '0');
-    return `${minutesStr}:${secondsStr}`;
+    return `${hoursStr}:${minutesStr}:${secondsStr}`;
   };
   const formatDistance = distance => {
     const km = Math.floor(distance / 1000); // get km
@@ -145,7 +142,9 @@ export default function ChallengeItem({
     const dm = Math.floor((distance - km * 1000 - hm * 100) / 10); // get tenths of meters
     return `${km}.${hm}${dm} km`;
   };
-
+  const finalTime = convertTime(item.challenger_date);
+  const RunTime = formatTime(otherTime);
+  const convUserTime = formatTime(userTime);
   const timestamp = item.challenger_date;
   const formattedDate = date.toLocaleDateString();
   const convUserKm = formatDistance(userKm);
