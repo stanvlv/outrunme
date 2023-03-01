@@ -47,10 +47,11 @@ export default function Register({navigation}) {
    // console.log(token)
     
     auth()
-      .createUserWithEmailAndPassword(`${email.name}`, `${password}`)
+      .createUserWithEmailAndPassword(`${email.name}`, `${password.name}`)
       .then(userCredential => {
-        // console.log('User account created & signed in!');
-
+         console.log('User account created & signed in!');
+       // console.log(email.name)
+       // console.log(password.name)
         // take the uid from the reg and get the users collection to make first post
         const {uid} = userCredential.user;
         const userRef = firestore().collection('users').doc(uid);

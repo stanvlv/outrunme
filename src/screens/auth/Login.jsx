@@ -33,7 +33,6 @@ export default function Login({navigation}) {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [errors, setErrors] = React.useState({});
-  const [alert, setAlert] = React.useState('');
 
   // const validate = () => {
   //   if (email.name === undefined) {
@@ -56,22 +55,27 @@ export default function Login({navigation}) {
   // login with email and password
   const loginUser = () => {
     auth()
-      .signInWithEmailAndPassword(`${email.name}`, `${password}`)
+      .signInWithEmailAndPassword(`${email.name}`, `${password.name}`)
       .then(() => {
         console.log('User account signed in!');
+        console.log(password.name)
       })
       .catch(error => {
         if (error.code === 'auth/email-already-in-use') {
           console.log('That email address is already in use!');
-          setAlert('orange');
+          alert('Email already in use');
         }
 
         if (error.code === 'auth/invalid-email') {
           console.log('That email address is invalid!');
-          setAlert('red');
+          alert('Wrong email');
         }
 
-        console.error(error);
+        if(error.code === 'auth/invalid-password') {
+          console.log('That password is wrong')
+          alert('Wrong password')
+        }
+        alert(error);
       });
   };
 
