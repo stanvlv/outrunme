@@ -384,7 +384,6 @@ export default function Map({route, navigation}) {
 
   const progressionDistance = (distance * 100) / run.challenger_km;
   const progressionTime = (timer * 100) / run.challenger_time;
-  console.log(timer + 'ei timer');
 
   return (
     <View style={styles.container}>
@@ -413,12 +412,19 @@ export default function Map({route, navigation}) {
                         style={styles.colorOrange}
                         size="2xl"
                         rounded="0"
-                        mb="5"
                         bg="white"
                         borderColor="#50A5B1"
                         borderWidth="2"
                         shadow="10"
                       />
+                      <HStack
+                        backgroundColor="#50A5B1"
+                        mb="5"
+                        px="2"
+                        py="1"
+                        justifyContent="flex-end">
+                        <Text style={styles.TextMiniWhite}>1.60 km</Text>
+                      </HStack>
                     </Box>
                   </Center>
                 ) : null}
@@ -438,8 +444,19 @@ export default function Map({route, navigation}) {
                         style={styles.colorOrange}
                         size="2xl"
                         rounded="0"
-                        mt="4"
+                        bg="white"
+                        borderColor="#50A5B1"
+                        borderWidth="2"
+                        shadow="10"
                       />
+                      <HStack
+                        backgroundColor="#50A5B1"
+                        mb="5"
+                        px="2"
+                        py="1"
+                        justifyContent="flex-end">
+                        <Text style={styles.TextMiniWhite}>1.60 km</Text>
+                      </HStack>
                     </Box>
                   </Center>
                 ) : null}
@@ -449,7 +466,12 @@ export default function Map({route, navigation}) {
 
             {showChoice === false && (
               <HStack style={styles.theButtons} mx="auto">
-                <Button style={styles.button} onPress={handleClickForRun}>
+                <Button
+                  style={styles.button}
+                  colorScheme="warning"
+                  onPress={handleClickForRun}
+                  py="2"
+                  width="95%">
                   <Text style={styles.buttonStartText}>
                     {isRunning ? 'Stop' : 'Start'}
                   </Text>
@@ -516,8 +538,8 @@ const styles = StyleSheet.create({
   },
   button: {
     color: 'white',
-    padding: 30,
-    marginVertical: 8,
+    paddingHorizontal: 30,
+    bottom: 0,
     borderRadius: 12,
   },
   buttonText: {
@@ -529,8 +551,7 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   theButtons: {
-    marginTop: 32,
-    paddingHorizontal: 40,
+    marginTop: 20,
   },
   logoutButton: {
     backgroundColor: '#50A5B1',
@@ -541,5 +562,8 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: '600',
     paddingBottom: 20,
+  },
+  TextMiniWhite: {
+    color: 'white',
   },
 });

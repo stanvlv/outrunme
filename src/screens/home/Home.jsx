@@ -201,7 +201,6 @@ export default function Home({navigation}) {
                   nameTile={item.challenger ? item.challenger : item.challenged}
                   sent={item.challenger ? true : false}
                   selectedTab={'finished'}
-                  winner={item.winner}
                 />
               ))}
           </ScrollView>
