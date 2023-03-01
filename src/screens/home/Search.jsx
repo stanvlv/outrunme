@@ -50,7 +50,7 @@ export default function Search({navigation}) {
   }
 
 
-
+  // searching for a suer by username in the database from the input field
   useEffect(() => {
     const userRef = firestore().collection('users');
 
@@ -90,12 +90,14 @@ export default function Search({navigation}) {
         />
       )}
       {secondUser.username && (
-        <View alignSelf="flex-end" my="5">
+        <View alignSelf="center" my="5">
+          {/* style={styles.challengeButton} */}
           <Button
             onPress={onClick}
-            style={styles.challengeButton}>
+            colorScheme='warning'
+            >
               <Text style={styles.buttonText}>
-            Challenge: {secondUser.username}{' '}
+            Challenge
             </Text>
           </Button>
         </View>

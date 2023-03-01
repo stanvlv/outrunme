@@ -356,7 +356,8 @@ export default function Map({route, navigation}) {
     return `${km} km ${hm}:${dm < 10 ? '0' : ''}${dm}`;
   };
 
-  return (<View style={styles.container}>
+  return (
+  <View style={styles.container}>
     {Object.keys(run).length ? (
     <SafeAreaView style={styles.container}>
       <ScrollView contentInsetAdjustmentBehavior="automatic">
@@ -389,7 +390,8 @@ export default function Map({route, navigation}) {
     </SafeAreaView>
   ) : ( <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
     <Text style={styles.customText}>Challenge someone to start a run</Text>
-    <Button style={styles.logoutButton} onPress={() => { navigation.navigate('Search')}}>Seek a challenger</Button>
+    {/* style={styles.logoutButton} */}
+    <Button  colorScheme='warning' onPress={() => { navigation.navigate('Search')}}>Search</Button>
     </View>
     )
 }</View>
