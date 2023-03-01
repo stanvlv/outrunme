@@ -22,7 +22,7 @@ export default function timerItem({byTime, timer}) {
       <VStack style={{flex: 1}}>
         <MaterialCommunityIcons
           name="timer-outline"
-          size={byTime ? 50 : 30}
+          size={byTime ? 50 : 50}
           style={byTime ? styles.colorWhite : styles.colorBlue}
         />
       </VStack>
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     borderColor: '#50A5B1',
     borderWidth: 2,
     borderRadius: 7,
-    width: '70%',
+    width: '95%',
   },
 
   colorBlue: {
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
   },
 
   textColorBlue: {
-    fontSize: 30,
+    fontSize: 50,
     color: '#50A5B1',
   },
 
