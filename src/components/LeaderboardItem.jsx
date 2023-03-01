@@ -46,6 +46,7 @@ export default function LeaderboardItem({
   return (
     <Center>     
       <HStack
+      
         key={key}
         alignItems="center"
         py="3"
@@ -53,14 +54,14 @@ export default function LeaderboardItem({
         w="98%"
         justifyContent="space-between"
         style={username === userData?.username ? styles.userBorder : ''}>
-          <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+          {/* <TouchableOpacity onPress={() => navigation.navigate('Profile')}> */}
         <HStack alignItems="center">
           <Text fontSize="md">{place}. </Text>
             <Text fontSize="lg" bold>
         {username}
           </Text>
         </HStack>
-        </TouchableOpacity>
+        {/* </TouchableOpacity> */}
         <HStack>
           <HStack mx="2">
             <Ionicons name="trophy" size={23} />
