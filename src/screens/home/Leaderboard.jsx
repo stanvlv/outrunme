@@ -5,7 +5,7 @@ import {View, ScrollView} from 'react-native';
 import {styles} from '../../styles/Style';
 import LeaderboardItem from '../../components/LeaderboardItem';
 
-export default function Leaderboard() {
+export default function Leaderboard({navigation}) {
   const [leaderBoardUser, setLeaderBoardUser] = useState();
 
   // Get onSnapshot user data from DB, ordered by challenges won:
@@ -26,31 +26,25 @@ export default function Leaderboard() {
 
   return (
     <NativeBaseProvider>
-      {leaderBoardUser ? (
-        <View style={styles.screenColor}>
-          <HStack justifyContent="flex-end" px="3">
-            <Text px="2">wins </Text>
-            <Text px="2">loses </Text>
-            <Text px="2">runs</Text>
-          </HStack>
-          <ScrollView>
-            {leaderBoardUser?.map((user, index, key) => (
-              <LeaderboardItem
-                place={index + 1}
-                wins={user.challenges_won}
-                loses={user.challenges_lost}
-                runs={user.runs}
-                username={user.username}
-                key={user.uid}
-              />
-            ))}
-          </ScrollView>
-        </View>
-      ) : (
-        <View style={styles.screenColor}>
-          <Text>Loading leaderboard data...</Text>
-        </View>
-      )}
+      <View style={styles.screenColor}>
+        <HStack justifyContent="flex-end" px="3">
+          <Text px="2">wins </Text>
+          <Text px="2">losses </Text>
+          <Text px="2">runs</Text>
+        </HStack>
+        <ScrollView>
+          {leaderBoardUser?.map((user, index, key) => (
+            <LeaderboardItem
+              place={index + 1}
+              wins={user.challenges_won}
+              losses={user.challenges_lost}
+              runs={user.runs}
+              username={user.username}
+              key={user.uid}
+            />
+          ))}
+        </ScrollView>
+      </View>
     </NativeBaseProvider>
   );
 }
