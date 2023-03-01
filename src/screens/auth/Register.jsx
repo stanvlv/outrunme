@@ -113,6 +113,7 @@ export default function Register({navigation}) {
               </FormControl.Label>
               <Input
                 backgroundColor="#FEF6ED"
+                placeholder='enter valid email'
                 onChangeText={value => setEmail({...email, name: value})}
               />
               {'name' in errors ? (
@@ -129,6 +130,7 @@ export default function Register({navigation}) {
               </FormControl.Label>
               <Input
                 backgroundColor="#FEF6ED"
+                placeholder="username can't be changed"
                 onChangeText={value => setUsername({...username, name: value})}
               />
             </FormControl>
@@ -139,6 +141,7 @@ export default function Register({navigation}) {
               <Input
                 backgroundColor="#FEF6ED"
                 type="password"
+                placeholder='enter password'
                 onChangeText={value => setPassword({...password, name: value})}
               />
             </FormControl>
@@ -149,6 +152,7 @@ export default function Register({navigation}) {
               <Input
                 backgroundColor="#FEF6ED"
                 type="password"
+                placeholder='repeat password'
                 onChangeText={value =>
                   setPasswordRepeat({...passwordRepeat, name: value})
                 }

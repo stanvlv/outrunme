@@ -184,8 +184,8 @@ export default function Login({navigation}) {
                     color: '#1A265A',
                   }}
                   alignSelf="flex-end"
-                  mt="0">
-                  Forget Password?
+                  mt="3">
+                  Forgot Password?
                 </Link>
                 <Text style={{borderBottomColor: 'black', borderBottomWidth: 0.5, borderBottomColor: '#F1600D'}}></Text>
         

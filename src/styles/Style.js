@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#FEF6ED',
         borderWidth: 1,
         borderColor: '#80808040',
-        marginTop: 6,
+        marginTop: 10,
       },
       googleButton: {
         marginTop: 25,
