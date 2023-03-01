@@ -5,19 +5,29 @@ import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
+  Text,
+} from 'react-native';
+import {
+  VStack,
+  Input,
+  NativeBaseProvider,
+  Button,
+  Link,
   Box,
   HStack,
-} from 'react-native';
+  Center,
+  Progress,
+} from 'native-base';
 import Geolocation from 'react-native-geolocation-service';
 import ViewContainer from '../../components/MapContainer';
 import firestore from '@react-native-firebase/firestore';
 import {getDistance} from 'geolib';
 import {useContext} from 'react';
 import {AppStateContext} from '../../../App';
-import {Button} from 'native-base';
+import TimerItem from '../../components/TimerItem';
+import DistanceItem from '../../components/DistanceItem';
 
 const LOCATION_UPDATE_INTERVAL = 15000; // 15 seconds
 
@@ -39,14 +49,13 @@ export default function Map({route, navigation}) {
 
   const {user, run, setRun} = useContext(AppStateContext);
 
-
-  console.log(Object.values(run))
+  console.log(Object.values(run));
 
   const [userData, setUserData] = useState();
 
   const [showChoice, setShowChoice] = useState(false);
 
-  const [isRunning, setIsRunning] = useState(false)
+  const [isRunning, setIsRunning] = useState(false);
 
   useEffect(() => {
     const userRef = firestore().collection('users').doc(user.uid);
@@ -62,7 +71,6 @@ export default function Map({route, navigation}) {
       })
       .catch(err => console.log(err));
   }, [user.uid]);
-
 
   useEffect(() => {
     setChallenger(run.challenger);
@@ -144,7 +152,6 @@ export default function Map({route, navigation}) {
       }
     };
   }, [watchingLocation]);
-
 
   const onStartWatching = () => {
     setWatchingLocation(true);
@@ -256,6 +263,8 @@ export default function Map({route, navigation}) {
 
           setRun({finished: true});
           navigation.navigate('Challenges');
+          setTimer(0);
+          setDistance(0);
         });
     }
   };
@@ -293,11 +302,12 @@ export default function Map({route, navigation}) {
           .catch(err => console.log(err));
         navigation.navigate('Challenges');
         setShowChoice(false);
+        setTimer(0);
+        setDistance(0);
       })
       .catch(err => console.log(err + ' from outside'));
-
-    }
-  const PostTimeFalse = () =>
+  };
+  const PostTimeFalse = () => {
     firestore()
       .collection('challenger')
       .doc(challenger)
@@ -329,17 +339,19 @@ export default function Map({route, navigation}) {
           .catch(err => console.log(err));
         navigation.navigate('Challenges');
         setShowChoice(false);
+        setTimer(0);
+        setDistance(0);
       })
       .catch(err => console.log(err + ' from outside'));
-
-      const handleClickForRun = () => {
-        if(isRunning) {
-          onStopWatching()
-        } else {
-          onStartWatching()
-        }
-        setIsRunning(!isRunning)
-      }
+  };
+  const handleClickForRun = () => {
+    if (isRunning) {
+      onStopWatching();
+    } else {
+      onStartWatching();
+    }
+    setIsRunning(!isRunning);
+  };
 
   const formatTime = timer => {
     const minutes = Math.floor(timer / 60);
@@ -349,84 +361,179 @@ export default function Map({route, navigation}) {
     return `${minutesStr}:${secondsStr}`;
   };
 
+  const convertTime = time => {
+    const dt = new Date(time);
+    const hr = dt.getUTCHours();
+    const m = '0' + dt.getUTCMinutes();
+    const s = '0' + dt.getSeconds();
+    return hr + ':' + m.slice(-2) + ':' + s.slice(-2);
+  };
+
+  // const formatDistance = distance => {
+  //   const km = Math.floor(distance / 1000); // get km
+  //   const hm = Math.floor((distance - km * 1000) / 100); // get hundreds of meters
+  //   const dm = Math.floor((distance - km * 1000 - hm * 100) / 10); // get tenths of meters
+  //   return `${km} km ${hm}:${dm < 10 ? '0' : ''}${dm}`;
+  // };
   const formatDistance = distance => {
     const km = Math.floor(distance / 1000); // get km
     const hm = Math.floor((distance - km * 1000) / 100); // get hundreds of meters
     const dm = Math.floor((distance - km * 1000 - hm * 100) / 10); // get tenths of meters
-    return `${km} km ${hm}:${dm < 10 ? '0' : ''}${dm}`;
+    return `${km}.${hm}${dm} km`;
   };
 
-  return (<View style={styles.container}>
-    {Object.keys(run).length ? (
-    <SafeAreaView style={styles.container}>
-      <ScrollView contentInsetAdjustmentBehavior="automatic">
-        <View style={styles.sectionContainer}>
-          <Text>Time: {formatTime(timer)}</Text>
-          <Text>Distance: {formatDistance(distance)}</Text>
-        </View>
-        {showChoice === false && (
-          <View style={styles.theButtons}>
-            <Button
-        style={styles.button}
-        onPress={handleClickForRun}
-      >{isRunning ? 'Stop Running' : 'Start Running'}</Button>
-          </View>
-        )}
+  const progressionDistance = (distance * 100) / run.challenger_km;
+  const progressionTime = (timer * 100) / run.challenger_time;
+  console.log(timer + 'ei timer');
 
-        {latlng.length && currentLocation ? (
+  return (
+    <View style={styles.container}>
+      {/* Show Map */}
+      {currentLocation ? (
+        <HStack justifyContent="center">
           <ViewContainer latlng={latlng} currentLocation={currentLocation} />
-        ) : null}
-      </ScrollView>
-      {showChoice === true && (
-        <View>
-        <Text style={styles.customText}>Challenge your opponent by:</Text>
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', paddingBottom: 20 }}>
-          <Button style={styles.logoutButton} onPress={PostTimeTrue}>TIME</Button>
-          <Button style={styles.logoutButton} onPress={PostTimeFalse}>DISTANCE</Button>
+        </HStack>
+      ) : null}
+
+      {Object.keys(run).length ? (
+        <SafeAreaView style={styles.container}>
+          <ScrollView contentInsetAdjustmentBehavior="automatic">
+            {/* Show Run Data */}
+            {run.byTime ? (
+              <VStack>
+                <TimerItem timer={timer} byTime={run.byTime} />
+                {run.challenged === userData?.username ? (
+                  <Center w="100%">
+                    <Box w="95%" maxW="400">
+                      <Progress
+                        colorScheme="warning"
+                        value={
+                          run.byTime ? progressionTime : progressionDistance
+                        }
+                        style={styles.colorOrange}
+                        size="2xl"
+                        rounded="0"
+                        mb="5"
+                        bg="white"
+                        borderColor="#50A5B1"
+                        borderWidth="2"
+                        shadow="10"
+                      />
+                    </Box>
+                  </Center>
+                ) : null}
+                <DistanceItem distance={distance} byTime={run.byTime} />
+              </VStack>
+            ) : (
+              <VStack>
+                <DistanceItem distance={distance} byTime={run.byTime} />
+                {run.challenged === userData?.username ? (
+                  <Center w="100%">
+                    <Box w="95%" maxW="400">
+                      <Progress
+                        colorScheme="warning"
+                        value={
+                          run.byTime ? progressionTime : progressionDistance
+                        }
+                        style={styles.colorOrange}
+                        size="2xl"
+                        rounded="0"
+                        mt="4"
+                      />
+                    </Box>
+                  </Center>
+                ) : null}
+                <TimerItem timer={timer} byTime={run.byTime} />
+              </VStack>
+            )}
+
+            {showChoice === false && (
+              <HStack style={styles.theButtons} mx="auto">
+                <Button style={styles.button} onPress={handleClickForRun}>
+                  <Text style={styles.buttonStartText}>
+                    {isRunning ? 'Stop' : 'Start'}
+                  </Text>
+                </Button>
+              </HStack>
+            )}
+          </ScrollView>
+          {/* Show choice buttons after run if user is challenger */}
+          {showChoice === true && (
+            <View>
+              <Text style={styles.customText}>Challenge your opponent by:</Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-around',
+                  paddingBottom: 20,
+                }}>
+                <Button style={styles.logoutButton} onPress={PostTimeTrue}>
+                  TIME
+                </Button>
+                <Button style={styles.logoutButton} onPress={PostTimeFalse}>
+                  DISTANCE
+                </Button>
+              </View>
+            </View>
+          )}
+        </SafeAreaView>
+      ) : (
+        // Redirect to search User
+        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+          <Text style={styles.customText}>
+            Challenge someone to start a run
+          </Text>
+          <Button
+            style={styles.logoutButton}
+            onPress={() => {
+              navigation.navigate('Search');
+            }}>
+            Seek a challenger
+          </Button>
         </View>
-      </View>
       )}
-    </SafeAreaView>
-  ) : ( <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-    <Text style={styles.customText}>Challenge someone to start a run</Text>
-    <Button style={styles.logoutButton} onPress={() => { navigation.navigate('Search')}}>Seek a challenger</Button>
     </View>
-    )
-}</View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FEF6ED'
+    backgroundColor: '#FEF6ED',
   },
   sectionContainer: {
     marginTop: 32,
     paddingHorizontal: 24,
-    
+  },
+
+  colorOrange: {
+    color: '#F1600D',
   },
   sectionTitle: {
     fontSize: 24,
     fontWeight: '600',
   },
   button: {
-    color: '#50A5B1',
-    padding: 16,
+    color: 'white',
+    padding: 30,
     marginVertical: 8,
-    borderRadius: 4,
+    borderRadius: 12,
   },
   buttonText: {
-    color: '#FEF6ED'
+    color: '#FEF6ED',
+  },
+
+  buttonStartText: {
+    fontSize: 40,
+    color: 'white',
   },
   theButtons: {
     marginTop: 32,
-    paddingHorizontal: 24,
-    marginTop: 32,
-    width: 175
+    paddingHorizontal: 40,
   },
   logoutButton: {
-    backgroundColor: "#50A5B1",
+    backgroundColor: '#50A5B1',
     width: 150,
   },
   customText: {
@@ -434,5 +541,5 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: '600',
     paddingBottom: 20,
-  }
+  },
 });
