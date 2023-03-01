@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useContext} from 'react';
 import firestore from '@react-native-firebase/firestore';
 import {Box, HStack, NativeBaseProvider, Text} from 'native-base';
-import {View, ScrollView} from 'react-native';
+import {View, ScrollView, ActivityIndicator} from 'react-native';
 import {styles} from '../../styles/Style';
 import LeaderboardItem from '../../components/LeaderboardItem';
 
@@ -26,7 +26,7 @@ export default function Leaderboard({navigation}) {
 
   return (
     <NativeBaseProvider>
-      <View style={styles.screenColor}>
+      {leaderBoardUser ? ( <View style={styles.screenColor}>
         <HStack justifyContent="flex-end" px="3">
           <Text px="2">wins </Text>
           <Text px="2">losses </Text>
@@ -44,7 +44,12 @@ export default function Leaderboard({navigation}) {
             />
           ))}
         </ScrollView>
-      </View>
+      </View>) : (
+        <View  style={styles.screenColor} >
+        <ActivityIndicator size="large" color="#F1600D" style={{paddingTop: 150}} />
+       </View>
+      )}
+     
     </NativeBaseProvider>
   );
 }
