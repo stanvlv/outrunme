@@ -123,7 +123,9 @@ export default function ChallengeItem({
     const dt = new Date(time);
     const hr = dt.getUTCHours();
     const m = '0' + dt.getUTCMinutes();
-    return hr + ':' + m.slice(-2);
+    const s = '0' + dt.getSeconds();
+
+    return hr + ':' + m.slice(-2) + ':' + s.slice(-2);
   };
 
   const finalTime = convertTime(item.challenger_date);
@@ -145,8 +147,9 @@ export default function ChallengeItem({
   };
 
   const timestamp = item.challenger_date;
-
   const formattedDate = date.toLocaleDateString();
+  const convUserKm = formatDistance(userKm);
+  const convOtherKm = formatDistance(otherKm);
 
   return (
     <View>
@@ -162,13 +165,13 @@ export default function ChallengeItem({
                 {sent ? (
                   <MaterialCommunityIcons
                     name="sword-cross"
-                    size={50}
+                    size={60}
                     style={winner ? {color: '#50A5B1'} : {color: '#F1600D'}}
                   />
                 ) : (
                   <MaterialCommunityIcons
                     name="shield-sword"
-                    size={50}
+                    size={60}
                     style={winner ? {color: '#50A5B1'} : {color: '#F1600D'}}
                   />
                 )}
@@ -204,7 +207,7 @@ export default function ChallengeItem({
                     style={styles.colorWhite}
                   />
                   <Text px="1" style={styles.colorWhite}>
-                    {otherKm} Km
+                    {convOtherKm}
                   </Text>
                 </HStack>
               )}
@@ -257,7 +260,7 @@ export default function ChallengeItem({
               <Text
                 px="1"
                 style={byTime ? styles.colorBlue : styles.colorWhite}>
-                {userKm} Km
+                {convUserKm}
               </Text>
             </HStack>
           </HStack>
@@ -272,14 +275,13 @@ export default function ChallengeItem({
               </Text>
             </HStack>
             <HStack>
-              <VStack alignItems="center" my="1">
+              <VStack alignItems="center" my="1" style={{flex: 2}}>
                 <Text style={styles.headerText} py="2">
                   {userData}
                 </Text>
                 <HStack
                   px="0.5"
                   my="3"
-                  mx="9"
                   alignItems="center"
                   style={byTime ? styles.fillBlue : styles.borderBlue}>
                   <MaterialCommunityIcons
@@ -294,7 +296,6 @@ export default function ChallengeItem({
                   </Text>
                 </HStack>
                 <HStack
-                  mx="9"
                   alignItems="center"
                   style={byTime ? styles.borderBlue : styles.fillBlue}>
                   <MaterialCommunityIcons
@@ -305,32 +306,34 @@ export default function ChallengeItem({
                   <Text
                     px="1"
                     style={byTime ? styles.colorBlue : styles.colorWhite}>
-                    {userKm} km
+                    {convUserKm}
                   </Text>
                 </HStack>
               </VStack>
-              <VStack>
+              <VStack
+                style={{flex: 1}}
+                alignItems="center"
+                justifyContent="center">
                 {sent ? (
                   <MaterialCommunityIcons
                     name="sword-cross"
-                    size={50}
+                    size={60}
                     style={winner ? {color: '#50A5B1'} : {color: '#F1600D'}}
                   />
                 ) : (
                   <MaterialCommunityIcons
                     name="shield-sword"
-                    size={50}
+                    size={60}
                     style={winner ? {color: '#50A5B1'} : {color: '#F1600D'}}
                   />
                 )}
               </VStack>
-              <VStack alignItems="center" my="1">
+              <VStack alignItems="center" my="1" style={{flex: 2}}>
                 <Text style={styles.headerText} py="2">
                   {nameTile}
                 </Text>
                 <HStack
                   px="0.5"
-                  mx="9"
                   my="3"
                   alignItems="center"
                   style={byTime ? styles.fillBlue : styles.borderBlue}>
@@ -346,7 +349,6 @@ export default function ChallengeItem({
                   </Text>
                 </HStack>
                 <HStack
-                  mx="9"
                   alignItems="center"
                   style={byTime ? styles.borderBlue : styles.fillBlue}>
                   <MaterialCommunityIcons
@@ -357,7 +359,7 @@ export default function ChallengeItem({
                   <Text
                     px="1"
                     style={byTime ? styles.colorBlue : styles.colorWhite}>
-                    {otherKm} Km
+                    {convOtherKm}
                   </Text>
                 </HStack>
               </VStack>
