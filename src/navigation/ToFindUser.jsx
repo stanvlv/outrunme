@@ -1,6 +1,6 @@
 import React from 'react'; // not sure if needed
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import FindUser from '../screens/home/FindUser';
+import Search from '../screens/home/Search';
 
 const Stack = createNativeStackNavigator();
 export default function ToFindUser({user}) {
@@ -13,7 +13,7 @@ export default function ToFindUser({user}) {
           backgroundColor: 'orange',
         },
       }}>
-      <Stack.Screen name="Search" component={FindUser} user={user} />
+      <Stack.Screen name="Search" component={Search} user={user} />
     </Stack.Navigator>
   );
 }

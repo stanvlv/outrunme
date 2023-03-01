@@ -35,6 +35,7 @@ export default function ChallengeItem({
   const [layoutHeight, setLayoutHeight] = useState(0);
   const [isClicked, setIsClicked] = useState(false);
   const {setRun, user} = useContext(AppStateContext);
+  
   const handleClick = () => {
     setIsClicked(!isClicked);
   };
@@ -128,6 +129,23 @@ export default function ChallengeItem({
   const finalTime = convertTime(item.challenger_date);
   const RunTime = convertTime(otherTime);
   const convUserTime = convertTime(userTime);
+  const formatTime = timer => {
+    const minutes = Math.floor(timer / 60);
+    const remainingSeconds = timer % 60;
+    const minutesStr = String(minutes).padStart(2, '0');
+    const secondsStr = String(remainingSeconds).padStart(2, '0');
+    return `${minutesStr}:${secondsStr}`;
+  };
+  const formatDistance = distance => {
+    const km = Math.floor(distance / 1000); // get km
+    const hm = Math.floor((distance - km * 1000) / 100); // get hundreds of meters
+    const dm = Math.floor((distance - km * 1000 - hm * 100) / 10); // get tenths of meters
+    return `${km}.${hm}${dm} km`;
+  };
+
+  const timestamp = item.challenger_date;
+
+  const formattedDate = date.toLocaleDateString();
 
   return (
     <View>
@@ -330,16 +348,16 @@ export default function ChallengeItem({
       {/* {userTime ? (
           <TouchableOpacity key={key} style={styles.content}>
             <Text style={styles.text}>your Stats</Text>
-            <Text style={styles.text}>time: {userTime} min</Text>
-            <Text style={styles.text}>distance: {userKm} km</Text>
+            <Text style={styles.text}>time: {formatTime(userTime)} min</Text>
+            <Text style={styles.text}>distance: {formatDistance(userKm)} </Text>
             <View style={styles.separator} />
           </TouchableOpacity>
         ) : null}
         {otherTime ? (
           <TouchableOpacity key={key} style={styles.content}>
             <Text style={styles.text}>their Stats</Text>
-            <Text style={styles.text}>time: {otherTime} min</Text>
-            <Text style={styles.text}>distance: {otherKm} km</Text>
+            <Text style={styles.text}>time: {formatTime(otherTime)}</Text>
+            <Text style={styles.text}>distance: {formatDistance(otherKm)} </Text>
           </TouchableOpacity>
         ) : null}
         {showButtons && item.accepted !== false && (
@@ -368,6 +386,8 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: '#FEF6ED',
+    opacity: 0.8,
+    borderColor: '#50A5B1',
     padding: 20,
     borderTopColor: '#50A5B1',
     borderTopWidth: 0.5,
@@ -375,23 +395,26 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 25,
     fontWeight: '500',
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#50A5B1'
   },
   separator: {
-    height: 0.5,
-    backgroundColor: '#808080',
+    height: 1.5,
+    backgroundColor: '#F1600D',
     width: '95%',
     marginLeft: 16,
     marginRight: 16,
   },
   text: {
     fontSize: 16,
-    color: '#606070',
+    color: '#1A265A',
     padding: 10,
   },
   content: {
     paddingLeft: 10,
     paddingRight: 10,
-    backgroundColor: '#fff',
+    backgroundColor: '#50A5B130',
   },
 
   date: {

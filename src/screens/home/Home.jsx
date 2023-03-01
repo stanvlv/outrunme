@@ -156,7 +156,7 @@ export default function Home({navigation}) {
                 <ChallengeItem
                   key={item.category_name}
                   item={item}
-                  title={'you were challenged by'}
+                  title={'Challenged by'}
                   otherTime={
                     item.byTime === true ? item.challenger_time : '***'
                   }
@@ -178,10 +178,12 @@ export default function Home({navigation}) {
                 <ChallengeItem
                   key={item.category_name}
                   userData={userData}
+                  winColor={item.winner ? '#2CD034' : "#D0342C"}
+                  winner={item.winner}
                   item={item}
                   title={
                     item.challenger
-                      ? 'you were challenged by'
+                      ? 'challenged by'
                       : 'you challenged'
                   }
                   userTime={

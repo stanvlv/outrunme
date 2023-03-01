@@ -17,6 +17,8 @@ import {
 
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+// import messaging from '@react-native-firebase/messaging';
+
 import {styles} from '../../styles/Style';
 
 export default function Register({navigation}) {
@@ -29,13 +31,21 @@ export default function Register({navigation}) {
   // console.log(password.name)
   // console.log(passwordRepeat.name)
   // create user with email and password
-  const createUser = () => {
+  const createUser = async () => {
     console.log(password.name + ' from createUser');
     console.log(passwordRepeat.name + ' from createUser');
+
+
+    
+
     if (password.name !== passwordRepeat.name) {
       // console.log(`Passwords don't match`)
-      return;
+      return alert(`Passwords don't match`)
     }
+
+   // const token = await messaging().getToken();
+   // console.log(token)
+    
     auth()
       .createUserWithEmailAndPassword(`${email.name}`, `${password}`)
       .then(userCredential => {
@@ -44,6 +54,9 @@ export default function Register({navigation}) {
         // take the uid from the reg and get the users collection to make first post
         const {uid} = userCredential.user;
         const userRef = firestore().collection('users').doc(uid);
+
+
+        
 
         // if username exist somewhere in the collection it shows an error
         userRef.get().then(doc => {
@@ -57,6 +70,7 @@ export default function Register({navigation}) {
               challenges_won: 0,
               challenges_lost: 0,
               runs: 0,
+            //  fcmToken: token,
             })
             .then(() => {
               console.log('User data added to Firestore!');
@@ -79,7 +93,7 @@ export default function Register({navigation}) {
 
   return (
     <NativeBaseProvider>
-      <Center w="100%" style={{backgroundColor: styles.appColor.orange}}>
+      <Center w="100%">
         <Box safeArea p="2" w="90%" maxW="290" py="8">
           <Heading
             size="lg"

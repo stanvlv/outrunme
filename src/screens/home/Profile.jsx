@@ -1,4 +1,4 @@
-import {NativeBaseProvider, Button} from 'native-base';
+import {NativeBaseProvider, Button, View, Text} from 'native-base';
 import React, {Component, useState, useEffect} from 'react';
 import firebase from '@react-native-firebase/app';
 import auth from '@react-native-firebase/auth';
@@ -6,6 +6,7 @@ import firestore from '@react-native-firebase/firestore';
 import {useContext} from 'react';
 import {AppStateContext} from '../../../App';
 import ProfileItem from '../../components/ProfileItem';
+import { styles } from '../../styles/Style';
 
 export default function FirebaseDatabase() {
   const {user} = useContext(AppStateContext);
@@ -39,13 +40,21 @@ export default function FirebaseDatabase() {
 
   return (
     <NativeBaseProvider>
+      <View style={styles.screenColor}>
       <ProfileItem
         username={userData?.username}
         runs={userData?.runs}
         challenges_won={userData?.challenges_won}
         challenges_lost={userData?.challenges_lost}
       />
-      <Button onPress={logout}>Logout</Button>
+      <View style={styles.buttonView}>
+      
+      </View>
+     
+     <View style={{alignItems: 'center', marginBottom: 20}}>
+    <Button style={styles.logoutButton} onPress={logout}><Text style={styles.buttonText}>Logout</Text></Button>
+    </View>
+    </View>
     </NativeBaseProvider>
   );
 }
