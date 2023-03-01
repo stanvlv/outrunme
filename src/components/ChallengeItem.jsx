@@ -35,7 +35,7 @@ export default function ChallengeItem({
   const [layoutHeight, setLayoutHeight] = useState(0);
   const [isClicked, setIsClicked] = useState(false);
   const {setRun, user} = useContext(AppStateContext);
-  
+
   const handleClick = () => {
     setIsClicked(!isClicked);
   };
@@ -129,6 +129,7 @@ export default function ChallengeItem({
   const finalTime = convertTime(item.challenger_date);
   const RunTime = convertTime(otherTime);
   const convUserTime = convertTime(userTime);
+
   const formatTime = timer => {
     const minutes = Math.floor(timer / 60);
     const remainingSeconds = timer % 60;
@@ -154,79 +155,73 @@ export default function ChallengeItem({
         onPress={handleClick}
         style={styles.header}>
         {/* Header */}
+        {selectedTab !== 'finished' && (
+          <VStack space={5}>
+            <HStack justifyContent="space-between">
+              <HStack alignItems="center">
+                {sent ? (
+                  <MaterialCommunityIcons
+                    name="sword-cross"
+                    size={50}
+                    style={winner ? {color: '#50A5B1'} : {color: '#F1600D'}}
+                  />
+                ) : (
+                  <MaterialCommunityIcons
+                    name="shield-sword"
+                    size={50}
+                    style={winner ? {color: '#50A5B1'} : {color: '#F1600D'}}
+                  />
+                )}
+                <Text style={styles.headerText} ml="6" py="2">
+                  {nameTile}
+                </Text>
+              </HStack>
 
-        <VStack space={5}>
-          <HStack justifyContent="space-between">
-            <HStack alignItems="center">
-              {selectedTab === 'finished' && (
-                <HStack w="51%" justifyContent="flex-end">
-                  <Text style={styles.headerText} mx="2">
-                    {userData}
-                  </Text>
-                </HStack>
-              )}
-              {sent ? (
-                <MaterialCommunityIcons
-                  name="sword-cross"
-                  size={50}
-                  style={winner ? {color: '#50A5B1'} : {color: '#F1600D'}}
-                />
-              ) : (
-                <MaterialCommunityIcons
-                  name="shield-sword"
-                  size={50}
-                  style={winner ? {color: '#50A5B1'} : {color: '#F1600D'}}
-                />
-              )}
-              <Text style={styles.headerText} mx="2">
-                {nameTile}
+              <Text style={styles.date}>
+                {weekDay}
+                {finalTime}
               </Text>
             </HStack>
 
-            <Text style={styles.date}>
-              {weekDay}
-              {finalTime}
-            </Text>
-          </HStack>
+            <HStack justifyContent="space-between" alignItems="flex-end" ml="2">
+              {otherKm === '***' && (
+                <HStack p="0.5" alignItems="center" style={styles.fillBlue}>
+                  <MaterialCommunityIcons
+                    name="timer-outline"
+                    size={32}
+                    style={styles.colorWhite}
+                  />
+                  <Text px="1" style={styles.colorWhite}>
+                    {RunTime}
+                  </Text>
+                </HStack>
+              )}
+              {otherTime === '***' && (
+                <HStack alignItems="center" style={styles.fillBlue}>
+                  <MaterialCommunityIcons
+                    name="map-marker-distance"
+                    size={30}
+                    style={styles.colorWhite}
+                  />
+                  <Text px="1" style={styles.colorWhite}>
+                    {otherKm} Km
+                  </Text>
+                </HStack>
+              )}
 
-          <HStack justifyContent="space-between" alignItems="flex-end" ml="2">
-            {otherKm === '***' && (
-              <HStack p="0.5" alignItems="center" style={styles.fillBlue}>
-                <MaterialCommunityIcons
-                  name="timer-outline"
-                  size={32}
-                  style={styles.colorWhite}
-                />
-                <Text px="1" style={styles.colorWhite}>
-                  {RunTime}
-                </Text>
-              </HStack>
-            )}
-            {otherTime === '***' && (
-              <HStack alignItems="center" style={styles.fillBlue}>
-                <MaterialCommunityIcons
-                  name="map-marker-distance"
-                  size={30}
-                  style={styles.colorWhite}
-                />
-                <Text px="1" style={styles.colorWhite}>
-                  {otherKm} Km
-                </Text>
-              </HStack>
-            )}
-
-            {selectedTab === 'received' && item.accepted !== false && (
-              <HStack>
-                <Button mx="5" style={styles.buttonAccept} onPress={onClick}>
-                  <Text style={styles.colorBlue}>Accept</Text>
-                </Button>
-                <Button style={styles.buttonDecline} onPress={PostRejected}>
-                  <Text style={styles.colorOrange}>Decline</Text>
-                </Button>
-              </HStack>
-            )}
-          </HStack>
-        </VStack>
+              {selectedTab === 'received' && item.accepted !== false && (
+                <HStack>
+                  <Button mx="5" style={styles.buttonAccept} onPress={onClick}>
+                    <Text style={styles.colorBlue}>Accept</Text>
+                  </Button>
+                  <Button style={styles.buttonDecline} onPress={PostRejected}>
+                    <Text style={styles.colorOrange}>Decline</Text>
+                  </Button>
+                </HStack>
+              )}
+            </HStack>
+          </VStack>
+        )}
         {/*   {item.accepted === false && (
               <Text style={styles.rejected}>Rejected</Text>
             )} */}
@@ -270,71 +265,102 @@ export default function ChallengeItem({
 
         {selectedTab === 'finished' && (
           <VStack>
-            <HStack mt="2" justifyContent="center" alignItems="center">
-              <HStack
-                px="0.5"
-                mx="2"
-                alignItems="center"
-                style={byTime ? styles.fillBlue : styles.borderBlue}>
-                <MaterialCommunityIcons
-                  name="timer-outline"
-                  size={30}
-                  style={byTime ? styles.colorWhite : styles.colorBlue}
-                />
-                <Text
-                  px="1"
-                  style={byTime ? styles.colorWhite : styles.colorBlue}>
-                  {convUserTime}
-                </Text>
-              </HStack>
-              <HStack
-                px="0.5"
-                mx="2"
-                alignItems="center"
-                style={byTime ? styles.fillBlue : styles.borderBlue}>
-                <MaterialCommunityIcons
-                  name="timer-outline"
-                  size={30}
-                  style={byTime ? styles.colorWhite : styles.colorBlue}
-                />
-                <Text
-                  px="1"
-                  style={byTime ? styles.colorWhite : styles.colorBlue}>
-                  {RunTime}
-                </Text>
-              </HStack>
+            <HStack justifyContent="flex-end">
+              <Text style={styles.date}>
+                {weekDay}
+                {finalTime}
+              </Text>
             </HStack>
-            <HStack mt="2" justifyContent="center" alignItems="center">
-              <HStack
-                mx="2"
-                alignItems="center"
-                style={byTime ? styles.borderBlue : styles.fillBlue}>
-                <MaterialCommunityIcons
-                  name="map-marker-distance"
-                  size={30}
-                  style={byTime ? styles.colorBlue : styles.colorWhite}
-                />
-                <Text
-                  px="1"
-                  style={byTime ? styles.colorBlue : styles.colorWhite}>
-                  {userKm} km
+            <HStack>
+              <VStack alignItems="center" my="1">
+                <Text style={styles.headerText} py="2">
+                  {userData}
                 </Text>
-              </HStack>
-              <HStack
-                mx="2"
-                alignItems="center"
-                style={byTime ? styles.borderBlue : styles.fillBlue}>
-                <MaterialCommunityIcons
-                  name="map-marker-distance"
-                  size={30}
-                  style={byTime ? styles.colorBlue : styles.colorWhite}
-                />
-                <Text
-                  px="1"
-                  style={byTime ? styles.colorBlue : styles.colorWhite}>
-                  {otherKm} Km
+                <HStack
+                  px="0.5"
+                  my="3"
+                  mx="9"
+                  alignItems="center"
+                  style={byTime ? styles.fillBlue : styles.borderBlue}>
+                  <MaterialCommunityIcons
+                    name="timer-outline"
+                    size={30}
+                    style={byTime ? styles.colorWhite : styles.colorBlue}
+                  />
+                  <Text
+                    px="1"
+                    style={byTime ? styles.colorWhite : styles.colorBlue}>
+                    {convUserTime}
+                  </Text>
+                </HStack>
+                <HStack
+                  mx="9"
+                  alignItems="center"
+                  style={byTime ? styles.borderBlue : styles.fillBlue}>
+                  <MaterialCommunityIcons
+                    name="map-marker-distance"
+                    size={30}
+                    style={byTime ? styles.colorBlue : styles.colorWhite}
+                  />
+                  <Text
+                    px="1"
+                    style={byTime ? styles.colorBlue : styles.colorWhite}>
+                    {userKm} km
+                  </Text>
+                </HStack>
+              </VStack>
+              <VStack>
+                {sent ? (
+                  <MaterialCommunityIcons
+                    name="sword-cross"
+                    size={50}
+                    style={winner ? {color: '#50A5B1'} : {color: '#F1600D'}}
+                  />
+                ) : (
+                  <MaterialCommunityIcons
+                    name="shield-sword"
+                    size={50}
+                    style={winner ? {color: '#50A5B1'} : {color: '#F1600D'}}
+                  />
+                )}
+              </VStack>
+              <VStack alignItems="center" my="1">
+                <Text style={styles.headerText} py="2">
+                  {nameTile}
                 </Text>
-              </HStack>
+                <HStack
+                  px="0.5"
+                  mx="9"
+                  my="3"
+                  alignItems="center"
+                  style={byTime ? styles.fillBlue : styles.borderBlue}>
+                  <MaterialCommunityIcons
+                    name="timer-outline"
+                    size={30}
+                    style={byTime ? styles.colorWhite : styles.colorBlue}
+                  />
+                  <Text
+                    px="1"
+                    style={byTime ? styles.colorWhite : styles.colorBlue}>
+                    {RunTime}
+                  </Text>
+                </HStack>
+                <HStack
+                  mx="9"
+                  alignItems="center"
+                  style={byTime ? styles.borderBlue : styles.fillBlue}>
+                  <MaterialCommunityIcons
+                    name="map-marker-distance"
+                    size={30}
+                    style={byTime ? styles.colorBlue : styles.colorWhite}
+                  />
+                  <Text
+                    px="1"
+                    style={byTime ? styles.colorBlue : styles.colorWhite}>
+                    {otherKm} Km
+                  </Text>
+                </HStack>
+              </VStack>
             </HStack>
           </VStack>
         )}
@@ -395,9 +421,6 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 25,
     fontWeight: '500',
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#50A5B1'
   },
   separator: {
     height: 1.5,
