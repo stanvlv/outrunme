@@ -2,28 +2,21 @@ import {
   Box,
   NativeBaseProvider,
   FormControl,
-  Stack,
   Input,
-  WarningOutlineIcon,
   Center,
-  Heading,
   VStack,
   Link,
   Button,
   HStack,
   Text,
-  Alert,
-  IconButton,
-  CloseIcon,
 } from 'native-base';
 import React from 'react';
 import auth from '@react-native-firebase/auth';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import googleicon from '../../assets/googleicon.png';
 import {Image, ScrollView} from 'react-native';
 import {styles} from '../../styles/Style';
 import { KeyboardAvoidingView, Platform } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 
 GoogleSignin.configure({
   webClientId:
@@ -174,7 +167,9 @@ export default function Login({navigation}) {
               </FormControl>
               <Box style={{display: 'flex', flexDirection: 'column'}}>
                 <Button style={styles.loginButton} onPress={loginUser}>
+                  <TouchableOpacity>
                  <Text style={styles.loginButtonText}> LOGIN </Text>
+                 </TouchableOpacity>
                 </Button>
                 <Link
                   onPress={() => navigation.navigate('ForgotPassword')}
@@ -221,6 +216,7 @@ export default function Login({navigation}) {
                   }}>
                   Become a challenger:{' '}
                 </Text>
+                <TouchableOpacity>
                 <Link
                   _text={{
                     color: '#F1600D',
@@ -230,6 +226,7 @@ export default function Login({navigation}) {
                   onPress={() => navigation.navigate('Register')}>
                   Sign Up
                 </Link>
+                </TouchableOpacity>
               </HStack>
             </VStack>
           </Box>

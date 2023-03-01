@@ -1,11 +1,11 @@
 import React, {useState, useEffect, useContext} from 'react';
 import firestore from '@react-native-firebase/firestore';
 import {Box, HStack, NativeBaseProvider, Text} from 'native-base';
-import {View, ScrollView} from 'react-native';
+import {View, ScrollView, ActivityIndicator} from 'react-native';
 import {styles} from '../../styles/Style';
 import LeaderboardItem from '../../components/LeaderboardItem';
 
-export default function Leaderboard() {
+export default function Leaderboard({navigation}) {
   const [leaderBoardUser, setLeaderBoardUser] = useState();
 
   // Get onSnapshot user data from DB, ordered by challenges won:
@@ -26,10 +26,10 @@ export default function Leaderboard() {
 
   return (
     <NativeBaseProvider>
-      <View style={styles.screenColor}>
+      {leaderBoardUser ? ( <View style={styles.screenColor}>
         <HStack justifyContent="flex-end" px="3">
           <Text px="2">wins </Text>
-          <Text px="2">loses </Text>
+          <Text px="2">losses </Text>
           <Text px="2">runs</Text>
         </HStack>
         <ScrollView>
@@ -37,14 +37,19 @@ export default function Leaderboard() {
             <LeaderboardItem
               place={index + 1}
               wins={user.challenges_won}
-              loses={user.challenges_lost}
+              losses={user.challenges_lost}
               runs={user.runs}
               username={user.username}
               key={user.uid}
             />
           ))}
         </ScrollView>
-      </View>
+      </View>) : (
+        <View  style={styles.screenColor} >
+        <ActivityIndicator size="large" color="#F1600D" style={{paddingTop: 150}} />
+       </View>
+      )}
+     
     </NativeBaseProvider>
   );
 }

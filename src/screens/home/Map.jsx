@@ -29,7 +29,7 @@ import {AppStateContext} from '../../../App';
 import TimerItem from '../../components/TimerItem';
 import DistanceItem from '../../components/DistanceItem';
 
-const LOCATION_UPDATE_INTERVAL = 15000; // 15 seconds
+const LOCATION_UPDATE_INTERVAL = 5000; // 15 seconds
 
 export default function Map({route, navigation}) {
   const [watchingLocation, setWatchingLocation] = useState(false);
@@ -73,6 +73,16 @@ export default function Map({route, navigation}) {
   }, [user.uid]);
 
   useEffect(() => {
+    // this effect runs whenever the `latlng` array changes
+    if (latlng.length >= 2) {
+      const lastLatLng = latlng[latlng.length - 2];
+      const currentLatLng = latlng[latlng.length - 1];
+      const mran = getDistance(lastLatLng, currentLatLng);
+      setDistance(prevDistance => prevDistance + mran);
+    }
+  }, [latlng]);
+
+  useEffect(() => {
     setChallenger(run.challenger);
     setChallenged(run.challenged);
 
@@ -99,14 +109,14 @@ export default function Map({route, navigation}) {
                     },
                   ];
                 });
-
-                if (latlng.length) {
-                  const mran = getDistance(latlng[latlng.length - 1], {
-                    latitude: position.coords.latitude,
-                    longitude: position.coords.longitude,
-                  });
-                  console.log(mran);
-                }
+                // if (latlng.length) {
+                //   const mran = getDistance(latlng[latlng.length - 1], {
+                //     latitude: position.coords.latitude,
+                //     longitude: position.coords.longitude,
+                //   });
+                //   setDistance(prevDistance => prevDistance + mran);
+                //   console.log(distance + ` this is supposed to be the distance in meters`)
+                // }
               },
               error => {
                 console.log(error);
@@ -192,6 +202,7 @@ export default function Map({route, navigation}) {
           challenged_km: distance,
           challenged_time: timer,
           finished: true,
+          challenged_coordinates: latlng,
         })
         .then(() => {
           console.log('I accepted a challenge');
@@ -208,6 +219,7 @@ export default function Map({route, navigation}) {
           challenged_km: distance,
           challenged_time: timer,
           finished: true,
+          challenged_coordinates: latlng,
         })
         .then(() => {
           setVelocityChallenger(run.challenger_km / run.challenger_time);
@@ -270,6 +282,7 @@ export default function Map({route, navigation}) {
   };
   console.log(user.uid);
 
+  console.log(latlng + ` this will be saved for coordinates`);
   const PostTimeTrue = () => {
     firestore()
       .collection('challenger')
@@ -281,6 +294,7 @@ export default function Map({route, navigation}) {
         challenger_km: distance,
         challenger_time: timer,
         byTime: true,
+        challenger_coordinates: latlng,
       })
       .then(docRef => {
         console.log(docRef.id + ' this is for the docref');
@@ -297,6 +311,7 @@ export default function Map({route, navigation}) {
             challenger_km: distance,
             challenger_time: timer,
             byTime: true,
+            challenger_coordinates: latlng,
           })
           .then(res => console.log(res))
           .catch(err => console.log(err));
@@ -318,6 +333,7 @@ export default function Map({route, navigation}) {
         challenger_km: distance,
         challenger_time: timer,
         byTime: false,
+        challenger_coordinates: latlng,
       })
       .then(docRef => {
         console.log(docRef.id + ' this is for the docref');
@@ -334,6 +350,7 @@ export default function Map({route, navigation}) {
             challenger_km: distance,
             challenger_time: timer,
             byTime: false,
+            challenger_coordinates: latlng,
           })
           .then(res => console.log(res))
           .catch(err => console.log(err));
@@ -379,6 +396,7 @@ export default function Map({route, navigation}) {
     const km = Math.floor(distance / 1000); // get km
     const hm = Math.floor((distance - km * 1000) / 100); // get hundreds of meters
     const dm = Math.floor((distance - km * 1000 - hm * 100) / 10); // get tenths of meters
+
     return `${km}.${hm}${dm} km`;
   };
 
@@ -393,11 +411,10 @@ export default function Map({route, navigation}) {
           <ViewContainer latlng={latlng} currentLocation={currentLocation} />
         </HStack>
       ) : null}
-
       {Object.keys(run).length ? (
         <SafeAreaView style={styles.container}>
           <ScrollView contentInsetAdjustmentBehavior="automatic">
-            {/* Show Run Data */}
+           
             {run.byTime ? (
               <VStack>
                 <TimerItem timer={timer} byTime={run.byTime} />
@@ -463,7 +480,6 @@ export default function Map({route, navigation}) {
                 <TimerItem timer={timer} byTime={run.byTime} />
               </VStack>
             )}
-
             {showChoice === false && (
               <HStack style={styles.theButtons} mx="auto">
                 <Button
