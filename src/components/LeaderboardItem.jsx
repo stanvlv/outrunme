@@ -46,7 +46,6 @@ export default function LeaderboardItem({
   return (
     <Center>     
       <HStack
-      
         key={key}
         alignItems="center"
         py="3"
