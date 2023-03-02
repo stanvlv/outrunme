@@ -27,11 +27,15 @@ export default function Leaderboard({navigation}) {
   return (
     <NativeBaseProvider>
       {leaderBoardUser ? ( <View style={styles.screenColor}>
-        <HStack justifyContent="flex-end" px="3">
-          <Text px="2">wins </Text>
-          <Text px="2">losses </Text>
-          <Text px="2">runs</Text>
-        </HStack>
+       
+        <HStack justifyContent="space-between" px="2" backgroundColor="#F1600D">
+  <Text marginLeft="2" fontWeight='bold'>POSITION</Text>  
+  <HStack>
+    <Text px="3" fontWeight='bold'>WINS</Text>
+    <Text px="3" fontWeight='bold'>LOSSES</Text>
+    <Text px="2" fontWeight='bold'>RUNS</Text>
+  </HStack>
+</HStack>
         <ScrollView>
           {leaderBoardUser?.map((user, index, key) => (
             <LeaderboardItem
@@ -40,7 +44,6 @@ export default function Leaderboard({navigation}) {
               losses={user.challenges_lost}
               runs={user.runs}
               username={user.username}
-              key={user.uid}
             />
           ))}
         </ScrollView>

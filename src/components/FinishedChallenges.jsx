@@ -32,11 +32,10 @@ export default function FinishedChallenges({
     sent,
     byTime,
     winner,
-    coordinates
+    userCoordinates,
+    opponentCoordinates
 }) {
  
-
-
     const [myLayoutHeight, setMyLayoutHeight] = useState(0);
     const [opponentLayoutHeight, setOpponentLayoutHeight] = useState(0);
     const [opponentMapClick, setOpponentMapClick] = useState(false);
@@ -94,8 +93,8 @@ export default function FinishedChallenges({
       weekDay = 'Sat.';
     }
 
-    
-    const convertTime = time => {
+
+    const convertDate = time => {
       const dt = new Date(time);
       const hr = dt.getUTCHours();
       const m = '0' + dt.getUTCMinutes();
@@ -104,9 +103,8 @@ export default function FinishedChallenges({
       return hr + ':' + m.slice(-2) + ':' + s.slice(-2);
     };
   
-    const finalTime = convertTime(item.challenger_date);
-    const RunTime = convertTime(otherTime);
-    const convUserTime = convertTime(userTime);
+    const finalTime = convertDate(item.challenger_date);
+ 
   
     const formatTime = timer => {
       const minutes = Math.floor(timer / 60);
@@ -116,6 +114,10 @@ export default function FinishedChallenges({
       return `${minutesStr}:${secondsStr}`;
     };
 
+    const convOpponentTime = formatTime(otherTime);
+    const convUserTime = formatTime(userTime);
+  
+  
     const formatDistance = distance => {
       const km = Math.floor(distance / 1000); // get km
       const hm = Math.floor((distance - km * 1000) / 100); // get hundreds of meters
@@ -126,7 +128,7 @@ export default function FinishedChallenges({
     const timestamp = item.challenger_date;
     const formattedDate = date.toLocaleDateString();
     const convUserKm = formatDistance(userKm);
-    const convOtherKm = formatDistance(otherKm);
+    const convOpponentKm = formatDistance(otherKm);
   
 
   
@@ -140,7 +142,9 @@ export default function FinishedChallenges({
                   {finalTime}
                 </Text>
               </HStack>
+
               <HStack>
+                {/* this is for my map */}
                 <TouchableOpacity onPress={clickMyMap}>
                 <VStack alignItems="center" my="1" style={{flex: 2}}>
                   <Text style={styles.headerText} py="2">
@@ -196,6 +200,8 @@ export default function FinishedChallenges({
                     />
                   )}
                 </VStack>
+
+                {/* this is opponent map */}
                 <TouchableOpacity onPress={clickOpponentMap}>
                 <VStack alignItems="center" my="1" style={{flex: 2}}>
                   <Text style={styles.headerText} py="2">
@@ -214,7 +220,7 @@ export default function FinishedChallenges({
                     <Text
                       px="1"
                       style={byTime ? styles.colorWhite : styles.colorBlue}>
-                      {RunTime}
+                      {convOpponentTime}
                     </Text>
                   </HStack>
                   <HStack
@@ -228,7 +234,7 @@ export default function FinishedChallenges({
                     <Text
                       px="1"
                       style={byTime ? styles.colorBlue : styles.colorWhite}>
-                      {convOtherKm}
+                      {convOpponentKm}
                     </Text>
                   </HStack>
                 </VStack>
@@ -247,19 +253,19 @@ export default function FinishedChallenges({
        {userTime ? (
           <TouchableOpacity key={key} style={styles.myMapStyle}>
            <Text> THIS SHOULD BE MY MAP </Text>
-        {coordinates ? ( <View style={styles.containerMap}>
+        {userCoordinates ? ( <View style={styles.containerMap}>
    <MapView
     // showsUserLocation={true} this is to show the gps point where we are at the moment
       style={styles.map}
       region={{
-        latitude: coordinates?.[0].latitude,
-        longitude: coordinates?.[0].longitude,
+        latitude: userCoordinates?.[0].latitude,
+        longitude: userCoordinates?.[0].longitude,
         latitudeDelta: 0.0115,
         longitudeDelta: 0.0121,
       }}
     >
       <Polyline 
-      coordinates={coordinates}
+      coordinates={userCoordinates}
       strokeColor='#F1600D'
       fillColor='#F1600D'
       strokeWidth={8}
@@ -278,19 +284,19 @@ export default function FinishedChallenges({
         {otherTime ? (
           <TouchableOpacity key={key} style={styles.opponentMapStyle}>
             <Text> OPPONENT MAP HERE </Text>
-        {coordinates ? ( <View style={styles.containerMap}>
+        {opponentCoordinates ? ( <View style={styles.containerMap}>
    <MapView
      // showsUserLocation={true} this is to show the gps point where we are at the moment
       style={styles.map}
       region={{
-        latitude: coordinates?.[0].latitude,
-        longitude: coordinates?.[0].longitude,
+        latitude: opponentCoordinates?.[0].latitude,
+        longitude: opponentCoordinates?.[0].longitude,
         latitudeDelta: 0.0115,
         longitudeDelta: 0.0121,
       }}
     >
       <Polyline 
-      coordinates={coordinates}
+      coordinates={opponentCoordinates}
       strokeColor='#F1600D'
       fillColor='#F1600D'
       strokeWidth={8}
