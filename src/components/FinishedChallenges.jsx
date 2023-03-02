@@ -18,43 +18,41 @@ import {AppStateContext} from '../../App';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function FinishedChallenges({
-    item,
-    key,
-    title,
-    userTime,
-    userKm,
-    otherTime,
-    otherKm,
-    nameTile,
-    selectedTab,
-    navigation,
-    userData,
-    sent,
-    byTime,
-    winner,
-    userCoordinates,
-    opponentCoordinates
+  item,
+  key,
+  title,
+  userTime,
+  userKm,
+  otherTime,
+  otherKm,
+  nameTile,
+  selectedTab,
+  navigation,
+  userData,
+  sent,
+  byTime,
+  winner,
+  userCoordinates,
+  opponentCoordinates,
 }) {
- 
-    const [myLayoutHeight, setMyLayoutHeight] = useState(0);
-    const [opponentLayoutHeight, setOpponentLayoutHeight] = useState(0);
-    const [opponentMapClick, setOpponentMapClick] = useState(false);
-    const [myMapClick, setMyMapClick] = useState(false);
+  const [myLayoutHeight, setMyLayoutHeight] = useState(0);
+  const [opponentLayoutHeight, setOpponentLayoutHeight] = useState(0);
+  const [opponentMapClick, setOpponentMapClick] = useState(false);
+  const [myMapClick, setMyMapClick] = useState(false);
 
-    const clickOpponentMap = () => {
-      if(myMapClick) {       
-       setMyMapClick(!myMapClick);
-   }
+  const clickOpponentMap = () => {
+    if (myMapClick) {
+      setMyMapClick(!myMapClick);
+    }
     setOpponentMapClick(!opponentMapClick);
-};
-   const clickMyMap = () => {
-     if(opponentMapClick) {
-       setOpponentMapClick(!opponentMapClick)
-   }  
-       
-       setMyMapClick(!myMapClick)
-  
-};
+  };
+  const clickMyMap = () => {
+    if (opponentMapClick) {
+      setOpponentMapClick(!opponentMapClick);
+    }
+
+    setMyMapClick(!myMapClick);
+  };
 
   useEffect(() => {
     if (opponentMapClick) {
@@ -108,63 +106,45 @@ export default function FinishedChallenges({
     return `${hoursStr}:${minutesStr}:${secondsStr}`;
   };
 
-
-  const finalDateTime = convertDateHours(item.challenger_date);
+  const finalDateTime = convertDateHours(item.challenged_date);
   const RunTime = formatTime(otherTime);
-  
 
+  const convertDate = time => {
+    const dt = new Date(time);
+    const hr = dt.getUTCHours();
+    const m = '0' + dt.getUTCMinutes();
+    const s = '0' + dt.getSeconds();
 
+    return hr + ':' + m.slice(-2) + ':' + s.slice(-2);
+  };
 
-    const convertDate = time => {
-      const dt = new Date(time);
-      const hr = dt.getUTCHours();
-      const m = '0' + dt.getUTCMinutes();
-      const s = '0' + dt.getSeconds();
-  
-      return hr + ':' + m.slice(-2) + ':' + s.slice(-2);
-    };
-  
-    const finalTime = convertDate(item.challenger_date);
- 
-  
- 
+  const finalTime = convertDate(item.challenger_date);
 
-    const convOpponentTime = formatTime(otherTime);
-    const convUserTime = formatTime(userTime);
-  
-  
-    const formatDistance = distance => {
-      const km = Math.floor(distance / 1000); // get km
-      const hm = Math.floor((distance - km * 1000) / 100); // get hundreds of meters
-      const dm = Math.floor((distance - km * 1000 - hm * 100) / 10); // get tenths of meters
-      return `${km}.${hm}${dm} km`;
-    };
-  
-    const timestamp = item.challenger_date;
-    const formattedDate = date.toLocaleDateString();
-    const convUserKm = formatDistance(userKm);
-    const convOpponentKm = formatDistance(otherKm);
-  
+  const convOpponentTime = formatTime(otherTime);
+  const convUserTime = formatTime(userTime);
 
+  const formatDistance = distance => {
+    const km = Math.floor(distance / 1000); // get km
+    const hm = Math.floor((distance - km * 1000) / 100); // get hundreds of meters
+    const dm = Math.floor((distance - km * 1000 - hm * 100) / 10); // get tenths of meters
+    return `${km}.${hm}${dm} km`;
+  };
 
-
+  const timestamp = item.challenger_date;
+  const formattedDate = date.toLocaleDateString();
+  const convUserKm = formatDistance(userKm);
+  const convOpponentKm = formatDistance(otherKm);
 
   return (
-    <View style={{padding: 10}}>
+    <View style={styles.header}>
       {selectedTab === 'finished' && (
-        <VStack space={3}>
-          <HStack justifyContent="flex-end">
-            <Text style={styles.date}>
-              {weekDay} {finalDateTime}
-            </Text>
-          </HStack>
+        <VStack>
           <HStack>
-            <TouchableOpacity onPress={clickMyMap}>
-              <VStack alignItems="center" my="1" style={{flex: 2}}>
+            <TouchableOpacity onPress={clickMyMap} activeOpacity={0.8}>
+              <VStack alignItems="center" mt="1" style={{flex: 2}}>
                 <Text style={styles.headerText} py="2">
                   {userData}
                 </Text>
-
                 <HStack
                   px="0.5"
                   my="3"
@@ -179,12 +159,10 @@ export default function FinishedChallenges({
                     px="1"
                     style={byTime ? styles.colorWhite : styles.colorBlue}>
                     {convUserTime}
-
                   </Text>
                 </HStack>
                 <HStack
                   alignItems="center"
-
                   style={byTime ? styles.borderBlue : styles.fillBlue}>
                   <MaterialCommunityIcons
                     name="map-marker-distance"
@@ -216,7 +194,6 @@ export default function FinishedChallenges({
                   style={winner ? {color: '#50A5B1'} : {color: '#F1600D'}}
                 />
               )}
-
             </VStack>
             <TouchableOpacity onPress={clickOpponentMap}>
               <VStack alignItems="center" my="1" style={{flex: 2}}>
@@ -256,6 +233,11 @@ export default function FinishedChallenges({
               </VStack>
             </TouchableOpacity>
           </HStack>
+          <HStack justifyContent="center">
+            <Text style={styles.date}>
+              {weekDay} {finalDateTime}
+            </Text>
+          </HStack>
         </VStack>
       )}
 
@@ -266,28 +248,29 @@ export default function FinishedChallenges({
         }}>
         {userTime ? (
           <TouchableOpacity key={key} style={styles.myMapStyle}>
-
-           <Text> THIS SHOULD BE MY MAP </Text>
-        {userCoordinates ? ( <View style={styles.containerMap}>
-   <MapView
-    // showsUserLocation={true} this is to show the gps point where we are at the moment
-      style={styles.map}
-      region={{
-        latitude: userCoordinates?.[0].latitude,
-        longitude: userCoordinates?.[0].longitude,
-        latitudeDelta: 0.0115,
-        longitudeDelta: 0.0121,
-      }}
-    >
-      <Polyline 
-      coordinates={userCoordinates}
-      strokeColor='#F1600D'
-      fillColor='#F1600D'
-      strokeWidth={8}
-      />
-    </MapView>
-  </View>) : (<Text>No coordinates</Text>)}  
-
+            <Text> THIS SHOULD BE MY MAP </Text>
+            {userCoordinates ? (
+              <View style={styles.containerMap}>
+                <MapView
+                  // showsUserLocation={true} this is to show the gps point where we are at the moment
+                  style={styles.map}
+                  region={{
+                    latitude: userCoordinates?.[0].latitude,
+                    longitude: userCoordinates?.[0].longitude,
+                    latitudeDelta: 0.0115,
+                    longitudeDelta: 0.0121,
+                  }}>
+                  <Polyline
+                    coordinates={userCoordinates}
+                    strokeColor="#F1600D"
+                    fillColor="#F1600D"
+                    strokeWidth={8}
+                  />
+                </MapView>
+              </View>
+            ) : (
+              <Text>No coordinates</Text>
+            )}
           </TouchableOpacity>
         ) : null}
       </View>
@@ -300,26 +283,28 @@ export default function FinishedChallenges({
           <TouchableOpacity key={key} style={styles.opponentMapStyle}>
             <Text> OPPONENT MAP HERE </Text>
 
-        {opponentCoordinates ? ( <View style={styles.containerMap}>
-   <MapView
-     // showsUserLocation={true} this is to show the gps point where we are at the moment
-      style={styles.map}
-      region={{
-        latitude: opponentCoordinates?.[0].latitude,
-        longitude: opponentCoordinates?.[0].longitude,
-        latitudeDelta: 0.0115,
-        longitudeDelta: 0.0121,
-      }}
-    >
-      <Polyline 
-      coordinates={opponentCoordinates}
-      strokeColor='#F1600D'
-      fillColor='#F1600D'
-      strokeWidth={8}
-      />
-    </MapView>
-  </View>) : (<Text>No coordinates</Text>)} 
-
+            {opponentCoordinates ? (
+              <View style={styles.containerMap}>
+                <MapView
+                  // showsUserLocation={true} this is to show the gps point where we are at the moment
+                  style={styles.map}
+                  region={{
+                    latitude: opponentCoordinates?.[0].latitude,
+                    longitude: opponentCoordinates?.[0].longitude,
+                    latitudeDelta: 0.0115,
+                    longitudeDelta: 0.0121,
+                  }}>
+                  <Polyline
+                    coordinates={opponentCoordinates}
+                    strokeColor="#F1600D"
+                    fillColor="#F1600D"
+                    strokeWidth={8}
+                  />
+                </MapView>
+              </View>
+            ) : (
+              <Text>No coordinates</Text>
+            )}
           </TouchableOpacity>
         ) : null}
       </View>
@@ -383,8 +368,8 @@ const styles = StyleSheet.create({
   },
 
   date: {
-    textAlign: 'right',
-    fontSize: 12,
+    fontSize: 13,
+    // color: '#50A5B1',
   },
 
   timeKm: {
