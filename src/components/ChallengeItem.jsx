@@ -119,16 +119,16 @@ export default function ChallengeItem({
   } else if (numb === 6) {
     weekDay = 'Sat.';
   }
-  const convertTime = time => {
+
+  const convertDateHours = time => {
     const dt = new Date(time);
-    const hr = dt.getUTCHours();
-    const m = '0' + dt.getUTCMinutes();
-    const s = '0' + dt.getSeconds();
-    return hr + ':' + m.slice(-2) + ':' + s.slice(-2);
+    const hr = '0' + dt.getHours();
+    const m = '0' + dt.getMinutes();
+    return hr.slice(-2) + ':' + m.slice(-2);
   };
 
   const formatTime = timer => {
-    const hours = Math.floor(timer / 120);
+    const hours = Math.floor(timer / 3600);
     const minutes = Math.floor(timer / 60);
     const remainingSeconds = timer % 60;
     const hoursStr = String(hours).padStart(1, '0');
@@ -142,7 +142,7 @@ export default function ChallengeItem({
     const dm = Math.floor((distance - km * 1000 - hm * 100) / 10); // get tenths of meters
     return `${km}.${hm}${dm} km`;
   };
-  const finalTime = convertTime(item.challenger_date);
+  const finalTime = convertDateHours(item.challenger_date);
   const RunTime = formatTime(otherTime);
   const convUserTime = formatTime(userTime);
   const timestamp = item.challenger_date;
@@ -180,8 +180,7 @@ export default function ChallengeItem({
               </HStack>
 
               <Text style={styles.date}>
-                {weekDay}
-                {finalTime}
+                {weekDay} {finalTime}
               </Text>
             </HStack>
 
@@ -264,7 +263,6 @@ export default function ChallengeItem({
             </HStack>
           </HStack>
         )}
-
       </TouchableOpacity>
       {/* <View
         style={{

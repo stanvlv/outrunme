@@ -5,7 +5,7 @@ import {StyleSheet, Text} from 'react-native';
 
 export default function timerItem({byTime, timer}) {
   const formatTime = timer => {
-    const hours = Math.floor(timer / 120);
+    const hours = Math.floor(timer / 3600);
     const minutes = Math.floor(timer / 60);
     const remainingSeconds = timer % 60;
     const hoursStr = String(hours).padStart(1, '0');
