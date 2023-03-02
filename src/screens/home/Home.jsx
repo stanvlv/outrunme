@@ -194,6 +194,9 @@ export default function Home({navigation}) {
                   userKm={
                     item.challenger ? item.challenged_km : item.challenger_km
                   }
+                  userCoordinates={
+                    item.challenger ? item.challenged_coordinates : item.challenger_coordinates
+                  }
                   otherTime={
                     item.challenger
                       ? item.challenger_time
@@ -202,7 +205,7 @@ export default function Home({navigation}) {
                   otherKm={
                     item.challenger ? item.challenger_km : item.challenged_km
                   }
-                  coordinates={
+                  opponentCoordinates={
                     item.challenger ? item.challenger_coordinates : item.challenged_coordinates
                   }
                   nameTile={item.challenger ? item.challenger : item.challenged}
