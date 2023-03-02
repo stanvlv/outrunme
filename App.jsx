@@ -33,6 +33,9 @@ import {ScrollView} from 'native-base';
 import AuthNavigator from './src/navigation/AuthNavigator';
 import BottomNavBar from './src/navigation/BottomNavBar';
 
+
+
+
 export const AppStateContext = React.createContext();
 
 const AppStateProvider = props => {
@@ -72,6 +75,12 @@ export default function App() {
 
 // console.log(user + " this comes from app.jsx objssect")
 // console.log(user?.uid + " this should be the uid that comes from app.jsx")
+
+
+
+
+
+
 
   return ( <NativeBaseProvider>
     <AppStateProvider user={user}>
