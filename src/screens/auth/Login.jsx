@@ -15,8 +15,8 @@ import auth from '@react-native-firebase/auth';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {Image, ScrollView} from 'react-native';
 import {styles} from '../../styles/Style';
-import { KeyboardAvoidingView, Platform } from 'react-native';
-import { TouchableOpacity } from 'react-native';
+import {KeyboardAvoidingView, Platform} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 
 GoogleSignin.configure({
   webClientId:
@@ -47,11 +47,12 @@ export default function Login({navigation}) {
 
   // login with email and password
   const loginUser = () => {
+    console.log('kliked');
     auth()
       .signInWithEmailAndPassword(`${email.name}`, `${password.name}`)
       .then(() => {
         console.log('User account signed in!');
-        console.log(password.name)
+        console.log(password.name);
       })
       .catch(error => {
         if (error.code === 'auth/email-already-in-use') {
@@ -64,9 +65,9 @@ export default function Login({navigation}) {
           alert('Wrong email');
         }
 
-        if(error.code === 'auth/invalid-password') {
-          console.log('That password is wrong')
-          alert('Wrong password')
+        if (error.code === 'auth/invalid-password') {
+          console.log('That password is wrong');
+          alert('Wrong password');
         }
         alert(error);
       });
@@ -89,15 +90,13 @@ export default function Login({navigation}) {
     onGoogleButtonPress().then(() => console.log('Signed in with Google!'));
   };
 
-
   return (
     <KeyboardAvoidingView
-    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    style={{ flex: 1 }}
-  >
-    <ScrollView >
-      <NativeBaseProvider>
-        {/* {alert && (
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={{flex: 1}}>
+      <ScrollView>
+        <NativeBaseProvider>
+          {/* {alert && (
         <Box>
           <Alert w="100%" status={alert === 'red' ? 'error' : 'warning'}>
             <HStack flexShrink={1} space={2} justifyContent="space-between">
@@ -121,119 +120,127 @@ export default function Login({navigation}) {
         </Box>
       )} */}
 
-        {/* Form for the email */}
+          {/* Form for the email */}
 
-        <Center w="100%">
-          
-          <Image
-            source={require('../../assets/isitgood.png')}
-            style={{
-              width: 250,
-              height: 230,
-              backgroundColor: 'transparent',
-              resizeMode: 'contain',
-            }}
-          />
-          <Box safeArea p="2" py="0" w="90%" maxW="290">
-           
-
-            <VStack space={0} >
-              <FormControl isInvalid={'name' in errors}>
-                <FormControl.Label ><Text style={styles.textColor}>Email</Text></FormControl.Label>
-                <Input
-                placeholder='Enter email'
-                backgroundColor="#FEF6ED"
-                  onChangeText={value => setEmail({...email, name: value})}
-                />
-                {/* {'name' in errors ? (
+          <Center w="100%">
+            <Image
+              source={require('../../assets/isitgood.png')}
+              style={{
+                width: 250,
+                height: 230,
+                backgroundColor: 'transparent',
+                resizeMode: 'contain',
+              }}
+            />
+            <Box safeArea p="2" py="0" w="90%" maxW="290">
+              <VStack space={0}>
+                <FormControl isInvalid={'name' in errors}>
+                  <FormControl.Label>
+                    <Text style={styles.textColor}>Email</Text>
+                  </FormControl.Label>
+                  <Input
+                    placeholder="Enter email"
+                    backgroundColor="#FEF6ED"
+                    onChangeText={value => setEmail({...email, name: value})}
+                  />
+                  {/* {'name' in errors ? (
                 <FormControl.ErrorMessage>
                   {errors.name}
                 </FormControl.ErrorMessage>
               ) : (
                 <FormControl.HelperText>{errors.name}</FormControl.HelperText>
               )} */}
-              </FormControl>
-              <FormControl>
-                <FormControl.Label><Text style={styles.textColor}>Password</Text></FormControl.Label>
-                <Input
-                placeholder='Enter password'
-                 backgroundColor="#FEF6ED"
-                  type="password"
-                  onChangeText={value =>
-                    setPassword({...password, name: value})
-                  }
-                />
-               
-              </FormControl>
-              <Box style={{display: 'flex', flexDirection: 'column'}}>
-                <Button style={styles.loginButton} onPress={loginUser}>
-                  <TouchableOpacity>
-                 <Text style={styles.loginButtonText}> LOGIN </Text>
-                 </TouchableOpacity>
-                </Button>
-                <Link
-                  onPress={() => navigation.navigate('ForgotPassword')}
-                  _text={{
-                    fontSize: 'xs',
-                    fontWeight: '500',
-                    color: '#1A265A',
-                  }}
-                  alignSelf="flex-end"
-                  mt="3">
-                  Forgot Password?
-                </Link>
-                <Text style={{borderBottomColor: 'black', borderBottomWidth: 0.5, borderBottomColor: '#F1600D'}}></Text>
-        
-               <Box style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around', gap: 5}}>
-                
-               <Button style={styles.googleButton}>
- 
-                  <Image
-                    source={require('../../assets/googleicon.png')}
-                    style={{width: 30, height: 30}}
-                    onPress={signWithGoogle}
+                </FormControl>
+                <FormControl>
+                  <FormControl.Label>
+                    <Text style={styles.textColor}>Password</Text>
+                  </FormControl.Label>
+                  <Input
+                    placeholder="Enter password"
+                    backgroundColor="#FEF6ED"
+                    type="password"
+                    onChangeText={value =>
+                      setPassword({...password, name: value})
+                    }
                   />
-                </Button>
-                <Button style={styles.googleButton}>
-                  <Image
-                    source={require('../../assets/facebooktrans.png')}
-                    style={{width: 30, height: 30}}
-                  />
-                </Button>
-                </Box>
-              </Box>
+                </FormControl>
+                <Box style={{display: 'flex', flexDirection: 'column'}}>
+                  <Button style={styles.loginButton} onPress={loginUser}>
+                    <TouchableOpacity>
+                      <Text style={styles.loginButtonText}> LOGIN </Text>
+                    </TouchableOpacity>
+                  </Button>
+                  <Link
+                    onPress={() => navigation.navigate('ForgotPassword')}
+                    _text={{
+                      fontSize: 'xs',
+                      fontWeight: '500',
+                      color: '#1A265A',
+                    }}
+                    alignSelf="flex-end"
+                    mt="3">
+                    Forgot Password?
+                  </Link>
+                  <Text
+                    style={{
+                      borderBottomColor: 'black',
+                      borderBottomWidth: 0.5,
+                      borderBottomColor: '#F1600D',
+                    }}></Text>
 
-              {/* <Button mt="2" colorScheme="indigo" onPress={createUser}>
+                  <Box
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'space-around',
+                      gap: 5,
+                    }}>
+                    <Button style={styles.googleButton}>
+                      <Image
+                        source={require('../../assets/googleicon.png')}
+                        style={{width: 30, height: 30}}
+                        onPress={signWithGoogle}
+                      />
+                    </Button>
+                    <Button style={styles.googleButton}>
+                      <Image
+                        source={require('../../assets/facebooktrans.png')}
+                        style={{width: 30, height: 30}}
+                      />
+                    </Button>
+                  </Box>
+                </Box>
+
+                {/* <Button mt="2" colorScheme="indigo" onPress={createUser}>
               Register
             </Button> */}
 
-              <HStack mt="5" justifyContent="center">
-                <Text
-                  fontSize="sm"
-                  color="coolGray.800"
-                  _dark={{
-                    color: 'warmGray.200',
-                  }}>
-                  Become a challenger:{' '}
-                </Text>
-                <TouchableOpacity>
-                <Link
-                  _text={{
-                    color: '#F1600D',
-                    fontWeight: 'medium',
-                    fontSize: 'sm',
-                  }}
-                  onPress={() => navigation.navigate('Register')}>
-                  Sign Up
-                </Link>
-                </TouchableOpacity>
-              </HStack>
-            </VStack>
-          </Box>
-        </Center>
-      </NativeBaseProvider>
-    </ScrollView>
+                <HStack mt="5" justifyContent="center">
+                  <Text
+                    fontSize="sm"
+                    color="coolGray.800"
+                    _dark={{
+                      color: 'warmGray.200',
+                    }}>
+                    Become a challenger:{' '}
+                  </Text>
+                  <TouchableOpacity>
+                    <Link
+                      _text={{
+                        color: '#F1600D',
+                        fontWeight: 'medium',
+                        fontSize: 'sm',
+                      }}
+                      onPress={() => navigation.navigate('Register')}>
+                      Sign Up
+                    </Link>
+                  </TouchableOpacity>
+                </HStack>
+              </VStack>
+            </Box>
+          </Center>
+        </NativeBaseProvider>
+      </ScrollView>
     </KeyboardAvoidingView>
   );
 }
-

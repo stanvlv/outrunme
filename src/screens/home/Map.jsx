@@ -49,7 +49,7 @@ export default function Map({route, navigation}) {
 
   const {user, run, setRun} = useContext(AppStateContext);
 
-  console.log(Object.values(run));
+  // console.log(Object.values(run));
 
   const [userData, setUserData] = useState();
 
@@ -158,7 +158,7 @@ export default function Map({route, navigation}) {
       if (watchId) {
         Geolocation.clearWatch(watchId);
         setWatchId(undefined);
-        console.log(watchId);
+        // console.log(watchId);
       }
     };
   }, [watchingLocation]);
@@ -185,8 +185,8 @@ export default function Map({route, navigation}) {
     // setTimer(0)
     // setDistance(0)
     setTimerId(null);
-    console.log(challenger);
-    console.log(challenged);
+    // console.log(challenger);
+    // console.log(challenged);
 
     if (challenger === userData.username) {
       setShowChoice(true);
@@ -280,9 +280,9 @@ export default function Map({route, navigation}) {
         });
     }
   };
-  console.log(user.uid);
+  // console.log(user.uid);
 
-  console.log(latlng + ` this will be saved for coordinates`);
+  // console.log(latlng + ` this will be saved for coordinates`);
   const PostTimeTrue = () => {
     firestore()
       .collection('challenger')
@@ -297,8 +297,8 @@ export default function Map({route, navigation}) {
         challenger_coordinates: latlng,
       })
       .then(docRef => {
-        console.log(docRef.id + ' this is for the docref');
-        console.log('I challenged somebody');
+        // console.log(docRef.id + ' this is for the docref');
+        // console.log('I challenged somebody');
         firestore()
           .collection('challenged')
           .doc(challenged)
@@ -336,8 +336,8 @@ export default function Map({route, navigation}) {
         challenger_coordinates: latlng,
       })
       .then(docRef => {
-        console.log(docRef.id + ' this is for the docref');
-        console.log('I challenged somebody');
+        // console.log(docRef.id + ' this is for the docref');
+        // console.log('I challenged somebody');
         firestore()
           .collection('challenged')
           .doc(challenged)
@@ -371,11 +371,13 @@ export default function Map({route, navigation}) {
   };
 
   const formatTime = timer => {
+    const hours = Math.floor(timer / 3600);
     const minutes = Math.floor(timer / 60);
     const remainingSeconds = timer % 60;
+    const hoursStr = String(hours).padStart(1, '0');
     const minutesStr = String(minutes).padStart(2, '0');
     const secondsStr = String(remainingSeconds).padStart(2, '0');
-    return `${minutesStr}:${secondsStr}`;
+    return `${hoursStr}:${minutesStr}:${secondsStr}`;
   };
 
   const convertTime = time => {
@@ -399,11 +401,25 @@ export default function Map({route, navigation}) {
 
     return `${km}.${hm}${dm} km`;
   };
-
-  const progressionDistance = (distance * 100) / run.challenger_km;
-  const progressionTime = (timer * 100) / run.challenger_time;
   const convChallengerKm = formatDistance(run.challenger_km);
   const convChallengerTime = formatTime(run.challenger_time);
+  const progressionDistance = (distance * 100) / run.challenger_km;
+  const progressionTime = (timer * 100) / run.challenger_time;
+
+  useEffect(() => {
+    if (run.byTime) {
+      console.log(progressionTime);
+      if (progressionTime >= 100) {
+        clearInterval(timerId);
+        onStopWatching();
+        setIsRunning(false);
+      }
+    } else if (progressionDistance >= 100) {
+      clearInterval(timerId);
+      onStopWatching();
+      setIsRunning(false);
+    }
+  }, [progressionTime, progressionDistance]);
 
   return (
     <View style={styles.container}>
