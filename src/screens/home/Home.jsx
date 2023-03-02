@@ -77,6 +77,8 @@ export default function Home({navigation}) {
   useEffect(() => {
     if (run?.finished === true) {
       setSelectedTab('finished');
+    } else if (run?.sent === true) {
+      setSelectedTab('sent');
     }
   }, [run]);
 
@@ -84,9 +86,6 @@ export default function Home({navigation}) {
   const onPressReceived = () => setSelectedTab('received');
   const onPressFinished = () => setSelectedTab('finished');
 
-  
- 
- 
   return (
     <NativeBaseProvider>
       <View style={styles.container}>
@@ -152,6 +151,7 @@ export default function Home({navigation}) {
             <Ionicons name="add-circle" size={70} style={{color: '#F1600D'}} />
           </Link>
         )} */}
+
         {selectedTab === 'received' && (
           <ScrollView>
             {challenged
@@ -178,6 +178,11 @@ export default function Home({navigation}) {
             {challenged
               .concat(challenger)
               .filter(character => character.finished === true)
+              .sort(function (a, b) {
+                return (
+                  new Date(b.challenged_date) - new Date(a.challenged_date)
+                );
+              })
               .map(item => (
                 <FinishedChallenges
                   key={item.category_name}
@@ -195,7 +200,9 @@ export default function Home({navigation}) {
                     item.challenger ? item.challenged_km : item.challenger_km
                   }
                   userCoordinates={
-                    item.challenger ? item.challenged_coordinates : item.challenger_coordinates
+                    item.challenger
+                      ? item.challenged_coordinates
+                      : item.challenger_coordinates
                   }
                   otherTime={
                     item.challenger
@@ -206,11 +213,15 @@ export default function Home({navigation}) {
                     item.challenger ? item.challenger_km : item.challenged_km
                   }
                   opponentCoordinates={
-                    item.challenger ? item.challenger_coordinates : item.challenged_coordinates
+                    item.challenger
+                      ? item.challenger_coordinates
+                      : item.challenged_coordinates
                   }
+                  byTime={item.byTime}
                   nameTile={item.challenger ? item.challenger : item.challenged}
-                  sent={item.challenger ? true : false}
+                  sent={item.challenger ? false : true}
                   selectedTab={'finished'}
+                  cena={item.challenger}
                 />
               ))}
           </ScrollView>

@@ -44,8 +44,7 @@ export default function Map({route, navigation}) {
 
   const [challenger, setChallenger] = useState('');
   const [challenged, setChallenged] = useState('');
-  const [velocityChallenger, setVelocityChallenger] = useState();
-  const [velocityChallenged, setVelocityChallenged] = useState();
+  const [userWinner, setUserWinner] = useState(true);
 
   const {user, run, setRun} = useContext(AppStateContext);
 
@@ -191,6 +190,30 @@ export default function Map({route, navigation}) {
     if (challenger === userData.username) {
       setShowChoice(true);
     } else if (challenged === userData.username) {
+      // Check if the user lost
+      const velocityChallenger = run.challenger_km / run.challenger_time;
+      const velocityChallenged = distance / timer;
+      // console.log(velocityChallenged + 'challenged velocity');
+      // console.log(distance + 'challenged distance');
+      // console.log(timer + 'challenged timer');
+      // console.log(velocityChallenger + 'challenger velocity');
+      // console.log(run.challenger_km + 'challenger distance');
+      // console.log(run.challenger_time + 'challenger timer');
+      if (run.byTime === true) {
+        if (
+          velocityChallenger >= velocityChallenged ||
+          timer < run.challenger_time
+        ) {
+          setUserWinner(false);
+        }
+      } else {
+        if (
+          velocityChallenger >= velocityChallenged ||
+          distance < run.challenger_km
+        ) {
+          setUserWinner(false);
+        }
+      }
       firestore()
         .collection('challenger')
         .doc(challenger)
@@ -203,6 +226,7 @@ export default function Map({route, navigation}) {
           challenged_time: timer,
           finished: true,
           challenged_coordinates: latlng,
+          winner: !userWinner,
         })
         .then(() => {
           console.log('I accepted a challenge');
@@ -220,57 +244,29 @@ export default function Map({route, navigation}) {
           challenged_time: timer,
           finished: true,
           challenged_coordinates: latlng,
+          winner: userWinner,
         })
         .then(() => {
-          setVelocityChallenger(run.challenger_km / run.challenger_time);
-          setVelocityChallenged(distance / timer);
           const increment = firestore.FieldValue.increment(1);
-          if (run.byTime === true) {
-            if (
-              velocityChallenger >= velocityChallenged ||
-              timer < run.challenger_time
-            ) {
-              firestore().collection('users').doc(user.uid).update({
-                challenges_lost: increment,
-                runs: increment,
-              });
-              firestore().collection('users').doc(run.challenger_id).update({
-                challenges_won: increment,
-                runs: increment,
-              });
-            } else {
-              firestore().collection('users').doc(user.uid).update({
-                challenges_won: increment,
-                runs: increment,
-              });
-              firestore().collection('users').doc(run.challenger_id).update({
-                challenges_lost: increment,
-                runs: increment,
-              });
-            }
+
+          if (userWinner === false) {
+            firestore().collection('users').doc(user.uid).update({
+              challenges_lost: increment,
+              runs: increment,
+            });
+            firestore().collection('users').doc(run.challenger_id).update({
+              challenges_won: increment,
+              runs: increment,
+            });
           } else {
-            if (
-              velocityChallenger >= velocityChallenged ||
-              distance < run.challenger_km
-            ) {
-              firestore().collection('users').doc(user.uid).update({
-                challenges_lost: increment,
-                runs: increment,
-              });
-              firestore().collection('users').doc(run.challenger_id).update({
-                challenges_won: increment,
-                runs: increment,
-              });
-            } else {
-              firestore().collection('users').doc(user.uid).update({
-                challenges_won: increment,
-                runs: increment,
-              });
-              firestore().collection('users').doc(run.challenger_id).update({
-                challenges_lost: increment,
-                runs: increment,
-              });
-            }
+            firestore().collection('users').doc(user.uid).update({
+              challenges_won: increment,
+              runs: increment,
+            });
+            firestore().collection('users').doc(run.challenger_id).update({
+              challenges_lost: increment,
+              runs: increment,
+            });
           }
 
           setRun({finished: true});
@@ -315,6 +311,7 @@ export default function Map({route, navigation}) {
           })
           .then(res => console.log(res))
           .catch(err => console.log(err));
+        setRun({sent: true});
         navigation.navigate('Challenges');
         setShowChoice(false);
         setTimer(0);
@@ -354,6 +351,7 @@ export default function Map({route, navigation}) {
           })
           .then(res => console.log(res))
           .catch(err => console.log(err));
+        setRun({sent: true});
         navigation.navigate('Challenges');
         setShowChoice(false);
         setTimer(0);
@@ -497,7 +495,7 @@ export default function Map({route, navigation}) {
                 <TimerItem timer={timer} byTime={run.byTime} />
               </VStack>
             )}
-            {showChoice === false && (
+            {showChoice === false ? (
               <HStack style={styles.theButtons} mx="auto">
                 <Button
                   style={styles.button}
@@ -510,28 +508,29 @@ export default function Map({route, navigation}) {
                   </Text>
                 </Button>
               </HStack>
+            ) : (
+              <VStack>
+                <HStack justifyContent="center" mt="5">
+                  <Text style={styles.customText}>
+                    Challenge your opponent by:
+                  </Text>
+                </HStack>
+                <HStack
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'space-evenly',
+                    paddingBottom: 20,
+                  }}>
+                  <Button style={styles.logoutButton} onPress={PostTimeTrue}>
+                    TIME
+                  </Button>
+                  <Button style={styles.logoutButton} onPress={PostTimeFalse}>
+                    DISTANCE
+                  </Button>
+                </HStack>
+              </VStack>
             )}
           </ScrollView>
-          {/* Show choice buttons after run if user is challenger */}
-          {showChoice === true && (
-            <View>
-              <Text style={styles.customText}>Challenge your opponent by:</Text>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'space-around',
-                  paddingBottom: 20,
-                }}>
-                <Button style={styles.logoutButton} onPress={PostTimeTrue}>
-                  TIME
-                </Button>
-                <Button style={styles.logoutButton} onPress={PostTimeFalse}>
-                  DISTANCE
-                </Button>
-              </View>
-            </View>
-          )}
         </SafeAreaView>
       ) : (
         // Redirect to search User
