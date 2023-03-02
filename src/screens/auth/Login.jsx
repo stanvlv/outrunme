@@ -158,6 +158,7 @@ export default function Login({navigation}) {
                 <Input
                 placeholder='Enter password'
                  backgroundColor="#FEF6ED"
+                 marginBottom='3'
                   type="password"
                   onChangeText={value =>
                     setPassword({...password, name: value})
@@ -166,11 +167,12 @@ export default function Login({navigation}) {
                
               </FormControl>
               <Box style={{display: 'flex', flexDirection: 'column'}}>
-                <Button style={styles.loginButton} onPress={loginUser}>
-                  <TouchableOpacity>
+                {/* <Button style={styles.loginButton} onPress={loginUser}> */}
+                  {/* <TouchableOpacity>
                  <Text style={styles.loginButtonText}> LOGIN </Text>
                  </TouchableOpacity>
-                </Button>
+                </Button> */}
+                <Button onPress={loginUser} colorScheme="warning" >LOGIN</Button>
                 <Link
                   onPress={() => navigation.navigate('ForgotPassword')}
                   _text={{
