@@ -164,6 +164,7 @@ export default function Login({navigation}) {
                 />
                
               </FormControl>
+              <FormControl>
               <Box style={{display: 'flex', flexDirection: 'column'}}>
                 {/* <Button style={styles.loginButton} onPress={loginUser}> */}
                   {/* <TouchableOpacity>
@@ -183,41 +184,9 @@ export default function Login({navigation}) {
                   Forgot Password?
                 </Link>
                 <Text style={{borderBottomColor: 'black', borderBottomWidth: 0.5, borderBottomColor: '#F1600D'}}></Text>
-        
-               <Box style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around', gap: 5}}>
-                
-               <Button style={styles.googleButton}>
- 
-                  <Image
-                    source={require('../../assets/googleicon.png')}
-                    style={{width: 30, height: 30}}
-                    onPress={signWithGoogle}
-
-                  />
+                  </Box>
                 </FormControl>
                 <Box style={{display: 'flex', flexDirection: 'column'}}>
-                  <Button style={styles.loginButton} onPress={loginUser}>
-                    <TouchableOpacity>
-                      <Text style={styles.loginButtonText}> LOGIN </Text>
-                    </TouchableOpacity>
-                  </Button>
-                  <Link
-                    onPress={() => navigation.navigate('ForgotPassword')}
-                    _text={{
-                      fontSize: 'xs',
-                      fontWeight: '500',
-                      color: '#1A265A',
-                    }}
-                    alignSelf="flex-end"
-                    mt="3">
-                    Forgot Password?
-                  </Link>
-                  <Text
-                    style={{
-                      borderBottomColor: 'black',
-                      borderBottomWidth: 0.5,
-                      borderBottomColor: '#F1600D',
-                    }}></Text>
 
                   <Box
                     style={{
@@ -243,8 +212,8 @@ export default function Login({navigation}) {
                 </Box>
 
                 {/* <Button mt="2" colorScheme="indigo" onPress={createUser}>
-              Register
-            </Button> */}
+                   Register
+                 </Button> */}
 
                 <HStack mt="5" justifyContent="center">
                   <Text

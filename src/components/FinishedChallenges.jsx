@@ -41,6 +41,21 @@ export default function FinishedChallenges({
     const [opponentMapClick, setOpponentMapClick] = useState(false);
     const [myMapClick, setMyMapClick] = useState(false);
 
+    const clickOpponentMap = () => {
+      if(myMapClick) {       
+       setMyMapClick(!myMapClick);
+   }
+    setOpponentMapClick(!opponentMapClick);
+};
+   const clickMyMap = () => {
+     if(opponentMapClick) {
+       setOpponentMapClick(!opponentMapClick)
+   }  
+       
+       setMyMapClick(!myMapClick)
+  
+};
+
   useEffect(() => {
     if (opponentMapClick) {
       setOpponentLayoutHeight('auto');
@@ -96,11 +111,9 @@ export default function FinishedChallenges({
 
   const finalDateTime = convertDateHours(item.challenger_date);
   const RunTime = formatTime(otherTime);
-  const convUserTime = formatTime(userTime);
-  const timestamp = item.challenger_date;
-  const formattedDate = date.toLocaleDateString();
-  const convUserKm = formatDistance(userKm);
-  const convOtherKm = formatDistance(otherKm);
+  
+
+
 
     const convertDate = time => {
       const dt = new Date(time);
@@ -132,6 +145,9 @@ export default function FinishedChallenges({
     const convUserKm = formatDistance(userKm);
     const convOpponentKm = formatDistance(otherKm);
   
+
+
+
 
   return (
     <View style={{padding: 10}}>
@@ -234,7 +250,7 @@ export default function FinishedChallenges({
                   <Text
                     px="1"
                     style={byTime ? styles.colorBlue : styles.colorWhite}>
-                    {convOtherKm}
+                    {convOpponentKm}
                   </Text>
                 </HStack>
               </VStack>
