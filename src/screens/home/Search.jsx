@@ -16,7 +16,7 @@ import {AppStateContext} from '../../../App';
 import { styles } from '../../styles/Style'
 
 export default function Search({navigation}) {
-  const [input, setInput] = useState();
+  const [input, setInput] = useState('');
   const [secondUser, setSecondUser] = useState({});
 
   const {user, isChallenged, run, setRun} = useContext(AppStateContext);
@@ -45,8 +45,9 @@ export default function Search({navigation}) {
     challenged: secondUser.username ,
    })
    
-   
-    navigation.navigate('Map', {secondUser})
+   setSecondUser({})
+   setInput('')
+    navigation.navigate('Map')
   }
 
 
@@ -78,6 +79,7 @@ export default function Search({navigation}) {
           px="1"
           fontSize="14"
           InputLeftElement={<Ionicons name="search" size={20} />}
+          value={input}
           onChangeText={value => setInput(value)}
         />
       </VStack>

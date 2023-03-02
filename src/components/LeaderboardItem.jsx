@@ -53,7 +53,7 @@ export default function LeaderboardItem({
         w="98%"
         justifyContent="space-between"
         style={[
-          place % 2 === 0 ? { backgroundColor: '#F0F0F0' } : { backgroundColor: '#FFFFFF' },
+          place % 2 === 0 ? { backgroundColor: '#F0F0F080' } : { backgroundColor: '#FFFFFF80' },
           username === userData?.username ? styles.userBorder : '',
         ]}
         

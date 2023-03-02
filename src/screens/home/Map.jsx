@@ -277,6 +277,8 @@ export default function Map({route, navigation}) {
           navigation.navigate('Challenges');
           setTimer(0);
           setDistance(0);
+          setLatlng([])
+          setRun({showMap: false})
         });
     }
   };
@@ -319,9 +321,15 @@ export default function Map({route, navigation}) {
         setShowChoice(false);
         setTimer(0);
         setDistance(0);
+        setLatlng([])
+        setRun({showMap: false})
       })
       .catch(err => console.log(err + ' from outside'));
-  };
+ 
+ 
+    };
+
+
   const PostTimeFalse = () => {
     firestore()
       .collection('challenger')
@@ -358,6 +366,8 @@ export default function Map({route, navigation}) {
         setShowChoice(false);
         setTimer(0);
         setDistance(0);
+        setLatlng([])
+        setRun({showMap: false})
       })
       .catch(err => console.log(err + ' from outside'));
   };
@@ -429,7 +439,7 @@ export default function Map({route, navigation}) {
           <ViewContainer latlng={latlng} currentLocation={currentLocation} />
         </HStack>
       ) : null}
-      {Object.keys(run).length ? (
+      {Object.keys(run).length > 1 ? (
         <SafeAreaView style={styles.container}>
           <ScrollView contentInsetAdjustmentBehavior="automatic">
             {run.byTime ? (
@@ -523,10 +533,10 @@ export default function Map({route, navigation}) {
                   justifyContent: 'space-around',
                   paddingBottom: 20,
                 }}>
-                <Button style={styles.logoutButton} onPress={PostTimeTrue}>
+                <Button colorScheme='warning' onPress={PostTimeTrue}>
                   TIME
                 </Button>
-                <Button style={styles.logoutButton} onPress={PostTimeFalse}>
+                <Button colorScheme='warning' onPress={PostTimeFalse}>
                   DISTANCE
                 </Button>
               </View>
@@ -540,11 +550,11 @@ export default function Map({route, navigation}) {
             Challenge someone to start a run
           </Text>
           <Button
-            style={styles.logoutButton}
+            colorScheme='warning'
             onPress={() => {
               navigation.navigate('Search');
             }}>
-            Seek a challenger
+            Search
           </Button>
         </View>
       )}

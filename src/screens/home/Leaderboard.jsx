@@ -10,30 +10,34 @@ export default function Leaderboard({navigation}) {
 
   // Get onSnapshot user data from DB, ordered by challenges won:
 
-  const Leaderboard = async () => {
-    const Userstats = firestore()
+  const leaderboard = async () => {
+   // const userstats = it seems this line is not needed
+    firestore()
       .collection('users')
       .orderBy('challenges_won', 'desc')
       .onSnapshot(post => {
         const data = post.docs.map(doc => ({id: doc.id, ...doc.data()}));
         setLeaderBoardUser(data);
       });
-    return () => user();
+   // return () => user(); this line is not needed it seems
   };
   useEffect(() => {
-    Leaderboard();
+    leaderboard();
+  
   }, []);
 
+
+    
   return (
     <NativeBaseProvider>
       {leaderBoardUser ? ( <View style={styles.screenColor}>
        
         <HStack justifyContent="space-between" px="2" backgroundColor="#F1600D">
-  <Text marginLeft="2" fontWeight='bold'>POSITION</Text>  
+  <Text marginLeft="2" fontWeight='bold' color='#FEF6ED'>RANK</Text>  
   <HStack>
-    <Text px="3" fontWeight='bold'>WINS</Text>
-    <Text px="3" fontWeight='bold'>LOSSES</Text>
-    <Text px="2" fontWeight='bold'>RUNS</Text>
+    <Text px="3" fontWeight='bold' color='#FEF6ED'>WINS</Text>
+    <Text px="3" fontWeight='bold' color='#FEF6ED'>LOSSES</Text>
+    <Text px="2" fontWeight='bold' color='#FEF6ED'>RUNS</Text>
   </HStack>
 </HStack>
         <ScrollView>
