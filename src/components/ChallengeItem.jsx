@@ -88,6 +88,7 @@ export default function ChallengeItem({
 
   const onClick = () => {
     setRun({
+      showMap: true,
       challenger: nameTile,
       challenged: userData,
       byTime: item.byTime,

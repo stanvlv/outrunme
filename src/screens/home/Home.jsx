@@ -54,10 +54,13 @@ export default function Home({navigation}) {
       });
     return () => user();
   };
+
+
   useEffect(() => {
     isChallengedDocument();
   }, [userData]);
   // console.log(challenged);
+  
   const isChallengerDocument = async () => {
     const isChallenger = firestore()
       .collection('challenger')
@@ -70,9 +73,13 @@ export default function Home({navigation}) {
       });
     return () => user();
   };
+
+
   useEffect(() => {
     isChallengerDocument();
   }, [userData]);
+
+
 
   useEffect(() => {
     if (run?.finished === true) {

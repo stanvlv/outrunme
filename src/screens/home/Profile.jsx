@@ -7,6 +7,7 @@ import {useContext} from 'react';
 import {AppStateContext} from '../../../App';
 import ProfileItem from '../../components/ProfileItem';
 import { styles } from '../../styles/Style';
+import { ActivityIndicator } from 'react-native';
 
 export default function FirebaseDatabase() {
   const {user} = useContext(AppStateContext);
@@ -40,23 +41,21 @@ export default function FirebaseDatabase() {
   };
 
   return (
-    <NativeBaseProvider>
-      <View style={styles.screenColor}>
+    <NativeBaseProvider>{userData ? (<View style={styles.screenColor}>
+        
       <ProfileItem
         username={userData?.username}
         runs={userData?.runs}
         challenges_won={userData?.challenges_won}
         challenges_lost={userData?.challenges_lost}
       />
-      <View style={styles.buttonView}>
-      
-      </View>
-     
      <View style={{alignItems: 'center', marginBottom: 20}}>
-     {/* style={styles.logoutButton} */}
     <Button colorScheme='warning' onPress={logout}><Text style={styles.buttonText}>Logout</Text></Button>
     </View>
-    </View>
+    </View> ) : ( <View  style={styles.screenColor} >
+        <ActivityIndicator size="large" color="#F1600D" style={{paddingTop: 150}} />
+       </View>)}
+      
     </NativeBaseProvider>
   );
 }
