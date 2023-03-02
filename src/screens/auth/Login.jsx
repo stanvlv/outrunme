@@ -150,18 +150,49 @@ export default function Login({navigation}) {
               ) : (
                 <FormControl.HelperText>{errors.name}</FormControl.HelperText>
               )} */}
-                </FormControl>
-                <FormControl>
-                  <FormControl.Label>
-                    <Text style={styles.textColor}>Password</Text>
-                  </FormControl.Label>
-                  <Input
-                    placeholder="Enter password"
-                    backgroundColor="#FEF6ED"
-                    type="password"
-                    onChangeText={value =>
-                      setPassword({...password, name: value})
-                    }
+              </FormControl>
+              <FormControl>
+                <FormControl.Label><Text style={styles.textColor}>Password</Text></FormControl.Label>
+                <Input
+                placeholder='Enter password'
+                 backgroundColor="#FEF6ED"
+                 marginBottom='3'
+                  type="password"
+                  onChangeText={value =>
+                    setPassword({...password, name: value})
+                  }
+                />
+               
+              </FormControl>
+              <Box style={{display: 'flex', flexDirection: 'column'}}>
+                {/* <Button style={styles.loginButton} onPress={loginUser}> */}
+                  {/* <TouchableOpacity>
+                 <Text style={styles.loginButtonText}> LOGIN </Text>
+                 </TouchableOpacity>
+                </Button> */}
+                <Button onPress={loginUser} colorScheme="warning" >LOGIN</Button>
+                <Link
+                  onPress={() => navigation.navigate('ForgotPassword')}
+                  _text={{
+                    fontSize: 'xs',
+                    fontWeight: '500',
+                    color: '#1A265A',
+                  }}
+                  alignSelf="flex-end"
+                  mt="3">
+                  Forgot Password?
+                </Link>
+                <Text style={{borderBottomColor: 'black', borderBottomWidth: 0.5, borderBottomColor: '#F1600D'}}></Text>
+        
+               <Box style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around', gap: 5}}>
+                
+               <Button style={styles.googleButton}>
+ 
+                  <Image
+                    source={require('../../assets/googleicon.png')}
+                    style={{width: 30, height: 30}}
+                    onPress={signWithGoogle}
+
                   />
                 </FormControl>
                 <Box style={{display: 'flex', flexDirection: 'column'}}>
