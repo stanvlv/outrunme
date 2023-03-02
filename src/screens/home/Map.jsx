@@ -532,13 +532,14 @@ export default function Map({route, navigation}) {
                   alignItems: 'center',
                   justifyContent: 'space-around',
                   paddingBottom: 20,
-                }}>
+                }}><Box style={{width: 100}}>
                 <Button colorScheme='warning' onPress={PostTimeTrue}>
-                  TIME
-                </Button>
+                  Time
+                </Button></Box>
+                <Box style={{width: 100}}>
                 <Button colorScheme='warning' onPress={PostTimeFalse}>
-                  DISTANCE
-                </Button>
+                  Distance
+                </Button></Box>
               </View>
             </View>
           )}

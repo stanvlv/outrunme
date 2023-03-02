@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   containerMap: {
     display: 'flex',
     //   ...StyleSheet.absoluteFillObject,
-    height: 250,
+    height: 175,
     width: '100%',
     justifyContent: 'space-between',
     alignItems: 'center',
