@@ -1,6 +1,5 @@
 import {NativeBaseProvider, Button, View, Text} from 'native-base';
-import React, {Component, useState, useEffect} from 'react';
-import firebase from '@react-native-firebase/app';
+import React, { useState, useEffect} from 'react';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import {useContext} from 'react';
@@ -11,8 +10,7 @@ import { ActivityIndicator } from 'react-native';
 
 export default function FirebaseDatabase() {
   const {user} = useContext(AppStateContext);
-  // console.log(user.uid + 'this comes from the profile component');
-  // console.log(user);
+
 
   const [userData, setUserData] = useState();
   
@@ -31,7 +29,6 @@ export default function FirebaseDatabase() {
       .catch(err => console.log(err));
   }, [user.uid]);
 
-  // console.log(userData);
 
   // logout the user
   const logout = () => {
