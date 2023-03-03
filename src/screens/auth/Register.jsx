@@ -17,7 +17,7 @@ import {
 
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-// import messaging from '@react-native-firebase/messaging';
+import messaging from '@react-native-firebase/messaging';
 
 import {styles} from '../../styles/Style';
 
@@ -40,8 +40,9 @@ export default function Register({navigation}) {
       return alert(`Passwords don't match`);
     }
 
-    // const token = await messaging().getToken();
-    // console.log(token)
+   const token = await messaging().getToken();
+   console.log(token)
+    
 
     auth()
       .createUserWithEmailAndPassword(`${email.name}`, `${password.name}`)
@@ -66,7 +67,8 @@ export default function Register({navigation}) {
               challenges_lost: 0,
               runs: 0,
               points: 0,
-              //  fcmToken: token,
+              fcmToken: token,
+
             })
             .then(() => {
               console.log('User data added to Firestore!');
