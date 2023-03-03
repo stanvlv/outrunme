@@ -10,6 +10,7 @@ import {
   HStack,
   Center,
   Text,
+  index,
 } from 'native-base';
 import {StyleSheet, View, TouchableOpacity} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -19,12 +20,13 @@ import {AppStateContext} from '../../App';
 import {color} from 'native-base/lib/typescript/theme/styled-system';
 
 export default function LeaderboardItem({
-  place,
+  rank,
   wins,
   losses,
   runs,
   username,
-  navigation
+  points,
+  navigation,
 }) {
   const {user} = useContext(AppStateContext);
   const [userData, setUserData] = useState();
@@ -44,45 +46,45 @@ export default function LeaderboardItem({
   }, [user.uid]);
 
   return (
-    <Center>     
+    <Center>
       <HStack
-        key='place'
+        key="rank"
         alignItems="center"
         py="3"
         px="2"
         w="98%"
         justifyContent="space-between"
+        opacity={0.8}
         style={[
-          place % 2 === 0 ? { backgroundColor: '#F0F0F080' } : { backgroundColor: '#FFFFFF80' },
+          index % 2 === 0
+            ? {backgroundColor: '#F0F0F080'}
+            : {backgroundColor: '#FFFFFF80'},
           username === userData?.username ? styles.userBorder : '',
-        ]}
-        
-        >
-          {/* <TouchableOpacity onPress={() => navigation.navigate('Profile')}> */}
-        <HStack style={{direction: 'row', alignItems: 'baseline'}} >
-          <Text fontSize="md">{place}. </Text>
-            <Text fontSize="lg" bold>
-        {username}
+        ]}>
+        {/* <TouchableOpacity onPress={() => navigation.navigate('Profile')}> */}
+        <HStack style={{direction: 'row', alignItems: 'baseline'}}>
+          <Text fontSize="md">{rank}. </Text>
+          <Text fontSize="lg" bold>
+            {username}
           </Text>
         </HStack>
         {/* </TouchableOpacity> */}
         <HStack mx="1">
-          <HStack mx="5" width='25'>
-            <Ionicons name="trophy" size={23} color='#028a0f' />
+          <Text>{points}</Text>
+          <HStack mx="5" width="25">
+            <Ionicons name="trophy" size={23} color="#028a0f" />
             <Text fontSize="md">{wins}</Text>
           </HStack>
-          <HStack mx="4" width='25'>
+          <HStack mx="4" width="25">
             <Ionicons name="close" size={23} color="#df2c14" />
             <Text fontSize="md">{losses}</Text>
           </HStack>
-          <HStack mx="4" width='25'>
+          <HStack mx="4" width="25">
             <MaterialIcons name="run" size={23} color="#F1600D" />
             <Text fontSize="md">{runs}</Text>
           </HStack>
         </HStack>
-     
-      </HStack> 
-        
+      </HStack>
     </Center>
   );
 }
