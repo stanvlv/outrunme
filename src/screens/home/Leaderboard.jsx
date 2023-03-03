@@ -30,7 +30,7 @@ export default function Leaderboard({navigation}) {
     let currentCount = -1,
       currentRank = 0,
       stack = 1; // consecutive clients with same rating
-    for (let i = 0; i < leaderBoardUser.length; i++) {
+    for (let i = 0; i < leaderBoardUser?.length; i++) {
       const result = leaderBoardUser[i];
       if (currentCount !== result['points']) {
         currentRank += stack;
