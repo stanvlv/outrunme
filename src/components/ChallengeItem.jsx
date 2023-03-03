@@ -18,8 +18,6 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 export default function ChallengeItem({
   item,
-  key,
-  title,
   userTime,
   userKm,
   otherTime,
@@ -146,8 +144,6 @@ export default function ChallengeItem({
   const finalTime = convertDateHours(item.challenger_date);
   const RunTime = formatTime(otherTime);
   const convUserTime = formatTime(userTime);
-  const timestamp = item.challenger_date;
-  const formattedDate = date.toLocaleDateString();
   const convUserKm = formatDistance(userKm);
   const convOtherKm = formatDistance(otherKm);
 
@@ -224,10 +220,6 @@ export default function ChallengeItem({
             </HStack>
           </VStack>
         )}
-        {/*   {item.accepted === false && (
-              <Text style={styles.rejected}>Rejected</Text>
-            )} */}
-        {/* distance and time labels on sent */}
 
         {selectedTab === 'sent' && (
           <HStack mt="2" justifyContent="center" alignItems="center">
@@ -265,38 +257,6 @@ export default function ChallengeItem({
           </HStack>
         )}
       </TouchableOpacity>
-      {/* <View
-        style={{
-          height: layoutHeight,
-          overflow: 'hidden',
-        }}> */}
-      {/*Details*/}
-      {/* {userTime ? (
-          <TouchableOpacity key={key} style={styles.content}>
-            <Text style={styles.text}>your Stats</Text>
-            <Text style={styles.text}>time: {formatTime(userTime)} min</Text>
-            <Text style={styles.text}>distance: {formatDistance(userKm)} </Text>
-            <View style={styles.separator} />
-          </TouchableOpacity>
-        ) : null}
-        {otherTime ? (
-          <TouchableOpacity key={key} style={styles.content}>
-            <Text style={styles.text}>their Stats</Text>
-            <Text style={styles.text}>time: {formatTime(otherTime)}</Text>
-            <Text style={styles.text}>distance: {formatDistance(otherKm)} </Text>
-          </TouchableOpacity>
-        ) : null}
-        {showButtons && item.accepted !== false && (
-          <Link>
-            <Button onPress={onClick}>Accept</Button>
-
-            <Button onPress={PostRejected}>Reject</Button>
-          </Link>
-        )}
-        {item.accepted === false && (
-          <Button onPress={DeleteRejected}>Delete</Button>
-        )}
-      </View> */}
     </View>
   );
 }

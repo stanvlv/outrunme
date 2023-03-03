@@ -1,33 +1,23 @@
 import React, {useEffect, useState} from 'react';
-import MapView, {Marker, Polyline} from 'react-native-maps';
+import MapView, {Polyline} from 'react-native-maps';
 import {StyleSheet, View, TouchableOpacity} from 'react-native';
-import firestore from '@react-native-firebase/firestore';
+
 import {
   VStack,
-  Input,
-  NativeBaseProvider,
-  Button,
-  Link,
-  Box,
   HStack,
   Text,
-  Center,
 } from 'native-base';
-import {useContext} from 'react';
-import {AppStateContext} from '../../App';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function FinishedChallenges({
     item,
     key,
-    title,
     userTime,
     userKm,
     otherTime,
     otherKm,
     nameTile,
     selectedTab,
-    navigation,
     userData,
     sent,
     byTime,
@@ -124,7 +114,6 @@ export default function FinishedChallenges({
       return hr + ':' + m.slice(-2) + ':' + s.slice(-2);
     };
   
-    const finalTime = convertDate(item.challenger_date);
  
   
  
@@ -140,8 +129,7 @@ export default function FinishedChallenges({
       return `${km}.${hm}${dm} km`;
     };
   
-    const timestamp = item.challenger_date;
-    const formattedDate = date.toLocaleDateString();
+ 
     const convUserKm = formatDistance(userKm);
     const convOpponentKm = formatDistance(otherKm);
   

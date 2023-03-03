@@ -1,4 +1,3 @@
-import React from 'react' // not sure if needed
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 // import all the screens for Auth
 import Login from '../screens/auth/Login';

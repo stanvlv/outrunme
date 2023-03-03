@@ -1,4 +1,4 @@
-import MapView, {Marker, Polyline} from 'react-native-maps';
+import MapView, {Polyline} from 'react-native-maps';
 import {StyleSheet} from 'react-native';
 import {View} from 'react-native';
 

@@ -4,17 +4,9 @@ import {StyleSheet, View, TouchableOpacity} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import {
   VStack,
-  Input,
-  NativeBaseProvider,
-  Button,
-  Link,
-  Box,
   HStack,
   Text,
-  Center,
 } from 'native-base';
-import {useContext} from 'react';
-import {AppStateContext} from '../../App';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function ChallengeItemFinished() {
