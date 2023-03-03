@@ -162,6 +162,17 @@ export default function Map({route, navigation}) {
     };
   }, [watchingLocation]);
 
+  const loseOnePoint = user_id => {
+    const userReference = firestore().collection('users').doc(user_id);
+    return firestore().runTransaction(async transaction => {
+      const postSnapshot = await transaction.get(userReference);
+      const updatedPoints = postSnapshot.data().points - 1;
+      if (updatedPoints >= 0) {
+        await transaction.update(userReference, {points: updatedPoints});
+      }
+    });
+  };
+
   const onStartWatching = () => {
     setWatchingLocation(true);
     const timerId = setInterval(
@@ -254,32 +265,50 @@ export default function Map({route, navigation}) {
               challenges_lost: increment,
               runs: increment,
             });
+            loseOnePoint(user.uid);
             firestore().collection('users').doc(run.challenger_id).update({
               challenges_won: increment,
               runs: increment,
+              points: increment,
             });
           } else {
             firestore().collection('users').doc(user.uid).update({
               challenges_won: increment,
               runs: increment,
+              points: increment,
             });
             firestore().collection('users').doc(run.challenger_id).update({
               challenges_lost: increment,
               runs: increment,
             });
+            loseOnePoint(run.challenger_id);
           }
 
           setRun({finished: true});
           navigation.navigate('Challenges');
           setTimer(0);
           setDistance(0);
-          setLatlng([])
-          setRun({showMap: false})
+          setLatlng([]);
+          setRun({showMap: false});
         });
     }
   };
-  // console.log(user.uid);
 
+  //   const res = await db.runTransaction(async t => {
+  //     const doc = await t.get(cityRef);
+  //     const newPopulation = doc.data().population + 1;
+  //     if (newPopulation <= 1000000) {
+  //       await t.update(cityRef, { population: newPopulation });
+  //       return `Population increased to ${newPopulation}`;
+  //     } else {
+  //       throw 'Sorry! Population is too big.';
+  //     }
+  //   });
+  //   console.log('Transaction success', res);
+  // } catch (e) {
+  //   console.log('Transaction failure:', e);
+  // }
+  // }
   // console.log(latlng + ` this will be saved for coordinates`);
   const PostTimeTrue = () => {
     firestore()
@@ -318,14 +347,11 @@ export default function Map({route, navigation}) {
         setShowChoice(false);
         setTimer(0);
         setDistance(0);
-        setLatlng([])
-        setRun({showMap: false})
+        setLatlng([]);
+        setRun({showMap: false});
       })
       .catch(err => console.log(err + ' from outside'));
- 
- 
-    };
-
+  };
 
   const PostTimeFalse = () => {
     firestore()
@@ -364,8 +390,8 @@ export default function Map({route, navigation}) {
         setShowChoice(false);
         setTimer(0);
         setDistance(0);
-        setLatlng([])
-        setRun({showMap: false})
+        setLatlng([]);
+        setRun({showMap: false});
       })
       .catch(err => console.log(err + ' from outside'));
   };
@@ -531,10 +557,16 @@ export default function Map({route, navigation}) {
                     justifyContent: 'space-evenly',
                     paddingBottom: 20,
                   }}>
-                  <Button colorScheme='warning' style={styles.logoutButton} onPress={PostTimeTrue}>
+                  <Button
+                    colorScheme="warning"
+                    style={styles.logoutButton}
+                    onPress={PostTimeTrue}>
                     TIME
                   </Button>
-                  <Button colorScheme='warning' style={styles.logoutButton} onPress={PostTimeFalse}>
+                  <Button
+                    colorScheme="warning"
+                    style={styles.logoutButton}
+                    onPress={PostTimeFalse}>
                     DISTANCE
                   </Button>
                 </HStack>
@@ -549,7 +581,7 @@ export default function Map({route, navigation}) {
             Challenge someone to start a run
           </Text>
           <Button
-            colorScheme='warning'
+            colorScheme="warning"
             onPress={() => {
               navigation.navigate('Search');
             }}>

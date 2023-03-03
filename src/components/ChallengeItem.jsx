@@ -48,6 +48,17 @@ export default function ChallengeItem({
     }
   }, [isClicked]);
 
+  const loseOnePoint = user_id => {
+    const userReference = firestore().collection('users').doc(user_id);
+    return firestore().runTransaction(async transaction => {
+      const postSnapshot = await transaction.get(userReference);
+      const updatedPoints = postSnapshot.data().points - 1;
+      if (updatedPoints >= 0) {
+        await transaction.update(userReference, {points: updatedPoints});
+      }
+    });
+  };
+
   const PostRejected = () => {
     firestore()
       .collection('challenged')
@@ -62,9 +73,12 @@ export default function ChallengeItem({
     firestore().collection('users').doc(user.uid).update({
       challenges_lost: increment,
     });
-    // Add a win challenge on challenger profile
+    // Take 1 point from user profile
+    loseOnePoint(user.uid);
+    // Add a win and a point on challenger profile
     firestore().collection('users').doc(item.challenger_id).update({
       challenges_won: increment,
+      points: increment,
     });
   };
 
