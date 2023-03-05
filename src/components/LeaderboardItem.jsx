@@ -14,6 +14,7 @@ import {AppStateContext} from '../../App';
 
 export default function LeaderboardItem({
   rank,
+  points,
   wins,
   losses,
   runs,
@@ -55,7 +56,7 @@ export default function LeaderboardItem({
         >
           
         <HStack style={{direction: 'row', alignItems: 'baseline'}} >
-          <Text fontSize="md">{place}. </Text>
+          <Text fontSize="md">{rank}. </Text>
             <Text fontSize="lg" bold>
         {username}
           </Text>

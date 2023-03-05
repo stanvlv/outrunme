@@ -99,33 +99,10 @@ export default function FinishedChallenges({
   const finalDateTime = convertDateHours(item.challenged_date);
   const RunTime = formatTime(otherTime);
 
-    const convertDate = time => {
-      const dt = new Date(time);
-      const hr = dt.getUTCHours();
-      const m = '0' + dt.getUTCMinutes();
-      const s = '0' + dt.getSeconds();
-  
-      return hr + ':' + m.slice(-2) + ':' + s.slice(-2);
-    };
-  
  
   
- 
 
-    const convOpponentTime = formatTime(otherTime);
-    const convUserTime = formatTime(userTime);
   
-  
-    const formatDistance = distance => {
-      const km = Math.floor(distance / 1000); // get km
-      const hm = Math.floor((distance - km * 1000) / 100); // get hundreds of meters
-      const dm = Math.floor((distance - km * 1000 - hm * 100) / 10); // get tenths of meters
-      return `${km}.${hm}${dm} km`;
-    };
-  
- 
-    const convUserKm = formatDistance(userKm);
-    const convOpponentKm = formatDistance(otherKm);
 
 
   const convertDate = time => {
