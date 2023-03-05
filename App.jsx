@@ -9,6 +9,9 @@ import auth from '@react-native-firebase/auth';
 import AuthNavigator from './src/navigation/AuthNavigator';
 import BottomNavBar from './src/navigation/BottomNavBar';
 
+
+
+
 export const AppStateContext = React.createContext();
 
 const AppStateProvider = props => {
@@ -41,6 +44,12 @@ export default function App() {
   }, []);
 
   if (initializing) return null;
+
+
+
+
+
+
 
 
 

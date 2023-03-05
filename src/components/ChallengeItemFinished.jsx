@@ -1,7 +1,6 @@
 import React from 'react';
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, View, TouchableOpacity} from 'react-native';
-import firestore from '@react-native-firebase/firestore';
 import {
   VStack,
   HStack,
@@ -9,15 +8,9 @@ import {
 } from 'native-base';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-export default function ChallengeItemFinished() {
+export default function ChallengeItemFinished({userData}) {
   return (
     <VStack>
-      <HStack justifyContent="flex-end">
-        <Text style={styles.date}>
-          {weekDay}
-          {finalTime}
-        </Text>
-      </HStack>
       <HStack>
         <VStack alignItems="center" my="1" style={{flex: 2}}>
           <Text style={styles.headerText} py="2">

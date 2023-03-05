@@ -46,6 +46,17 @@ export default function ChallengeItem({
     }
   }, [isClicked]);
 
+  const loseOnePoint = user_id => {
+    const userReference = firestore().collection('users').doc(user_id);
+    return firestore().runTransaction(async transaction => {
+      const postSnapshot = await transaction.get(userReference);
+      const updatedPoints = postSnapshot.data().points - 1;
+      if (updatedPoints >= 0) {
+        await transaction.update(userReference, {points: updatedPoints});
+      }
+    });
+  };
+
   const PostRejected = () => {
     firestore()
       .collection('challenged')
@@ -60,28 +71,29 @@ export default function ChallengeItem({
     firestore().collection('users').doc(user.uid).update({
       challenges_lost: increment,
     });
-    // Add a win challenge on challenger profile
+    // Take 1 point from user profile
+    loseOnePoint(user.uid);
+    // Add a win and a point on challenger profile
     firestore().collection('users').doc(item.challenger_id).update({
       challenges_won: increment,
+      points: increment,
     });
   };
 
-  const DeleteRejected = () => {
-    if (item.challenger) {
-      firestore()
-        .collection('challenged')
-        .doc(`${userData}`)
-        .collection('challenges')
-        .doc(`${item.id}`)
-        .delete();
-    } else {
-      firestore()
-        .collection('challenger')
-        .doc(`${userData}`)
-        .collection('challenges')
-        .doc(`${item.id}`)
-        .delete();
-    }
+  const DeleteSent = () => {
+    firestore()
+      .collection('challenger')
+      .doc(`${userData}`)
+      .collection('challenges')
+      .doc(`${item.id}`)
+      .delete();
+
+    firestore()
+      .collection('challenged')
+      .doc(`${nameTile}`)
+      .collection('challenges')
+      .doc(`${item.id}`)
+      .delete();
   };
 
   const onClick = () => {
@@ -150,7 +162,7 @@ export default function ChallengeItem({
   return (
     <View>
       <TouchableOpacity
-        activeOpacity={0.8}
+        // activeOpacity={0.8}
         onPress={handleClick}
         style={styles.header}>
         {/* Header */}
@@ -181,7 +193,7 @@ export default function ChallengeItem({
               </Text>
             </HStack>
 
-            <HStack justifyContent="space-between" alignItems="flex-end" ml="2">
+            <HStack justifyContent="space-between" alignItems="flex-end">
               {otherKm === '***' && (
                 <HStack p="0.5" alignItems="center" style={styles.fillBlue}>
                   <MaterialCommunityIcons
@@ -195,10 +207,10 @@ export default function ChallengeItem({
                 </HStack>
               )}
               {otherTime === '***' && (
-                <HStack alignItems="center" style={styles.fillBlue}>
+                <HStack alignItems="center" style={styles.fillBlue} py="0.5">
                   <MaterialCommunityIcons
                     name="map-marker-distance"
-                    size={30}
+                    size={32}
                     style={styles.colorWhite}
                   />
                   <Text px="1" style={styles.colorWhite}>
@@ -222,37 +234,44 @@ export default function ChallengeItem({
         )}
 
         {selectedTab === 'sent' && (
-          <HStack mt="2" justifyContent="center" alignItems="center">
-            <HStack
-              px="0.5"
-              mx="2"
-              alignItems="center"
-              style={byTime ? styles.fillBlue : styles.borderBlue}>
-              <MaterialCommunityIcons
-                name="timer-outline"
-                size={30}
-                style={byTime ? styles.colorWhite : styles.colorBlue}
-              />
-              <Text
-                px="1"
-                style={byTime ? styles.colorWhite : styles.colorBlue}>
-                {convUserTime}
-              </Text>
+          <HStack mt="2" alignItems="center" justifyContent="space-between">
+            <HStack>
+              <HStack
+                p="0.5"
+                mr="2"
+                alignItems="center"
+                style={byTime ? styles.fillBlue : styles.borderBlue}>
+                <MaterialCommunityIcons
+                  name="timer-outline"
+                  size={32}
+                  style={byTime ? styles.colorWhite : styles.colorBlue}
+                />
+                <Text
+                  px="1"
+                  style={byTime ? styles.colorWhite : styles.colorBlue}>
+                  {convUserTime}
+                </Text>
+              </HStack>
+              <HStack
+                mx="2"
+                alignItems="center"
+                style={byTime ? styles.borderBlue : styles.fillBlue}>
+                <MaterialCommunityIcons
+                  name="map-marker-distance"
+                  size={32}
+                  style={byTime ? styles.colorBlue : styles.colorWhite}
+                />
+                <Text
+                  px="1"
+                  style={byTime ? styles.colorBlue : styles.colorWhite}>
+                  {convUserKm}
+                </Text>
+              </HStack>
             </HStack>
-            <HStack
-              mx="2"
-              alignItems="center"
-              style={byTime ? styles.borderBlue : styles.fillBlue}>
-              <MaterialCommunityIcons
-                name="map-marker-distance"
-                size={30}
-                style={byTime ? styles.colorBlue : styles.colorWhite}
-              />
-              <Text
-                px="1"
-                style={byTime ? styles.colorBlue : styles.colorWhite}>
-                {convUserKm}
-              </Text>
+            <HStack>
+              <Button style={styles.buttonDecline} onPress={DeleteSent}>
+                <Text style={styles.colorOrange}>Delete</Text>
+              </Button>
             </HStack>
           </HStack>
         )}
