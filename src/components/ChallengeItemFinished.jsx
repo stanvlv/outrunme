@@ -1,11 +1,12 @@
 import React from 'react';
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, View, TouchableOpacity} from 'react-native';
+import {View, TouchableOpacity} from 'react-native';
 import {
   VStack,
   HStack,
   Text,
 } from 'native-base';
+import { styles } from '../styles/Style';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function ChallengeItemFinished({userData}) {
@@ -13,32 +14,32 @@ export default function ChallengeItemFinished({userData}) {
     <VStack>
       <HStack>
         <VStack alignItems="center" my="1" style={{flex: 2}}>
-          <Text style={styles.headerText} py="2">
+          <Text style={styles.headerTextChallengeItemFinished} py="2">
             {userData}
           </Text>
           <HStack
             px="0.5"
             my="3"
             alignItems="center"
-            style={byTime ? styles.fillBlue : styles.borderBlue}>
+            style={byTime ? styles.fillBlueChallengeItemFinished : styles.borderBlueChallengeItemFinished}>
             <MaterialCommunityIcons
               name="timer-outline"
               size={30}
-              style={byTime ? styles.colorWhite : styles.colorBlue}
+              style={byTime ? styles.colorWhiteChallengeItemFinished : styles.colorBlueChallengeItemFinished}
             />
-            <Text px="1" style={byTime ? styles.colorWhite : styles.colorBlue}>
+            <Text px="1" style={byTime ? styles.colorWhiteChallengeItemFinished : styles.colorBlueChallengeItemFinished}>
               {convUserTime}
             </Text>
           </HStack>
           <HStack
             alignItems="center"
-            style={byTime ? styles.borderBlue : styles.fillBlue}>
+            style={byTime ? styles.borderBlueChallengeItemFinished : styles.fillBlueChallengeItemFinished}>
             <MaterialCommunityIcons
               name="map-marker-distance"
               size={30}
-              style={byTime ? styles.colorBlue : styles.colorWhite}
+              style={byTime ? styles.colorBlueChallengeItemFinished : styles.colorWhiteChallengeItemFinished}
             />
-            <Text px="1" style={byTime ? styles.colorBlue : styles.colorWhite}>
+            <Text px="1" style={byTime ? styles.colorBlueChallengeItemFinished : styles.colorWhiteChallengeItemFinished}>
               {convUserKm}
             </Text>
           </HStack>
@@ -59,32 +60,32 @@ export default function ChallengeItemFinished({userData}) {
           )}
         </VStack>
         <VStack alignItems="center" my="1" style={{flex: 2}}>
-          <Text style={styles.headerText} py="2">
+          <Text style={styles.headerTextChallengeItemFinished} py="2">
             {nameTile}
           </Text>
           <HStack
             px="0.5"
             my="3"
             alignItems="center"
-            style={byTime ? styles.fillBlue : styles.borderBlue}>
+            style={byTime ? styles.fillBlueChallengeItemFinished : styles.borderBlueChallengeItemFinished}>
             <MaterialCommunityIcons
               name="timer-outline"
               size={30}
-              style={byTime ? styles.colorWhite : styles.colorBlue}
+              style={byTime ? styles.colorWhiteChallengeItemFinished : styles.colorBlueChallengeItemFinished}
             />
-            <Text px="1" style={byTime ? styles.colorWhite : styles.colorBlue}>
+            <Text px="1" style={byTime ? styles.colorWhiteChallengeItemFinished : styles.colorBlueChallengeItemFinished}>
               {RunTime}
             </Text>
           </HStack>
           <HStack
             alignItems="center"
-            style={byTime ? styles.borderBlue : styles.fillBlue}>
+            style={byTime ? styles.borderBlueChallengeItemFinished : styles.fillBlueChallengeItemFinished}>
             <MaterialCommunityIcons
               name="map-marker-distance"
               size={30}
-              style={byTime ? styles.colorBlue : styles.colorWhite}
+              style={byTime ? styles.colorBlueChallengeItemFinished : styles.colorWhiteChallengeItemFinished}
             />
-            <Text px="1" style={byTime ? styles.colorBlue : styles.colorWhite}>
+            <Text px="1" style={byTime ? styles.colorBlueChallengeItemFinished : styles.colorWhiteChallengeItemFinished}>
               {convOtherKm}
             </Text>
           </HStack>
@@ -93,106 +94,3 @@ export default function ChallengeItemFinished({userData}) {
     </VStack>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  titleText: {
-    flex: 1,
-    fontSize: 22,
-    fontWeight: 'bold',
-  },
-  header: {
-    backgroundColor: '#FEF6ED',
-    opacity: 0.8,
-    borderColor: '#50A5B1',
-    padding: 20,
-    borderTopColor: '#50A5B1',
-    borderTopWidth: 0.5,
-  },
-  headerText: {
-    fontSize: 25,
-    fontWeight: '500',
-  },
-  separator: {
-    height: 1.5,
-    backgroundColor: '#F1600D',
-    width: '95%',
-    marginLeft: 16,
-    marginRight: 16,
-  },
-  text: {
-    fontSize: 16,
-    color: '#1A265A',
-    padding: 10,
-  },
-  content: {
-    paddingLeft: 10,
-    paddingRight: 10,
-    backgroundColor: '#50A5B130',
-  },
-
-  date: {
-    textAlign: 'right',
-    fontSize: 12,
-  },
-
-  timeKm: {
-    fontSize: 19,
-  },
-
-  // time and distance labels:
-
-  colorBlue: {
-    color: '#50A5B1',
-  },
-
-  fillBlue: {
-    borderColor: '#50A5B1',
-    borderWidth: 2,
-    borderRadius: 7,
-    backgroundColor: '#50A5B1',
-  },
-
-  borderBlue: {
-    borderColor: '#50A5B1',
-    borderWidth: 2,
-    borderRadius: 7,
-  },
-
-  colorWhite: {
-    color: 'white',
-  },
-
-  colorOrange: {
-    color: '#F1600D',
-  },
-
-  buttonDecline: {
-    marginTop: 2,
-    backgroundColor: 'transparent',
-    padding: 7,
-    borderColor: '#F1600D',
-    borderWidth: 2,
-    borderRadius: 7,
-  },
-
-  buttonAccept: {
-    marginTop: 2,
-    backgroundColor: 'transparent',
-    padding: 7,
-    borderColor: '#50A5B1',
-    borderWidth: 2,
-    borderRadius: 7,
-  },
-
-  colorWhite: {
-    color: 'white',
-  },
-
-  rejected: {
-    fontSize: 18,
-    color: '#F1600D',
-  },
-});

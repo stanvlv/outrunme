@@ -1,7 +1,8 @@
 import React from 'react';
 import {HStack, VStack} from 'native-base';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {StyleSheet, Text} from 'react-native';
+import {Text} from 'react-native';
+import { styles } from '../styles/Style';
 
 export default function DistanceItem({byTime, distance}) {
   const formatDistance = distance => {
@@ -13,20 +14,20 @@ export default function DistanceItem({byTime, distance}) {
 
   return (
     <HStack
-      style={byTime ? styles.containerSmall : styles.containerBig}
+      style={byTime ? styles.containerSmallDistanceItem : styles.containerBigDistanceItem}
       justifyContent="space-between"
       mx="auto">
       <VStack style={{flex: 1}}>
         <MaterialCommunityIcons
           name="map-marker-distance"
           size={byTime ? 50 : 50}
-          style={byTime ? styles.colorBlue : styles.colorWhite}
+          style={byTime ? styles.colorBlueDistanceItem : styles.colorWhiteDistanceItem}
         />
       </VStack>
       <VStack style={{flex: 3}} alignItems="center">
         <Text
           px="1"
-          style={byTime ? styles.textColorBlue : styles.textColorWhite}>
+          style={byTime ? styles.textColorBlueDistanceItem : styles.textColorWhiteDistanceItem}>
           {formatDistance(distance)}
         </Text>
       </VStack>
@@ -34,49 +35,3 @@ export default function DistanceItem({byTime, distance}) {
     </HStack>
   );
 }
-
-const styles = StyleSheet.create({
-  containerBig: {
-    space: 5,
-    paddingHorizontal: 3,
-    paddingVertical: 1,
-    marginHorizontal: 100,
-    marginTop: 10,
-    alignItems: 'center',
-    borderColor: '#50A5B1',
-    borderWidth: 2,
-    borderTopStartRadius: 7,
-    borderTopEndRadius: 7,
-    backgroundColor: '#50A5B1',
-    width: '95%',
-  },
-
-  containerSmall: {
-    paddingHorizontal: 3,
-    paddingVertical: 1,
-    marginVertical: 5,
-    alignItems: 'center',
-    borderColor: '#50A5B1',
-    borderWidth: 2,
-    borderRadius: 7,
-    width: '95%',
-  },
-
-  colorBlue: {
-    color: '#50A5B1',
-  },
-
-  colorWhite: {
-    color: 'white',
-  },
-
-  textColorBlue: {
-    fontSize: 50,
-    color: '#50A5B1',
-  },
-
-  textColorWhite: {
-    fontSize: 50,
-    color: 'white',
-  },
-});

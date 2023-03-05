@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, View, TouchableOpacity} from 'react-native';
+import { View, TouchableOpacity} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import {
   VStack,
@@ -12,6 +12,7 @@ import {
   Text,
   Center,
 } from 'native-base';
+import { styles } from '../styles/Style';
 import {useContext} from 'react';
 import {AppStateContext} from '../../App';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -164,7 +165,7 @@ export default function ChallengeItem({
       <TouchableOpacity
         // activeOpacity={0.8}
         onPress={handleClick}
-        style={styles.header}>
+        style={styles.headerChallengeItem}>
         {/* Header */}
         {selectedTab !== 'finished' && (
           <VStack space={5}>
@@ -183,37 +184,37 @@ export default function ChallengeItem({
                     style={winner ? {color: '#50A5B1'} : {color: '#F1600D'}}
                   />
                 )}
-                <Text style={styles.headerText} ml="6" py="2">
+                <Text style={styles.headerTextChallengeItem} ml="6" py="2">
                   {nameTile}
                 </Text>
               </HStack>
 
-              <Text style={styles.date}>
+              <Text style={styles.dateChallengeItem}>
                 {weekDay} {finalTime}
               </Text>
             </HStack>
 
             <HStack justifyContent="space-between" alignItems="flex-end">
               {otherKm === '***' && (
-                <HStack p="0.5" alignItems="center" style={styles.fillBlue}>
+                <HStack p="0.5" alignItems="center" style={styles.fillBlueChallengeItem}>
                   <MaterialCommunityIcons
                     name="timer-outline"
                     size={32}
-                    style={styles.colorWhite}
+                    style={styles.colorWhiteChallengeItem}
                   />
-                  <Text px="1" style={styles.colorWhite}>
+                  <Text px="1" style={styles.colorWhiteChallengeItem}>
                     {RunTime}
                   </Text>
                 </HStack>
               )}
               {otherTime === '***' && (
-                <HStack alignItems="center" style={styles.fillBlue} py="0.5">
+                <HStack alignItems="center" style={styles.fillBlueChallengeItem} py="0.5">
                   <MaterialCommunityIcons
                     name="map-marker-distance"
                     size={32}
-                    style={styles.colorWhite}
+                    style={styles.colorWhiteChallengeItem}
                   />
-                  <Text px="1" style={styles.colorWhite}>
+                  <Text px="1" style={styles.colorWhiteChallengeItem}>
                     {convOtherKm}
                   </Text>
                 </HStack>
@@ -221,11 +222,11 @@ export default function ChallengeItem({
 
               {selectedTab === 'received' && item.accepted !== false && (
                 <HStack>
-                  <Button mx="5" style={styles.buttonAccept} onPress={onClick}>
-                    <Text style={styles.colorBlue}>Accept</Text>
+                  <Button mx="5" style={styles.buttonAcceptChallengeItem} onPress={onClick}>
+                    <Text style={styles.colorBlueChallengeItem}>Accept</Text>
                   </Button>
-                  <Button style={styles.buttonDecline} onPress={PostRejected}>
-                    <Text style={styles.colorOrange}>Decline</Text>
+                  <Button style={styles.buttonDeclineChallengeItem} onPress={PostRejected}>
+                    <Text style={styles.colorOrangeChallengeItem}>Decline</Text>
                   </Button>
                 </HStack>
               )}
@@ -240,37 +241,37 @@ export default function ChallengeItem({
                 p="0.5"
                 mr="2"
                 alignItems="center"
-                style={byTime ? styles.fillBlue : styles.borderBlue}>
+                style={byTime ? styles.fillBlueChallengeItem : styles.borderBlueChallengeItem}>
                 <MaterialCommunityIcons
                   name="timer-outline"
                   size={32}
-                  style={byTime ? styles.colorWhite : styles.colorBlue}
+                  style={byTime ? styles.colorWhiteChallengeItem : styles.colorBlueChallengeItem}
                 />
                 <Text
                   px="1"
-                  style={byTime ? styles.colorWhite : styles.colorBlue}>
+                  style={byTime ? styles.colorWhiteChallengeItem : styles.colorBlueChallengeItem}>
                   {convUserTime}
                 </Text>
               </HStack>
               <HStack
                 mx="2"
                 alignItems="center"
-                style={byTime ? styles.borderBlue : styles.fillBlue}>
+                style={byTime ? styles.borderBlueChallengeItem : styles.fillBlueChallengeItem}>
                 <MaterialCommunityIcons
                   name="map-marker-distance"
                   size={32}
-                  style={byTime ? styles.colorBlue : styles.colorWhite}
+                  style={byTime ? styles.colorBlueChallengeItem : styles.colorWhiteChallengeItem}
                 />
                 <Text
                   px="1"
-                  style={byTime ? styles.colorBlue : styles.colorWhite}>
+                  style={byTime ? styles.colorBlueChallengeItem : styles.colorWhiteChallengeItem}>
                   {convUserKm}
                 </Text>
               </HStack>
             </HStack>
             <HStack>
-              <Button style={styles.buttonDecline} onPress={DeleteSent}>
-                <Text style={styles.colorOrange}>Delete</Text>
+              <Button style={styles.buttonDeclineChallengeItem} onPress={DeleteSent}>
+                <Text style={styles.colorOrangeChallengeItem}>Delete</Text>
               </Button>
             </HStack>
           </HStack>
@@ -279,106 +280,3 @@ export default function ChallengeItem({
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  titleText: {
-    flex: 1,
-    fontSize: 22,
-    fontWeight: 'bold',
-  },
-  header: {
-    backgroundColor: '#FEF6ED',
-    opacity: 0.8,
-    borderColor: '#50A5B1',
-    padding: 20,
-    borderTopColor: '#50A5B1',
-    borderTopWidth: 0.5,
-  },
-  headerText: {
-    fontSize: 25,
-    fontWeight: '500',
-  },
-  separator: {
-    height: 1.5,
-    backgroundColor: '#F1600D',
-    width: '95%',
-    marginLeft: 16,
-    marginRight: 16,
-  },
-  text: {
-    fontSize: 16,
-    color: '#1A265A',
-    padding: 10,
-  },
-  content: {
-    paddingLeft: 10,
-    paddingRight: 10,
-    backgroundColor: '#50A5B130',
-  },
-
-  date: {
-    textAlign: 'right',
-    fontSize: 12,
-  },
-
-  timeKm: {
-    fontSize: 19,
-  },
-
-  // time and distance labels:
-
-  colorBlue: {
-    color: '#50A5B1',
-  },
-
-  fillBlue: {
-    borderColor: '#50A5B1',
-    borderWidth: 2,
-    borderRadius: 7,
-    backgroundColor: '#50A5B1',
-  },
-
-  borderBlue: {
-    borderColor: '#50A5B1',
-    borderWidth: 2,
-    borderRadius: 7,
-  },
-
-  colorWhite: {
-    color: 'white',
-  },
-
-  colorOrange: {
-    color: '#F1600D',
-  },
-
-  buttonDecline: {
-    marginTop: 2,
-    backgroundColor: 'transparent',
-    padding: 7,
-    borderColor: '#F1600D',
-    borderWidth: 2,
-    borderRadius: 7,
-  },
-
-  buttonAccept: {
-    marginTop: 2,
-    backgroundColor: 'transparent',
-    padding: 7,
-    borderColor: '#50A5B1',
-    borderWidth: 2,
-    borderRadius: 7,
-  },
-
-  colorWhite: {
-    color: 'white',
-  },
-
-  rejected: {
-    fontSize: 18,
-    color: '#F1600D',
-  },
-});

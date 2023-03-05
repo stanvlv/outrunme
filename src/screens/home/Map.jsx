@@ -4,7 +4,6 @@ import {
   Platform,
   SafeAreaView,
   ScrollView,
-  StyleSheet,
   View,
   Text,
 } from 'react-native';
@@ -20,6 +19,7 @@ import Geolocation from 'react-native-geolocation-service';
 import ViewContainer from '../../components/MapContainer';
 import firestore from '@react-native-firebase/firestore';
 import {getDistance} from 'geolib';
+import { styles } from '../../styles/Style';
 import {useContext} from 'react';
 import {AppStateContext} from '../../../App';
 import TimerItem from '../../components/TimerItem';
@@ -406,7 +406,7 @@ export default function Map({navigation}) {
   }, [progressionTime, progressionDistance]);
 
   return (
-    <View style={styles.container}>
+    <View style={styles.containerMap}>
       {/* Show Map */}
       {currentLocation ? (
         <HStack justifyContent="center">
@@ -414,7 +414,7 @@ export default function Map({navigation}) {
         </HStack>
       ) : null}
       {Object.keys(run).length > 1 ? (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={styles.containerMap}>
           <ScrollView contentInsetAdjustmentBehavior="automatic">
             {run.byTime ? (
               <VStack>
@@ -425,7 +425,7 @@ export default function Map({navigation}) {
                       <Progress
                         colorScheme="warning"
                         value={progressionTime}
-                        style={styles.colorOrange}
+                        style={styles.colorOrangeMap}
                         size="2xl"
                         rounded="0"
                         bg="white"
@@ -439,7 +439,7 @@ export default function Map({navigation}) {
                         px="2"
                         py="1"
                         justifyContent="flex-end">
-                        <Text style={styles.TextMiniWhite}>
+                        <Text style={styles.TextMiniWhiteMap}>
                           {convChallengerTime}
                         </Text>
                       </HStack>
@@ -457,7 +457,7 @@ export default function Map({navigation}) {
                       <Progress
                         colorScheme="warning"
                         value={progressionDistance}
-                        style={styles.colorOrange}
+                        style={styles.colorOrangeMap}
                         size="2xl"
                         rounded="0"
                         bg="white"
@@ -471,7 +471,7 @@ export default function Map({navigation}) {
                         px="2"
                         py="1"
                         justifyContent="flex-end">
-                        <Text style={styles.TextMiniWhite}>
+                        <Text style={styles.TextMiniWhiteMap}>
                           {`${convChallengerKm} Km`}
                         </Text>
                       </HStack>
@@ -482,14 +482,14 @@ export default function Map({navigation}) {
               </VStack>
             )}
             {showChoice === false ? (
-              <HStack style={styles.theButtons} mx="auto">
+              <HStack style={styles.theButtonsMap} mx="auto">
                 <Button
-                  style={styles.button}
+                  style={styles.buttonMap}
                   colorScheme="warning"
                   onPress={handleClickForRun}
                   py="2"
                   width="95%">
-                  <Text style={styles.buttonStartText}>
+                  <Text style={styles.buttonStartTextMap}>
                     {isRunning ? 'Stop' : 'Start'}
                   </Text>
                 </Button>
@@ -497,7 +497,7 @@ export default function Map({navigation}) {
             ) : (
               <VStack>
                 <HStack justifyContent="center" mt="5">
-                  <Text style={styles.customText}>
+                  <Text style={styles.customTextMap}>
                     Challenge your opponent by:
                   </Text>
                 </HStack>
@@ -509,13 +509,13 @@ export default function Map({navigation}) {
                   }}>
                   <Button
                     colorScheme="warning"
-                    style={styles.logoutButton}
+                    style={styles.logoutButtonMap}
                     onPress={PostTimeTrue}>
                     TIME
                   </Button>
                   <Button
                     colorScheme="warning"
-                    style={styles.logoutButton}
+                    style={styles.logoutButtonMap}
                     onPress={PostTimeFalse}>
                     DISTANCE
                   </Button>
@@ -527,7 +527,7 @@ export default function Map({navigation}) {
       ) : (
         // Redirect to search User
         <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Text style={styles.customText}>
+          <Text style={styles.customTextMap}>
             Challenge someone to start a run
           </Text>
           <Button
@@ -542,52 +542,3 @@ export default function Map({navigation}) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FEF6ED',
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-
-  colorOrange: {
-    color: '#F1600D',
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  button: {
-    color: 'white',
-    paddingHorizontal: 30,
-    bottom: 0,
-    borderRadius: 12,
-  },
-  buttonText: {
-    color: '#FEF6ED',
-  },
-
-  buttonStartText: {
-    fontSize: 40,
-    color: 'white',
-  },
-  theButtons: {
-    marginTop: 20,
-  },
-  logoutButton: {
-    backgroundColor: '#50A5B1',
-    width: 150,
-  },
-  customText: {
-    color: '#1A265A',
-    fontSize: 22,
-    fontWeight: '600',
-    paddingBottom: 20,
-  },
-  TextMiniWhite: {
-    color: 'white',
-  },
-});

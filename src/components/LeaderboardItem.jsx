@@ -6,7 +6,7 @@ import {
   Text,
   index,
 } from 'native-base';
-import {StyleSheet} from 'react-native';
+import { styles } from '../styles/Style';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useContext} from 'react';
@@ -51,7 +51,7 @@ export default function LeaderboardItem({
           index % 2 === 0
             ? {backgroundColor: '#F0F0F080'}
             : {backgroundColor: '#FFFFFF80'},
-          username === userData?.username ? styles.userBorder : '',
+          username === userData?.username ? styles.userBorderLeaderboardItem : '',
         ]} 
         >
           
@@ -81,10 +81,3 @@ export default function LeaderboardItem({
     </Center>
   );
 }
-
-const styles = StyleSheet.create({
-  userBorder: {
-    backgroundColor: '#50A5B180',
-    color: 'white',
-  },
-});
