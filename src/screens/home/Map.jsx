@@ -264,22 +264,26 @@ export default function Map({route, navigation}) {
             firestore().collection('users').doc(user.uid).update({
               challenges_lost: increment,
               runs: increment,
+              streak: 0,
             });
             loseOnePoint(user.uid);
             firestore().collection('users').doc(run.challenger_id).update({
               challenges_won: increment,
               runs: increment,
               points: increment,
+              streak: increment,
             });
           } else {
             firestore().collection('users').doc(user.uid).update({
               challenges_won: increment,
               runs: increment,
               points: increment,
+              streak: increment,
             });
             firestore().collection('users').doc(run.challenger_id).update({
               challenges_lost: increment,
               runs: increment,
+              streak: 0,
             });
             loseOnePoint(run.challenger_id);
           }
@@ -557,18 +561,16 @@ export default function Map({route, navigation}) {
                     justifyContent: 'space-evenly',
                     paddingBottom: 20,
                   }}>
-                  <Button
-                    colorScheme="warning"
-                    style={styles.logoutButton}
-                    onPress={PostTimeTrue}>
-                    TIME
-                  </Button>
-                  <Button
-                    colorScheme="warning"
-                    style={styles.logoutButton}
-                    onPress={PostTimeFalse}>
-                    DISTANCE
-                  </Button>
+                  <Box style={styles.logoutButton}>
+                    <Button colorScheme="warning" onPress={PostTimeTrue}>
+                      TIME
+                    </Button>
+                  </Box>
+                  <Box style={styles.logoutButton}>
+                    <Button colorScheme="warning" onPress={PostTimeFalse}>
+                      DISTANCE
+                    </Button>
+                  </Box>
                 </HStack>
               </VStack>
             )}
@@ -628,7 +630,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   logoutButton: {
-    backgroundColor: '#50A5B1',
     width: 150,
   },
   customText: {
