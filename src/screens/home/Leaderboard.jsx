@@ -2,6 +2,8 @@ import React, {useState, useEffect, useContext} from 'react';
 import firestore from '@react-native-firebase/firestore';
 import {Box, HStack, NativeBaseProvider, VStack} from 'native-base';
 import {View, ScrollView, ActivityIndicator, Text} from 'react-native';
+import {HStack, NativeBaseProvider, Text} from 'native-base';
+import {View, ScrollView, ActivityIndicator} from 'react-native';
 import {styles} from '../../styles/Style';
 import LeaderboardItem from '../../components/LeaderboardItem';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -13,7 +15,6 @@ export default function Leaderboard({navigation}) {
   // Get onSnapshot user data from DB, ordered by challenges won:
 
   const leaderboard = async () => {
-    // const userstats = it seems this line is not needed
     firestore()
       .collection('users')
       // .orderBy('points', 'desc')
@@ -28,11 +29,29 @@ export default function Leaderboard({navigation}) {
         );
         setLeaderBoardUser(sorted);
       });
-    return () => user();
   };
   useEffect(() => {
     leaderboard();
   }, []);
+
+  function setRanks(leaderBoardUser) {
+    let currentCount = -1,
+      currentRank = 0,
+      stack = 1; // consecutive clients with same rating
+    for (let i = 0; i < leaderBoardUser?.length; i++) {
+      const result = leaderBoardUser[i];
+      if (currentCount !== result['points']) {
+        currentRank += stack;
+        stack = 1;
+      } else {
+        stack++;
+      }
+      result['rank'] = currentRank;
+      currentCount = result['points'];
+    }
+  }
+  setRanks(leaderBoardUser);
+  console.log(leaderBoardUser);
 
   return (
     <NativeBaseProvider>

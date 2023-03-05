@@ -1,3 +1,4 @@
+import {useState, useEffect} from 'react'
 import {
   Box,
   NativeBaseProvider,
@@ -23,31 +24,14 @@ GoogleSignin.configure({
     '456724083654-jlu3nsqdlhnhh2h4kkcfqf43u9vd3n1h.apps.googleusercontent.com',
 });
 export default function Login({navigation}) {
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
-  const [errors, setErrors] = React.useState({});
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errors, setErrors] = useState({});
 
-  // const validate = () => {
-  //   if (email.name === undefined) {
-  //     setErrors({...errors, name: 'Name is required'});
-  //     return false;
-  //   } else if (email.name.length < 3) {
-  //     setErrors({...errors, name: 'Name is too short'});
-  //     return false;
-  //   }
 
-  //   return true;
-  // };
-  // console.log(email);
-  // console.log(errors);
-
-  // const onSubmit = () => {
-  //   validate() ? console.log('Submitted') : console.log('Validation Failed');
-  // };
 
   // login with email and password
   const loginUser = () => {
-    console.log('kliked');
     auth()
       .signInWithEmailAndPassword(`${email.name}`, `${password.name}`)
       .then(() => {
@@ -56,17 +40,12 @@ export default function Login({navigation}) {
       })
       .catch(error => {
         if (error.code === 'auth/email-already-in-use') {
-          console.log('That email address is already in use!');
           alert('Email already in use');
         }
-
         if (error.code === 'auth/invalid-email') {
-          console.log('That email address is invalid!');
           alert('Wrong email');
         }
-
         if (error.code === 'auth/invalid-password') {
-          console.log('That password is wrong');
           alert('Wrong password');
         }
         alert(error);
@@ -96,29 +75,7 @@ export default function Login({navigation}) {
       style={{flex: 1}}>
       <ScrollView>
         <NativeBaseProvider>
-          {/* {alert && (
-        <Box>
-          <Alert w="100%" status={alert === 'red' ? 'error' : 'warning'}>
-            <HStack flexShrink={1} space={2} justifyContent="space-between">
-              <HStack space={2} flexShrink={1}>
-                <Ionicons
-                  name="alert"
-                  size={30}
-                  color={alert === 'red' ? 'red' : 'orange'}
-                />
-                <Text fontSize="md" color="coolGray.800">
-                  {alert === 'red'
-                    ? 'That email address is invalid!'
-                    : 'That email address is already in use!'}
-                </Text>
-              </HStack>
-              <Button>
-                <Ionicons name="close" size={30} color="black" />
-              </Button>
-            </HStack>
-          </Alert>
-        </Box>
-      )} */}
+         
 
           {/* Form for the email */}
 
@@ -143,13 +100,7 @@ export default function Login({navigation}) {
                     backgroundColor="#FEF6ED"
                     onChangeText={value => setEmail({...email, name: value})}
                   />
-                  {/* {'name' in errors ? (
-                <FormControl.ErrorMessage>
-                  {errors.name}
-                </FormControl.ErrorMessage>
-              ) : (
-                <FormControl.HelperText>{errors.name}</FormControl.HelperText>
-              )} */}
+                 
               </FormControl>
               <FormControl>
                 <FormControl.Label><Text style={styles.textColor}>Password</Text></FormControl.Label>
@@ -166,11 +117,7 @@ export default function Login({navigation}) {
               </FormControl>
               <FormControl>
               <Box style={{display: 'flex', flexDirection: 'column'}}>
-                {/* <Button style={styles.loginButton} onPress={loginUser}> */}
-                  {/* <TouchableOpacity>
-                 <Text style={styles.loginButtonText}> LOGIN </Text>
-                 </TouchableOpacity>
-                </Button> */}
+                
                 <Button onPress={loginUser} colorScheme="warning" >LOGIN</Button>
                 <Link
                   onPress={() => navigation.navigate('ForgotPassword')}
@@ -210,10 +157,6 @@ export default function Login({navigation}) {
                     </Button>
                   </Box>
                 </Box>
-
-                {/* <Button mt="2" colorScheme="indigo" onPress={createUser}>
-                   Register
-                 </Button> */}
 
                 <HStack mt="5" justifyContent="center">
                   <Text

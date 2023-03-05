@@ -6,7 +6,6 @@ import {
   Input,
   NativeBaseProvider,
   Button,
-  Link,
   Text,
   View,
 } from 'native-base';
@@ -19,7 +18,7 @@ export default function Search({navigation}) {
   const [input, setInput] = useState('');
   const [secondUser, setSecondUser] = useState({});
 
-  const {user, isChallenged, run, setRun} = useContext(AppStateContext);
+  const {user, setRun} = useContext(AppStateContext);
 
   const [userData, setUserData] = useState();
   useEffect(() => {

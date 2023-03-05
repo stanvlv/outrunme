@@ -1,39 +1,29 @@
 import React, {useEffect, useState} from 'react';
-import MapView, {Marker, Polyline} from 'react-native-maps';
-import {StyleSheet, View, TouchableOpacity} from 'react-native';
-import firestore from '@react-native-firebase/firestore';
+import MapView, {Polyline} from 'react-native-maps';
+import {View, TouchableOpacity} from 'react-native';
+import { styles } from '../styles/Style';
 import {
   VStack,
-  Input,
-  NativeBaseProvider,
-  Button,
-  Link,
-  Box,
   HStack,
   Text,
-  Center,
 } from 'native-base';
-import {useContext} from 'react';
-import {AppStateContext} from '../../App';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function FinishedChallenges({
-  item,
-  key,
-  title,
-  userTime,
-  userKm,
-  otherTime,
-  otherKm,
-  nameTile,
-  selectedTab,
-  navigation,
-  userData,
-  sent,
-  byTime,
-  winner,
-  userCoordinates,
-  opponentCoordinates,
+    item,
+    key,
+    userTime,
+    userKm,
+    otherTime,
+    otherKm,
+    nameTile,
+    selectedTab,
+    userData,
+    sent,
+    byTime,
+    winner,
+    userCoordinates,
+    opponentCoordinates
 }) {
   const [myLayoutHeight, setMyLayoutHeight] = useState(0);
   const [opponentLayoutHeight, setOpponentLayoutHeight] = useState(0);
@@ -109,6 +99,12 @@ export default function FinishedChallenges({
   const finalDateTime = convertDateHours(item.challenged_date);
   const RunTime = formatTime(otherTime);
 
+ 
+  
+
+  
+
+
   const convertDate = time => {
     const dt = new Date(time);
     const hr = dt.getUTCHours();
@@ -136,42 +132,42 @@ export default function FinishedChallenges({
   const convOpponentKm = formatDistance(otherKm);
 
   return (
-    <View style={styles.header}>
+    <View style={styles.headerFinishedChallenges}>
       {selectedTab === 'finished' && (
         <VStack>
           <HStack>
             <TouchableOpacity onPress={clickMyMap} activeOpacity={0.8}>
               <VStack alignItems="center" mt="1" style={{flex: 2}}>
-                <Text style={styles.headerText} py="2">
+                <Text style={styles.headerTextFinishedChallenges} py="2">
                   {userData}
                 </Text>
                 <HStack
                   px="0.5"
                   my="3"
                   alignItems="center"
-                  style={byTime ? styles.fillBlue : styles.borderBlue}>
+                  style={byTime ? styles.fillBlueFinishedChallenges : styles.borderBlueFinishedChallenges}>
                   <MaterialCommunityIcons
                     name="timer-outline"
                     size={30}
-                    style={byTime ? styles.colorWhite : styles.colorBlue}
+                    style={byTime ? styles.colorWhiteFinishedChallenges : styles.colorBlueFinishedChallenges}
                   />
                   <Text
                     px="1"
-                    style={byTime ? styles.colorWhite : styles.colorBlue}>
+                    style={byTime ? styles.colorWhiteFinishedChallenges : styles.colorBlueFinishedChallenges}>
                     {convUserTime}
                   </Text>
                 </HStack>
                 <HStack
                   alignItems="center"
-                  style={byTime ? styles.borderBlue : styles.fillBlue}>
+                  style={byTime ? styles.borderBlueFinishedChallenges : styles.fillBlueFinishedChallenges}>
                   <MaterialCommunityIcons
                     name="map-marker-distance"
                     size={30}
-                    style={byTime ? styles.colorBlue : styles.colorWhite}
+                    style={byTime ? styles.colorBlueFinishedChallenges : styles.colorWhiteFinishedChallenges}
                   />
                   <Text
                     px="1"
-                    style={byTime ? styles.colorBlue : styles.colorWhite}>
+                    style={byTime ? styles.colorBlueFinishedChallenges : styles.colorWhiteFinishedChallenges}>
                     {convUserKm}
                   </Text>
                 </HStack>
@@ -197,36 +193,36 @@ export default function FinishedChallenges({
             </VStack>
             <TouchableOpacity onPress={clickOpponentMap}>
               <VStack alignItems="center" my="1" style={{flex: 2}}>
-                <Text style={styles.headerText} py="2">
+                <Text style={styles.headerTextFinishedChallenges} py="2">
                   {nameTile}
                 </Text>
                 <HStack
                   px="0.5"
                   my="3"
                   alignItems="center"
-                  style={byTime ? styles.fillBlue : styles.borderBlue}>
+                  style={byTime ? styles.fillBlueFinishedChallenges : styles.borderBlueFinishedChallenges}>
                   <MaterialCommunityIcons
                     name="timer-outline"
                     size={30}
-                    style={byTime ? styles.colorWhite : styles.colorBlue}
+                    style={byTime ? styles.colorWhiteFinishedChallenges : styles.colorBlueFinishedChallenges}
                   />
                   <Text
                     px="1"
-                    style={byTime ? styles.colorWhite : styles.colorBlue}>
+                    style={byTime ? styles.colorWhiteFinishedChallenges : styles.colorBlueFinishedChallenges}>
                     {RunTime}
                   </Text>
                 </HStack>
                 <HStack
                   alignItems="center"
-                  style={byTime ? styles.borderBlue : styles.fillBlue}>
+                  style={byTime ? styles.borderBlueFinishedChallenges : styles.fillBlueFinishedChallenges}>
                   <MaterialCommunityIcons
                     name="map-marker-distance"
                     size={30}
-                    style={byTime ? styles.colorBlue : styles.colorWhite}
+                    style={byTime ? styles.colorBlueFinishedChallenges : styles.colorWhiteFinishedChallenges}
                   />
                   <Text
                     px="1"
-                    style={byTime ? styles.colorBlue : styles.colorWhite}>
+                    style={byTime ? styles.colorBlueFinishedChallenges : styles.colorWhiteFinishedChallenges}>
                     {convOpponentKm}
                   </Text>
                 </HStack>
@@ -234,7 +230,7 @@ export default function FinishedChallenges({
             </TouchableOpacity>
           </HStack>
           <HStack justifyContent="center">
-            <Text style={styles.date}>
+            <Text style={styles.dateFinishedChallenges}>
               {weekDay} {finalDateTime}
             </Text>
           </HStack>
@@ -247,13 +243,13 @@ export default function FinishedChallenges({
           overflow: 'hidden',
         }}>
         {userTime ? (
-          <TouchableOpacity key={key} style={styles.myMapStyle}>
+          <TouchableOpacity key={key} style={styles.myMapStyleFinishedChallenges}>
             <Text> THIS SHOULD BE MY MAP </Text>
             {userCoordinates ? (
-              <View style={styles.containerMap}>
+              <View style={styles.containerMapFinishedChallenges}>
                 <MapView
                   // showsUserLocation={true} this is to show the gps point where we are at the moment
-                  style={styles.map}
+                  style={styles.mapFinishedChallenges}
                   region={{
                     latitude: userCoordinates?.[0].latitude,
                     longitude: userCoordinates?.[0].longitude,
@@ -280,14 +276,14 @@ export default function FinishedChallenges({
           overflow: 'hidden',
         }}>
         {otherTime ? (
-          <TouchableOpacity key={key} style={styles.opponentMapStyle}>
+          <TouchableOpacity key={key} style={styles.opponentMapStyleFinishedChallenges}>
             <Text> OPPONENT MAP HERE </Text>
 
             {opponentCoordinates ? (
-              <View style={styles.containerMap}>
+              <View style={styles.containerMapFinishedChallenges}>
                 <MapView
                   // showsUserLocation={true} this is to show the gps point where we are at the moment
-                  style={styles.map}
+                  style={styles.mapFinishedChallenges}
                   region={{
                     latitude: opponentCoordinates?.[0].latitude,
                     longitude: opponentCoordinates?.[0].longitude,
@@ -311,122 +307,3 @@ export default function FinishedChallenges({
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  containerMap: {
-    display: 'flex',
-    //   ...StyleSheet.absoluteFillObject,
-    height: 275,
-    width: 'auto',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  map: {
-    ...StyleSheet.absoluteFillObject,
-  },
-  container: {
-    flex: 1,
-  },
-  titleText: {
-    flex: 1,
-    fontSize: 22,
-    fontWeight: 'bold',
-  },
-  header: {
-    backgroundColor: '#FEF6ED',
-    opacity: 0.8,
-    borderColor: '#50A5B1',
-    padding: 20,
-    borderTopColor: '#50A5B1',
-    borderTopWidth: 0.5,
-  },
-  headerText: {
-    fontSize: 25,
-    fontWeight: '500',
-  },
-  separator: {
-    height: 1.5,
-    backgroundColor: '#F1600D',
-    width: '95%',
-    marginLeft: 16,
-    marginRight: 16,
-  },
-  text: {
-    fontSize: 16,
-    color: '#1A265A',
-    padding: 10,
-  },
-  myMapStyle: {
-    paddingLeft: 10,
-    paddingRight: 10,
-    backgroundColor: '#50A5B130',
-  },
-  opponentMapStyle: {
-    paddingLeft: 10,
-    paddingRight: 10,
-    backgroundColor: '#50A5B130',
-  },
-
-  date: {
-    fontSize: 13,
-    // color: '#50A5B1',
-  },
-
-  timeKm: {
-    fontSize: 19,
-  },
-
-  // time and distance labels:
-
-  colorBlue: {
-    color: '#50A5B1',
-  },
-
-  fillBlue: {
-    borderColor: '#50A5B1',
-    borderWidth: 2,
-    borderRadius: 7,
-    backgroundColor: '#50A5B1',
-  },
-
-  borderBlue: {
-    borderColor: '#50A5B1',
-    borderWidth: 2,
-    borderRadius: 7,
-  },
-
-  colorWhite: {
-    color: 'white',
-  },
-
-  colorOrange: {
-    color: '#F1600D',
-  },
-
-  buttonDecline: {
-    marginTop: 2,
-    backgroundColor: 'transparent',
-    padding: 7,
-    borderColor: '#F1600D',
-    borderWidth: 2,
-    borderRadius: 7,
-  },
-
-  buttonAccept: {
-    marginTop: 2,
-    backgroundColor: 'transparent',
-    padding: 7,
-    borderColor: '#50A5B1',
-    borderWidth: 2,
-    borderRadius: 7,
-  },
-
-  colorWhite: {
-    color: 'white',
-  },
-
-  rejected: {
-    fontSize: 18,
-    color: '#F1600D',
-  },
-});

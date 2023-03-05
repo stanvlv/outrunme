@@ -1,14 +1,14 @@
-import MapView, {Marker, Polyline} from 'react-native-maps';
-import {StyleSheet} from 'react-native';
+import MapView, {Polyline} from 'react-native-maps';
+import { styles } from '../styles/Style';
 import {View} from 'react-native';
 
 export default function ViewContainer({currentLocation, latlng}) {
   console.log(latlng);
   return (
-    <View style={styles.containerMap}>
+    <View style={styles.containerMapMapContainer}>
       <MapView
         showsUserLocation={true}
-        style={styles.map}
+        style={styles.mapMapContainer}
         region={{
           latitude: currentLocation?.latitude,
           longitude: currentLocation?.longitude,
@@ -25,17 +25,3 @@ export default function ViewContainer({currentLocation, latlng}) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  containerMap: {
-    display: 'flex',
-    //   ...StyleSheet.absoluteFillObject,
-    height: 175,
-    width: '100%',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  map: {
-    ...StyleSheet.absoluteFillObject,
-  },
-});

@@ -1,20 +1,15 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   PermissionsAndroid,
   Platform,
   SafeAreaView,
   ScrollView,
-  StyleSheet,
-  TouchableOpacity,
   View,
   Text,
 } from 'react-native';
 import {
   VStack,
-  Input,
-  NativeBaseProvider,
   Button,
-  Link,
   Box,
   HStack,
   Center,
@@ -24,6 +19,7 @@ import Geolocation from 'react-native-geolocation-service';
 import ViewContainer from '../../components/MapContainer';
 import firestore from '@react-native-firebase/firestore';
 import {getDistance} from 'geolib';
+import { styles } from '../../styles/Style';
 import {useContext} from 'react';
 import {AppStateContext} from '../../../App';
 import TimerItem from '../../components/TimerItem';
@@ -31,7 +27,7 @@ import DistanceItem from '../../components/DistanceItem';
 
 const LOCATION_UPDATE_INTERVAL = 5000; // 15 seconds
 
-export default function Map({route, navigation}) {
+export default function Map({navigation}) {
   const [watchingLocation, setWatchingLocation] = useState(false);
   const [locationHistory, setLocationHistory] = useState([]);
   const [currentLocation, setCurrentLocation] = useState(null);
@@ -48,7 +44,7 @@ export default function Map({route, navigation}) {
 
   const {user, run, setRun} = useContext(AppStateContext);
 
-  // console.log(Object.values(run));
+
 
   const [userData, setUserData] = useState();
 
@@ -108,14 +104,7 @@ export default function Map({route, navigation}) {
                     },
                   ];
                 });
-                // if (latlng.length) {
-                //   const mran = getDistance(latlng[latlng.length - 1], {
-                //     latitude: position.coords.latitude,
-                //     longitude: position.coords.longitude,
-                //   });
-                //   setDistance(prevDistance => prevDistance + mran);
-                //   console.log(distance + ` this is supposed to be the distance in meters`)
-                // }
+             
               },
               error => {
                 console.log(error);
@@ -133,7 +122,6 @@ export default function Map({route, navigation}) {
       } else {
         watchId = Geolocation.watchPosition(
           position => {
-            //  console.log(position);
             setCurrentLocation(position.coords);
             setLocationHistory(locationHistory => [
               ...locationHistory,
@@ -157,7 +145,6 @@ export default function Map({route, navigation}) {
       if (watchId) {
         Geolocation.clearWatch(watchId);
         setWatchId(undefined);
-        // console.log(watchId);
       }
     };
   }, [watchingLocation]);
@@ -192,11 +179,7 @@ export default function Map({route, navigation}) {
 
     clearInterval(timerId);
 
-    // setTimer(0)
-    // setDistance(0)
     setTimerId(null);
-    // console.log(challenger);
-    // console.log(challenged);
 
     if (challenger === userData.username) {
       setShowChoice(true);
@@ -298,22 +281,6 @@ export default function Map({route, navigation}) {
     }
   };
 
-  //   const res = await db.runTransaction(async t => {
-  //     const doc = await t.get(cityRef);
-  //     const newPopulation = doc.data().population + 1;
-  //     if (newPopulation <= 1000000) {
-  //       await t.update(cityRef, { population: newPopulation });
-  //       return `Population increased to ${newPopulation}`;
-  //     } else {
-  //       throw 'Sorry! Population is too big.';
-  //     }
-  //   });
-  //   console.log('Transaction success', res);
-  // } catch (e) {
-  //   console.log('Transaction failure:', e);
-  // }
-  // }
-  // console.log(latlng + ` this will be saved for coordinates`);
   const PostTimeTrue = () => {
     firestore()
       .collection('challenger')
@@ -328,8 +295,6 @@ export default function Map({route, navigation}) {
         challenger_coordinates: latlng,
       })
       .then(docRef => {
-        // console.log(docRef.id + ' this is for the docref');
-        // console.log('I challenged somebody');
         firestore()
           .collection('challenged')
           .doc(challenged)
@@ -371,8 +336,6 @@ export default function Map({route, navigation}) {
         challenger_coordinates: latlng,
       })
       .then(docRef => {
-        // console.log(docRef.id + ' this is for the docref');
-        // console.log('I challenged somebody');
         firestore()
           .collection('challenged')
           .doc(challenged)
@@ -418,20 +381,7 @@ export default function Map({route, navigation}) {
     return `${hoursStr}:${minutesStr}:${secondsStr}`;
   };
 
-  const convertTime = time => {
-    const dt = new Date(time);
-    const hr = dt.getUTCHours();
-    const m = '0' + dt.getUTCMinutes();
-    const s = '0' + dt.getSeconds();
-    return hr + ':' + m.slice(-2) + ':' + s.slice(-2);
-  };
 
-  // const formatDistance = distance => {
-  //   const km = Math.floor(distance / 1000); // get km
-  //   const hm = Math.floor((distance - km * 1000) / 100); // get hundreds of meters
-  //   const dm = Math.floor((distance - km * 1000 - hm * 100) / 10); // get tenths of meters
-  //   return `${km} km ${hm}:${dm < 10 ? '0' : ''}${dm}`;
-  // };
   const formatDistance = distance => {
     const km = Math.floor(distance / 1000); // get km
     const hm = Math.floor((distance - km * 1000) / 100); // get hundreds of meters
@@ -460,7 +410,7 @@ export default function Map({route, navigation}) {
   }, [progressionTime, progressionDistance]);
 
   return (
-    <View style={styles.container}>
+    <View style={styles.containerMap}>
       {/* Show Map */}
       {currentLocation ? (
         <HStack justifyContent="center">
@@ -468,7 +418,7 @@ export default function Map({route, navigation}) {
         </HStack>
       ) : null}
       {Object.keys(run).length > 1 ? (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={styles.containerMap}>
           <ScrollView contentInsetAdjustmentBehavior="automatic">
             {run.byTime ? (
               <VStack>
@@ -479,7 +429,7 @@ export default function Map({route, navigation}) {
                       <Progress
                         colorScheme="warning"
                         value={progressionTime}
-                        style={styles.colorOrange}
+                        style={styles.colorOrangeMap}
                         size="2xl"
                         rounded="0"
                         bg="white"
@@ -493,7 +443,7 @@ export default function Map({route, navigation}) {
                         px="2"
                         py="1"
                         justifyContent="flex-end">
-                        <Text style={styles.TextMiniWhite}>
+                        <Text style={styles.TextMiniWhiteMap}>
                           {convChallengerTime}
                         </Text>
                       </HStack>
@@ -511,7 +461,7 @@ export default function Map({route, navigation}) {
                       <Progress
                         colorScheme="warning"
                         value={progressionDistance}
-                        style={styles.colorOrange}
+                        style={styles.colorOrangeMap}
                         size="2xl"
                         rounded="0"
                         bg="white"
@@ -525,7 +475,7 @@ export default function Map({route, navigation}) {
                         px="2"
                         py="1"
                         justifyContent="flex-end">
-                        <Text style={styles.TextMiniWhite}>
+                        <Text style={styles.TextMiniWhiteMap}>
                           {`${convChallengerKm} Km`}
                         </Text>
                       </HStack>
@@ -536,14 +486,14 @@ export default function Map({route, navigation}) {
               </VStack>
             )}
             {showChoice === false ? (
-              <HStack style={styles.theButtons} mx="auto">
+              <HStack style={styles.theButtonsMap} mx="auto">
                 <Button
-                  style={styles.button}
+                  style={styles.buttonMap}
                   colorScheme="warning"
                   onPress={handleClickForRun}
                   py="2"
                   width="95%">
-                  <Text style={styles.buttonStartText}>
+                  <Text style={styles.buttonStartTextMap}>
                     {isRunning ? 'Stop' : 'Start'}
                   </Text>
                 </Button>
@@ -551,7 +501,7 @@ export default function Map({route, navigation}) {
             ) : (
               <VStack>
                 <HStack justifyContent="center" mt="5">
-                  <Text style={styles.customText}>
+                  <Text style={styles.customTextMap}>
                     Challenge your opponent by:
                   </Text>
                 </HStack>
@@ -579,7 +529,7 @@ export default function Map({route, navigation}) {
       ) : (
         // Redirect to search User
         <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Text style={styles.customText}>
+          <Text style={styles.customTextMap}>
             Challenge someone to start a run
           </Text>
           <Button
@@ -593,6 +543,7 @@ export default function Map({route, navigation}) {
       )}
     </View>
   );
+
 }
 
 const styles = StyleSheet.create({
@@ -642,3 +593,4 @@ const styles = StyleSheet.create({
     color: 'white',
   },
 });
+

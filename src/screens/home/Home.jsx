@@ -1,16 +1,15 @@
 import React, {useState, useEffect, useContext} from 'react';
 import {
-  StyleSheet,
   View,
   Text,
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import {NativeBaseProvider, Button, Flex, Link} from 'native-base';
+import { styles } from '../../styles/Style';
+import {NativeBaseProvider} from 'native-base';
 import ChallengeItem from '../../components/ChallengeItem';
 import firestore from '@react-native-firebase/firestore';
 import {AppStateContext} from '../../../App';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import FinishedChallenges from '../../components/FinishedChallenges';
 
 // Fetch Data
@@ -21,8 +20,7 @@ export default function Home({navigation}) {
   const [selectedTab, setSelectedTab] = useState('received');
 
   const {user, run} = useContext(AppStateContext);
-  // console.log(user.uid + 'this comes from the profile component');
-  // console.log(user);
+
 
   const [userData, setUserData] = useState();
   useEffect(() => {
@@ -39,8 +37,6 @@ export default function Home({navigation}) {
       })
       .catch(err => console.log(err));
   }, [user.uid]);
-
-  // console.log(userData);
 
   const isChallengedDocument = async () => {
     const isChallenged = firestore()
@@ -59,10 +55,9 @@ export default function Home({navigation}) {
   useEffect(() => {
     isChallengedDocument();
   }, [userData]);
-  // console.log(challenged);
   
   const isChallengerDocument = async () => {
-    const isChallenger = firestore()
+    firestore()
       .collection('challenger')
       .doc(`${userData}`)
       .collection('challenges')
@@ -95,35 +90,35 @@ export default function Home({navigation}) {
 
   return (
     <NativeBaseProvider>
-      <View style={styles.container}>
+      <View style={styles.containerHome}>
         <View style={{flexDirection: 'row', padding: 4}}></View>
-        <View style={styles.topNavigation}>
+        <View style={styles.topNavigationHome}>
           <TouchableOpacity
             onPress={onPressSent}
-            style={selectedTab === 'sent' ? styles.activeTab : styles.tab}>
+            style={selectedTab === 'sent' ? styles.activeTabHome : styles.tabHome}>
             <Text
               style={
-                selectedTab === 'sent' ? styles.activeText : styles.textTab
+                selectedTab === 'sent' ? styles.activeTextHome : styles.textTabHome
               }>
               Sent
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={onPressReceived}
-            style={selectedTab === 'received' ? styles.activeTab : styles.tab}>
+            style={selectedTab === 'received' ? styles.activeTabHome : styles.tabHome}>
             <Text
               style={
-                selectedTab === 'received' ? styles.activeText : styles.textTab
+                selectedTab === 'received' ? styles.activeTextHome : styles.textTabHome
               }>
               Received
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={onPressFinished}
-            style={selectedTab === 'finished' ? styles.activeTab : styles.tab}>
+            style={selectedTab === 'finished' ? styles.activeTabHome : styles.tabHome}>
             <Text
               style={
-                selectedTab === 'finished' ? styles.activeText : styles.textTab
+                selectedTab === 'finished' ? styles.activeTextHome : styles.textTabHome
               }>
               Finished
             </Text>
@@ -149,16 +144,6 @@ export default function Home({navigation}) {
               ))}
           </ScrollView>
         )}
-        {/* {selectedTab === 'sent' && (
-          <Link
-            style={styles.plusIcon}
-            alignSelf="flex-end"
-            my="5"
-            onPress={() => navigation.navigate('Search')}>
-            <Ionicons name="add-circle" size={70} style={{color: '#F1600D'}} />
-          </Link>
-        )} */}
-
         {selectedTab === 'received' && (
           <ScrollView>
             {challenged
@@ -237,90 +222,3 @@ export default function Home({navigation}) {
     </NativeBaseProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FEF6ED',
-  },
-  titleText: {
-    flex: 1,
-    fontSize: 22,
-    fontWeight: 'bold',
-  },
-  header: {
-    backgroundColor: '#F5FCFF',
-    padding: 20,
-  },
-  headerText: {
-    fontSize: 16,
-    fontWeight: '500',
-  },
-  separator: {
-    height: 0.5,
-    backgroundColor: '#808080',
-    width: '95%',
-    marginLeft: 16,
-    marginRight: 16,
-  },
-  text: {
-    fontSize: 16,
-    color: '#606070',
-    padding: 10,
-  },
-  content: {
-    paddingLeft: 10,
-    paddingRight: 10,
-    backgroundColor: '#fff',
-  },
-  activeButton: {
-    color: '#007aff',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  inactiveButton: {
-    colorScheme: 'red',
-  },
-  topNavigation: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#FEF6ED',
-    borderWidth: 1,
-    borderColor: '#FEF6ED',
-    borderRadius: 5,
-    overflow: 'hidden',
-    paddingBottom: 15,
-  },
-  tab: {
-    flex: 1,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    alignItems: 'center',
-  },
-  activeTab: {
-    flex: 1,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    alignItems: 'center',
-    borderBottomWidth: 3,
-    borderBottomColor: '#F1600D',
-  },
-  activeText: {
-    color: '#F1600D',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  textTab: {
-    color: '#50A5B1',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-
-  plusIcon: {
-    position: 'absolute',
-    left: '50%',
-    transform: [{translateX: -32}],
-    bottom: 0,
-  },
-});

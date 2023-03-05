@@ -1,24 +1,22 @@
 import React, {useEffect, useState} from 'react';
 import firestore from '@react-native-firebase/firestore';
 import {
-  VStack,
-  Input,
-  NativeBaseProvider,
-  Button,
-  Link,
-  Box,
   HStack,
   Center,
   index,
 } from 'native-base';
-import {StyleSheet, View, TouchableOpacity, Text} from 'react-native';
+
+import { View, TouchableOpacity, Text} from 'react-native';
+import { styles } from '../styles/Style';
+
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useContext} from 'react';
 import {AppStateContext} from '../../App';
-import {color} from 'native-base/lib/typescript/theme/styled-system';
 
 export default function LeaderboardItem({
+  rank,
+  points,
   wins,
   losses,
   runs,
@@ -121,6 +119,7 @@ export default function LeaderboardItem({
       </HStack> */}
     </VStack>
   );
+
 }
 
 const styles = StyleSheet.create({
@@ -164,18 +163,3 @@ const styles = StyleSheet.create({
     color: '#F1600D',
   },
 });
-
-{
-  /* <VStack mx="5" width="25">
-            <Ionicons name="trophy" size={23} color="#028a0f" />
-            <Text fontSize="md">{wins}</Text>
-          </VStack>
-          <VStack mx="4" width="25">
-            <Ionicons name="close" size={23} color="#df2c14" />
-            <Text fontSize="md">{losses}</Text>
-          </VStack>
-          <VStack mx="4" width="25">
-            <MaterialIcons name="run" size={23} color="#F1600D" />
-            <Text fontSize="md">{runs}</Text>
-          </VStack> */
-}
