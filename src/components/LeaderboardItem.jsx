@@ -1,23 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import firestore from '@react-native-firebase/firestore';
 import {
-  VStack,
-  Input,
-  NativeBaseProvider,
-  Button,
-  Link,
-  Box,
   HStack,
   Center,
   Text,
   index,
 } from 'native-base';
-import {StyleSheet, View, TouchableOpacity} from 'react-native';
+import {StyleSheet} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useContext} from 'react';
 import {AppStateContext} from '../../App';
-import {color} from 'native-base/lib/typescript/theme/styled-system';
 
 export default function LeaderboardItem({
   rank,
@@ -25,8 +18,6 @@ export default function LeaderboardItem({
   losses,
   runs,
   username,
-  points,
-  navigation,
 }) {
   const {user} = useContext(AppStateContext);
   const [userData, setUserData] = useState();
@@ -60,15 +51,16 @@ export default function LeaderboardItem({
             ? {backgroundColor: '#F0F0F080'}
             : {backgroundColor: '#FFFFFF80'},
           username === userData?.username ? styles.userBorder : '',
-        ]}>
-        {/* <TouchableOpacity onPress={() => navigation.navigate('Profile')}> */}
-        <HStack style={{direction: 'row', alignItems: 'baseline'}}>
-          <Text fontSize="md">{rank}. </Text>
-          <Text fontSize="lg" bold>
-            {username}
+        ]} 
+        >
+          
+        <HStack style={{direction: 'row', alignItems: 'baseline'}} >
+          <Text fontSize="md">{place}. </Text>
+            <Text fontSize="lg" bold>
+        {username}
           </Text>
         </HStack>
-        {/* </TouchableOpacity> */}
+       
         <HStack mx="1">
           <Text>{points}</Text>
           <HStack mx="5" width="25">

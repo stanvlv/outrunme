@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react';
 import firestore from '@react-native-firebase/firestore';
-import {Box, HStack, NativeBaseProvider, Text} from 'native-base';
+import {HStack, NativeBaseProvider, Text} from 'native-base';
 import {View, ScrollView, ActivityIndicator} from 'react-native';
 import {styles} from '../../styles/Style';
 import LeaderboardItem from '../../components/LeaderboardItem';
@@ -11,7 +11,6 @@ export default function Leaderboard({navigation}) {
   // Get onSnapshot user data from DB, ordered by challenges won:
 
   const leaderboard = async () => {
-    // const userstats = it seems this line is not needed
     firestore()
       .collection('users')
       .orderBy('points', 'desc')
@@ -20,7 +19,6 @@ export default function Leaderboard({navigation}) {
         const data = post.docs.map(doc => ({id: doc.id, ...doc.data()}));
         setLeaderBoardUser(data);
       });
-    return () => user();
   };
   useEffect(() => {
     leaderboard();

@@ -5,7 +5,7 @@ import Map from '../screens/home/Map';
 import Search from '../screens/home/Search';
 import Leaderboard from '../screens/home/Leaderboard';
 
-import {NavigationContainer} from '@react-navigation/native';
+
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 // take the icons from https://oblador.github.io/react-native-vector-icons/

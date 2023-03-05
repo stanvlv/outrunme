@@ -6,7 +6,6 @@ import {
   Input,
   NativeBaseProvider,
   Button,
-  Link,
   Text,
   View,
 } from 'native-base';
@@ -19,7 +18,7 @@ export default function Search({navigation}) {
   const [input, setInput] = useState('');
   const [secondUser, setSecondUser] = useState({});
 
-  const {user, isChallenged, run, setRun} = useContext(AppStateContext);
+  const {user, setRun} = useContext(AppStateContext);
 
   const [userData, setUserData] = useState();
   useEffect(() => {
@@ -70,7 +69,6 @@ export default function Search({navigation}) {
     <NativeBaseProvider >
       <View style={styles.screenColor}>
       <VStack w="100%" space={5} alignSelf="center" >
-        {/* <Heading fontSize="lg">Material</Heading> */}
         <Input
           placeholder="Find someone to challenge"
           width="100%"
@@ -93,7 +91,6 @@ export default function Search({navigation}) {
       )}
       {secondUser.username && (
         <View alignSelf="center" my="5">
-          {/* style={styles.challengeButton} */}
           <Button
             onPress={onClick}
             colorScheme='warning'

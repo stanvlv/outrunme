@@ -6,11 +6,10 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import {NativeBaseProvider, Button, Flex, Link} from 'native-base';
+import {NativeBaseProvider} from 'native-base';
 import ChallengeItem from '../../components/ChallengeItem';
 import firestore from '@react-native-firebase/firestore';
 import {AppStateContext} from '../../../App';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import FinishedChallenges from '../../components/FinishedChallenges';
 
 // Fetch Data
@@ -21,8 +20,7 @@ export default function Home({navigation}) {
   const [selectedTab, setSelectedTab] = useState('received');
 
   const {user, run} = useContext(AppStateContext);
-  // console.log(user.uid + 'this comes from the profile component');
-  // console.log(user);
+
 
   const [userData, setUserData] = useState();
   useEffect(() => {
@@ -39,8 +37,6 @@ export default function Home({navigation}) {
       })
       .catch(err => console.log(err));
   }, [user.uid]);
-
-  // console.log(userData);
 
   const isChallengedDocument = async () => {
     const isChallenged = firestore()
@@ -59,10 +55,9 @@ export default function Home({navigation}) {
   useEffect(() => {
     isChallengedDocument();
   }, [userData]);
-  // console.log(challenged);
   
   const isChallengerDocument = async () => {
-    const isChallenger = firestore()
+    firestore()
       .collection('challenger')
       .doc(`${userData}`)
       .collection('challenges')
@@ -149,16 +144,6 @@ export default function Home({navigation}) {
               ))}
           </ScrollView>
         )}
-        {/* {selectedTab === 'sent' && (
-          <Link
-            style={styles.plusIcon}
-            alignSelf="flex-end"
-            my="5"
-            onPress={() => navigation.navigate('Search')}>
-            <Ionicons name="add-circle" size={70} style={{color: '#F1600D'}} />
-          </Link>
-        )} */}
-
         {selectedTab === 'received' && (
           <ScrollView>
             {challenged

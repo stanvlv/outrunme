@@ -1,5 +1,5 @@
 import React from 'react';
-import {NativeBaseProvider, Box, Button, Text, Image, Center} from 'native-base';
+import {NativeBaseProvider, Box, Text, Image} from 'native-base';
 import { SafeAreaView } from 'react-native';
 
 
