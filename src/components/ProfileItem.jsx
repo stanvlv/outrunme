@@ -2,13 +2,11 @@ import React from 'react';
 import {
   NativeBaseProvider,
   Box,
-  Button,
   Text,
   Image,
-  Center,
 } from 'native-base';
 import {SafeAreaView} from 'react-native';
-import {NativeBaseProvider, Box, Text, Image} from 'native-base';
+
 
 export default function ProfileItem({
   username,

@@ -176,7 +176,6 @@ const styles = StyleSheet.create({
         marginTop: 20,
       },
       logoutButtonMap: {
-        backgroundColor: '#50A5B1',
         width: 150,
       },
       customTextMap: {
@@ -547,8 +546,34 @@ const styles = StyleSheet.create({
         color: '#F1600D',
       },
       userBorderLeaderboardItem: {
-        backgroundColor: '#50A5B180',
+        backgroundColor: '#50A5B1CC',
         color: 'white',
+      },
+      rankTextLeaderboardItem: {
+        fontSize: 25,
+        fontWeight: 'bold',
+        paddingRight: 2,
+      },
+      username: {
+        fontSize: 25,
+      },
+      pointsLeaderboardItem: {
+        fontSize: 25,
+        fontWeight: 'bold',
+        marginVertical: 'auto',
+        color: 'black',
+        opacity: 0.6,
+      },
+      statsLeaderboardItem: {
+        fontSize: 22,
+      },
+      borderStatsLeaderboardItem: {
+        borderLeftWidth: 0.5,
+        borderRightWidth: 0.5,
+      },
+    
+      colorOrangeLeaderboardItem: {
+        color: '#F1600D',
       },
       containerMapMapContainer: {
         display: 'flex',
@@ -604,6 +629,7 @@ const styles = StyleSheet.create({
         fontSize: 50,
         color: 'white',
       },
+      
       
 })
 
