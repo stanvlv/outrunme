@@ -247,22 +247,26 @@ export default function Map({navigation}) {
             firestore().collection('users').doc(user.uid).update({
               challenges_lost: increment,
               runs: increment,
+              streak: 0,
             });
             loseOnePoint(user.uid);
             firestore().collection('users').doc(run.challenger_id).update({
               challenges_won: increment,
               runs: increment,
               points: increment,
+              streak: increment,
             });
           } else {
             firestore().collection('users').doc(user.uid).update({
               challenges_won: increment,
               runs: increment,
               points: increment,
+              streak: increment,
             });
             firestore().collection('users').doc(run.challenger_id).update({
               challenges_lost: increment,
               runs: increment,
+              streak: 0,
             });
             loseOnePoint(run.challenger_id);
           }
@@ -507,18 +511,16 @@ export default function Map({navigation}) {
                     justifyContent: 'space-evenly',
                     paddingBottom: 20,
                   }}>
-                  <Button
-                    colorScheme="warning"
-                    style={styles.logoutButtonMap}
-                    onPress={PostTimeTrue}>
-                    TIME
-                  </Button>
-                  <Button
-                    colorScheme="warning"
-                    style={styles.logoutButtonMap}
-                    onPress={PostTimeFalse}>
-                    DISTANCE
-                  </Button>
+                  <Box style={styles.logoutButton}>
+                    <Button colorScheme="warning" onPress={PostTimeTrue}>
+                      TIME
+                    </Button>
+                  </Box>
+                  <Box style={styles.logoutButton}>
+                    <Button colorScheme="warning" onPress={PostTimeFalse}>
+                      DISTANCE
+                    </Button>
+                  </Box>
                 </HStack>
               </VStack>
             )}
@@ -541,4 +543,54 @@ export default function Map({navigation}) {
       )}
     </View>
   );
+
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#FEF6ED',
+  },
+  sectionContainer: {
+    marginTop: 32,
+    paddingHorizontal: 24,
+  },
+
+  colorOrange: {
+    color: '#F1600D',
+  },
+  sectionTitle: {
+    fontSize: 24,
+    fontWeight: '600',
+  },
+  button: {
+    color: 'white',
+    paddingHorizontal: 30,
+    bottom: 0,
+    borderRadius: 12,
+  },
+  buttonText: {
+    color: '#FEF6ED',
+  },
+
+  buttonStartText: {
+    fontSize: 40,
+    color: 'white',
+  },
+  theButtons: {
+    marginTop: 20,
+  },
+  logoutButton: {
+    width: 150,
+  },
+  customText: {
+    color: '#1A265A',
+    fontSize: 22,
+    fontWeight: '600',
+    paddingBottom: 20,
+  },
+  TextMiniWhite: {
+    color: 'white',
+  },
+});
+

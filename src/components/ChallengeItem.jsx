@@ -71,13 +71,16 @@ export default function ChallengeItem({
     const increment = firestore.FieldValue.increment(1);
     firestore().collection('users').doc(user.uid).update({
       challenges_lost: increment,
+      streak: 0,
     });
     // Take 1 point from user profile
     loseOnePoint(user.uid);
-    // Add a win and a point on challenger profile
+    // Add a win, a point on challenger profile
     firestore().collection('users').doc(item.challenger_id).update({
       challenges_won: increment,
       points: increment,
+      runs: increment,
+      streak: increment,
     });
   };
 

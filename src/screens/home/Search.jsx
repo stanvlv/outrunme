@@ -10,9 +10,9 @@ import {
   View,
 } from 'native-base';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { useContext } from 'react';
+import {useContext} from 'react';
 import {AppStateContext} from '../../../App';
-import { styles } from '../../styles/Style'
+import {styles} from '../../styles/Style';
 
 export default function Search({navigation}) {
   const [input, setInput] = useState('');
@@ -22,8 +22,8 @@ export default function Search({navigation}) {
 
   const [userData, setUserData] = useState();
   useEffect(() => {
-    const userRef = firestore().collection('users').doc(user.uid); 
-  
+    const userRef = firestore().collection('users').doc(user.uid);
+
     userRef
       .get()
       .then(doc => {
@@ -35,20 +35,17 @@ export default function Search({navigation}) {
       })
       .catch(err => console.log(err));
   }, [user.uid]);
-  
-
 
   const onClick = () => {
-   setRun({
-    challenger: userData.username,
-    challenged: secondUser.username ,
-   })
-   
-   setSecondUser({})
-   setInput('')
-    navigation.navigate('Map')
-  }
+    setRun({
+      challenger: userData.username,
+      challenged: secondUser.username,
+    });
 
+    setSecondUser({});
+    setInput('');
+    navigation.navigate('Map');
+  };
 
   // searching for a suer by username in the database from the input field
   useEffect(() => {
@@ -66,41 +63,38 @@ export default function Search({navigation}) {
   }, [input]);
 
   return (
-    <NativeBaseProvider >
+    <NativeBaseProvider>
       <View style={styles.screenColor}>
-      <VStack w="100%" space={5} alignSelf="center" >
-        <Input
-          placeholder="Find someone to challenge"
-          width="100%"
-          borderRadius="4"
-          py="3"
-          px="1"
-          fontSize="14"
-          InputLeftElement={<Ionicons name="search" size={20} />}
-          value={input}
-          onChangeText={value => setInput(value)}
-        />
-      </VStack>
-      {secondUser.username && (
-        <ProfileItem
-          username={secondUser.username}
-          runs={secondUser.runs}
-          challenges_won={secondUser.challenges_won}
-          challenges_lost={secondUser.challenges_lost}
-        />
-      )}
-      {secondUser.username && (
-        <View alignSelf="center" my="5">
-          <Button
-            onPress={onClick}
-            colorScheme='warning'
-            >
-              <Text style={styles.buttonText}>
-            Challenge
-            </Text>
-          </Button>
-        </View>
-      )}
+        <VStack w="100%" space={5} alignSelf="center">
+          {/* <Heading fontSize="lg">Material</Heading> */}
+          <Input
+            placeholder="Find someone to challenge"
+            width="100%"
+            borderRadius="4"
+            py="3"
+            px="1"
+            fontSize="14"
+            InputLeftElement={<Ionicons name="search" size={20} />}
+            value={input}
+            onChangeText={value => setInput(value)}
+          />
+        </VStack>
+        {secondUser.username && (
+          <ProfileItem
+            username={secondUser.username}
+            runs={secondUser.runs}
+            challenges_won={secondUser.challenges_won}
+            challenges_lost={secondUser.challenges_lost}
+          />
+        )}
+        {secondUser.username && (
+          <View alignSelf="center" my="5">
+            {/* style={styles.challengeButton} */}
+            <Button onPress={onClick} colorScheme="warning">
+              <Text style={styles.buttonText}>Challenge</Text>
+            </Button>
+          </View>
+        )}
       </View>
     </NativeBaseProvider>
   );

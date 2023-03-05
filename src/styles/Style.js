@@ -607,4 +607,4 @@ const styles = StyleSheet.create({
       
 })
 
-export { styles }
+export {styles};
