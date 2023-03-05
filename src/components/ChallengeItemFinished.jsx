@@ -3,14 +3,8 @@ import React, {useEffect, useState} from 'react';
 import {StyleSheet, View, TouchableOpacity} from 'react-native';
 import {
   VStack,
-  Input,
-  NativeBaseProvider,
-  Button,
-  Link,
-  Box,
   HStack,
   Text,
-  Center,
 } from 'native-base';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
