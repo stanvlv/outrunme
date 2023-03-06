@@ -473,14 +473,12 @@ const styles = StyleSheet.create({
         padding: 10,
       },
       myMapStyleFinishedChallenges: {
-        paddingLeft: 10,
-        paddingRight: 10,
-        backgroundColor: '#50A5B130',
+        borderWidth: 5,
+        borderColor: "#blue",
+        backgroundColor: '#FEF6ED',
       },
       opponentMapStyleFinishedChallenges: {
-        paddingLeft: 10,
-        paddingRight: 10,
-        backgroundColor: '#50A5B130',
+        backgroundColor: '#FEF6ED',
       },
     
       dateFinishedChallenges: {

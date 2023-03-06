@@ -49,8 +49,7 @@ export default function Leaderboard({navigation}) {
     }
   }
   setRanks(leaderBoardUser);
-  console.log(leaderBoardUser);
-
+ 
   return (
     <NativeBaseProvider>
       {leaderBoardUser ? (
@@ -80,8 +79,9 @@ export default function Leaderboard({navigation}) {
             </VStack>
           </HStack>
           <ScrollView>
-            {leaderBoardUser?.map((user, index, key) => (
+            {leaderBoardUser?.map((user, index) => (
               <LeaderboardItem
+              key={user.id}
                 index={index + 1}
                 wins={user.challenges_won}
                 losses={user.challenges_lost}

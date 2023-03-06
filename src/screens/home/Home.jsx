@@ -12,6 +12,7 @@ import firestore from '@react-native-firebase/firestore';
 import {AppStateContext} from '../../../App';
 import FinishedChallenges from '../../components/FinishedChallenges';
 
+
 // Fetch Data
 
 export default function Home({navigation}) {
@@ -87,6 +88,8 @@ export default function Home({navigation}) {
   const onPressSent = () => setSelectedTab('sent');
   const onPressReceived = () => setSelectedTab('received');
   const onPressFinished = () => setSelectedTab('finished');
+  
+
 
   return (
     <NativeBaseProvider>
@@ -129,8 +132,9 @@ export default function Home({navigation}) {
             {challenger
               .filter(character => !character.finished)
               .map(item => (
+                
                 <ChallengeItem
-                  key={item.category_name}
+                  key={item.id}
                   item={item}
                   title={'you challenged'}
                   userTime={item.challenger_time}
@@ -148,9 +152,9 @@ export default function Home({navigation}) {
           <ScrollView>
             {challenged
               .filter(character => !character.finished)
-              .map((item, key) => (
+              .map(item => (
                 <ChallengeItem
-                  key={item.category_name}
+                  key={item.id}
                   item={item}
                   title={'Challenged by'}
                   otherTime={
@@ -175,9 +179,10 @@ export default function Home({navigation}) {
                   new Date(b.challenged_date) - new Date(a.challenged_date)
                 );
               })
-              .map(item => (
+              .map((item, index)=> (
+               
                 <FinishedChallenges
-                  key={item.category_name}
+                  key={index}
                   userData={userData}
                   winColor={item.winner ? '#2CD034' : '#D0342C'}
                   winner={item.winner}
@@ -213,7 +218,6 @@ export default function Home({navigation}) {
                   nameTile={item.challenger ? item.challenger : item.challenged}
                   sent={item.challenger ? false : true}
                   selectedTab={'finished'}
-                  cena={item.challenger}
                 />
               ))}
           </ScrollView>

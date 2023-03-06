@@ -11,7 +11,6 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 export default function FinishedChallenges({
     item,
-    key,
     userTime,
     userKm,
     otherTime,
@@ -25,6 +24,7 @@ export default function FinishedChallenges({
     userCoordinates,
     opponentCoordinates
 }) {
+
   const [myLayoutHeight, setMyLayoutHeight] = useState(0);
   const [opponentLayoutHeight, setOpponentLayoutHeight] = useState(0);
   const [opponentMapClick, setOpponentMapClick] = useState(false);
@@ -243,8 +243,8 @@ export default function FinishedChallenges({
           overflow: 'hidden',
         }}>
         {userTime ? (
-          <TouchableOpacity key={key} style={styles.myMapStyleFinishedChallenges}>
-            <Text> THIS SHOULD BE MY MAP </Text>
+          <TouchableOpacity  style={styles.myMapStyleFinishedChallenges}>
+            <Text>{userData}`s run map:</Text>
             {userCoordinates ? (
               <View style={styles.containerMapFinishedChallenges}>
                 <MapView
@@ -276,8 +276,8 @@ export default function FinishedChallenges({
           overflow: 'hidden',
         }}>
         {otherTime ? (
-          <TouchableOpacity key={key} style={styles.opponentMapStyleFinishedChallenges}>
-            <Text> OPPONENT MAP HERE </Text>
+          <TouchableOpacity  style={styles.opponentMapStyleFinishedChallenges}>
+            <Text>{nameTile}`s run map:</Text>
 
             {opponentCoordinates ? (
               <View style={styles.containerMapFinishedChallenges}>
