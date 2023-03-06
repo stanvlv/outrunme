@@ -89,7 +89,7 @@ export default function Home({navigation}) {
   const onPressReceived = () => setSelectedTab('received');
   const onPressFinished = () => setSelectedTab('finished');
   
-  
+
 
   return (
     <NativeBaseProvider>
@@ -180,8 +180,9 @@ export default function Home({navigation}) {
                 );
               })
               .map((item, index)=> (
+               
                 <FinishedChallenges
-                  key={item.challenger_date}
+                  key={index}
                   userData={userData}
                   winColor={item.winner ? '#2CD034' : '#D0342C'}
                   winner={item.winner}
