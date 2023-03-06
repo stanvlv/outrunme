@@ -215,7 +215,7 @@ function SentView({challenger, userData, navigation}) {
           .filter(character => !character.finished)
           .map(item => (
             <ChallengeItem
-              key={item.category_name}
+              key={item.id}
               item={item}
               title={'you challenged'}
               userTime={item.challenger_time}
@@ -274,7 +274,7 @@ function ReceivedView({challenged, userData, navigation}) {
           .filter(character => !character.finished)
           .map((item, key) => (
             <ChallengeItem
-              key={item.category_name}
+              key={item.id}
               item={item}
               title={'Challenged by'}
               otherTime={item.byTime === true ? item.challenger_time : '***'}

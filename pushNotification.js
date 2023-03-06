@@ -7,13 +7,16 @@ const pushNotification = async (fcmToken) => {
         .functions()
         .httpsCallable('sendNotification');
       const response = await sendNotification({
-        token:
-          `${fcmToken}`,
+        token: `${fcmToken}`,
         data: {
-          title: 'Someone challenged you',
-          body: 'Put your running shoes on, it is time to prove yourself',
+          notification: {
+            title: 'Someone challenged you',
+            body: 'Put your running shoes on, it is time to prove yourself',
+          }
+          
         },
-      });
+     
+    });
       console.log(response);
     } catch (error) {
       console.log(error);
