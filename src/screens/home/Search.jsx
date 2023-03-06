@@ -40,6 +40,7 @@ export default function Search({navigation}) {
     setRun({
       challenger: userData.username,
       challenged: secondUser.username,
+      challenged_fcmToken: secondUser.fcmToken
     });
 
     setSecondUser({});
@@ -47,7 +48,7 @@ export default function Search({navigation}) {
     navigation.navigate('Map');
   };
 
-  // searching for a suer by username in the database from the input field
+  // searching for a user by username in the database from the input field
   useEffect(() => {
     const userRef = firestore().collection('users');
 

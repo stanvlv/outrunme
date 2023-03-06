@@ -18,6 +18,8 @@ import {Image, ScrollView} from 'react-native';
 import {styles} from '../../styles/Style';
 import {KeyboardAvoidingView, Platform} from 'react-native';
 import {TouchableOpacity} from 'react-native';
+import messaging from '@react-native-firebase/messaging';
+import firestore from '@react-native-firebase/firestore'
 
 GoogleSignin.configure({
   webClientId:
@@ -30,27 +32,72 @@ export default function Login({navigation}) {
 
 
 
+  // useEffect(() => {
+  //   const updateCfmToken = async () => {
+  //     try {
+  //       const updateToken = firebase.functions().httpsCallable('updateCfmToken');
+  //       await updateToken({ userId: user.id, cfmToken: cfmToken });
+  //       console.log('CFM token updated successfully!');
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+
+  //   updateCfmToken();
+  // }, [user, cfmToken]);
+
   // login with email and password
-  const loginUser = () => {
-    auth()
-      .signInWithEmailAndPassword(`${email.name}`, `${password.name}`)
-      .then(() => {
-        console.log('User account signed in!');
-        console.log(password.name);
-      })
-      .catch(error => {
-        if (error.code === 'auth/email-already-in-use') {
-          alert('Email already in use');
-        }
-        if (error.code === 'auth/invalid-email') {
-          alert('Wrong email');
-        }
-        if (error.code === 'auth/invalid-password') {
-          alert('Wrong password');
-        }
-        alert(error);
-      });
+  // const loginUser = async () => {
+  //   auth()
+  //     .signInWithEmailAndPassword(`${email.name}`, `${password.name}`)
+  //     .then(() => {
+  //       console.log('User account signed in!');
+  //       console.log(password.name);
+  //     })
+  //     .catch(error => {
+  //       if (error.code === 'auth/email-already-in-use') {
+  //         alert('Email already in use');
+  //       }
+  //       if (error.code === 'auth/invalid-email') {
+  //         alert('Wrong email');
+  //       }
+  //       if (error.code === 'auth/invalid-password') {
+  //         alert('Wrong password');
+  //       }
+  //       alert(error);
+  //     });
+  // };
+
+
+  const loginUser = async () => {
+    try {
+      const userCredentials = await auth().signInWithEmailAndPassword(`${email.name}`, `${password.name}`)
+  
+      // Get the user's CFM token
+      const fcmToken = await messaging().getToken();
+  
+        console.log(fcmToken)
+      // Update the user's CFM token in the database
+      await firestore()
+        .collection('users')
+        .doc(userCredentials.user.uid)
+        .update({ fcmToken });
+  
+      console.log('User account signed in!');
+    } catch (error) {
+      if (error.code === 'auth/email-already-in-use') {
+        alert('Email already in use');
+      }
+      if (error.code === 'auth/invalid-email') {
+        alert('Wrong email');
+      }
+      if (error.code === 'auth/invalid-password') {
+        alert('Wrong password');
+      }
+      alert(error);
+    }
   };
+
 
   async function onGoogleButtonPress() {
     // Check if your device supports Google Play
