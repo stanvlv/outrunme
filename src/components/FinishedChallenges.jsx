@@ -1,29 +1,25 @@
 import React, {useEffect, useState} from 'react';
 import MapView, {Polyline} from 'react-native-maps';
 import {View, TouchableOpacity} from 'react-native';
-import { styles } from '../styles/Style';
-import {
-  VStack,
-  HStack,
-  Text,
-} from 'native-base';
+import {styles} from '../styles/Style';
+import {VStack, HStack, Text} from 'native-base';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function FinishedChallenges({
-    item,
-    key,
-    userTime,
-    userKm,
-    otherTime,
-    otherKm,
-    nameTile,
-    selectedTab,
-    userData,
-    sent,
-    byTime,
-    winner,
-    userCoordinates,
-    opponentCoordinates
+  item,
+  key,
+  userTime,
+  userKm,
+  otherTime,
+  otherKm,
+  nameTile,
+  selectedTab,
+  userData,
+  sent,
+  byTime,
+  winner,
+  userCoordinates,
+  opponentCoordinates,
 }) {
   const [myLayoutHeight, setMyLayoutHeight] = useState(0);
   const [opponentLayoutHeight, setOpponentLayoutHeight] = useState(0);
@@ -60,24 +56,16 @@ export default function FinishedChallenges({
     }
   }, [myMapClick]);
 
-  const date = new Date(item.challenger_date);
-  const numb = date.getDay();
+  // Date conversion
+  const date = new Date(item.challenged_date);
 
-  if (numb === 0) {
-    weekDay = 'Sun.';
-  } else if (numb === 1) {
-    weekDay = 'Mon.';
-  } else if (numb === 2) {
-    weekDay = 'Tue.';
-  } else if (numb === 3) {
-    weekDay = 'Wed.';
-  } else if (numb === 4) {
-    weekDay = 'Thu.';
-  } else if (numb === 5) {
-    weekDay = 'Fri.';
-  } else if (numb === 6) {
-    weekDay = 'Sat.';
-  }
+  const convertDateDay = time => {
+    const dt = new Date(time);
+    const day = '0' + dt.getDate();
+    const month = '0' + (dt.getMonth() + 1);
+    const year = dt.getFullYear();
+    return day.slice(-2) + '/' + month.slice(-2) + '/' + year;
+  };
 
   const convertDateHours = time => {
     const dt = new Date(time);
@@ -95,16 +83,13 @@ export default function FinishedChallenges({
     const secondsStr = String(remainingSeconds).padStart(2, '0');
     return `${hoursStr}:${minutesStr}:${secondsStr}`;
   };
-
+  const timestamp = item.challenged_date;
+  const formattedDate = date.toLocaleDateString();
   const finalDateTime = convertDateHours(item.challenged_date);
+  const dateFinished = convertDateDay(item.challenged_date);
   const RunTime = formatTime(otherTime);
 
- 
-  
-
-  
-
-
+  // Timer conversion
   const convertDate = time => {
     const dt = new Date(time);
     const hr = dt.getUTCHours();
@@ -126,8 +111,6 @@ export default function FinishedChallenges({
     return `${km}.${hm}${dm} km`;
   };
 
-  const timestamp = item.challenger_date;
-  const formattedDate = date.toLocaleDateString();
   const convUserKm = formatDistance(userKm);
   const convOpponentKm = formatDistance(otherKm);
 
@@ -145,29 +128,53 @@ export default function FinishedChallenges({
                   px="0.5"
                   my="3"
                   alignItems="center"
-                  style={byTime ? styles.fillBlueFinishedChallenges : styles.borderBlueFinishedChallenges}>
+                  style={
+                    byTime
+                      ? styles.fillBlueFinishedChallenges
+                      : styles.borderBlueFinishedChallenges
+                  }>
                   <MaterialCommunityIcons
                     name="timer-outline"
                     size={30}
-                    style={byTime ? styles.colorWhiteFinishedChallenges : styles.colorBlueFinishedChallenges}
+                    style={
+                      byTime
+                        ? styles.colorWhiteFinishedChallenges
+                        : styles.colorBlueFinishedChallenges
+                    }
                   />
                   <Text
                     px="1"
-                    style={byTime ? styles.colorWhiteFinishedChallenges : styles.colorBlueFinishedChallenges}>
+                    style={
+                      byTime
+                        ? styles.colorWhiteFinishedChallenges
+                        : styles.colorBlueFinishedChallenges
+                    }>
                     {convUserTime}
                   </Text>
                 </HStack>
                 <HStack
                   alignItems="center"
-                  style={byTime ? styles.borderBlueFinishedChallenges : styles.fillBlueFinishedChallenges}>
+                  style={
+                    byTime
+                      ? styles.borderBlueFinishedChallenges
+                      : styles.fillBlueFinishedChallenges
+                  }>
                   <MaterialCommunityIcons
                     name="map-marker-distance"
                     size={30}
-                    style={byTime ? styles.colorBlueFinishedChallenges : styles.colorWhiteFinishedChallenges}
+                    style={
+                      byTime
+                        ? styles.colorBlueFinishedChallenges
+                        : styles.colorWhiteFinishedChallenges
+                    }
                   />
                   <Text
                     px="1"
-                    style={byTime ? styles.colorBlueFinishedChallenges : styles.colorWhiteFinishedChallenges}>
+                    style={
+                      byTime
+                        ? styles.colorBlueFinishedChallenges
+                        : styles.colorWhiteFinishedChallenges
+                    }>
                     {convUserKm}
                   </Text>
                 </HStack>
@@ -176,20 +183,26 @@ export default function FinishedChallenges({
             <VStack
               style={{flex: 1}}
               alignItems="center"
-              justifyContent="center">
-              {sent ? (
-                <MaterialCommunityIcons
-                  name="sword-cross"
-                  size={60}
-                  style={winner ? {color: '#50A5B1'} : {color: '#F1600D'}}
-                />
-              ) : (
-                <MaterialCommunityIcons
-                  name="shield-sword"
-                  size={60}
-                  style={winner ? {color: '#50A5B1'} : {color: '#F1600D'}}
-                />
-              )}
+              justifyContent="space-between">
+              <HStack></HStack>
+              <HStack>
+                {sent ? (
+                  <MaterialCommunityIcons
+                    name="sword-cross"
+                    size={60}
+                    style={winner ? {color: '#50A5B1'} : {color: '#F1600D'}}
+                  />
+                ) : (
+                  <MaterialCommunityIcons
+                    name="shield-sword"
+                    size={60}
+                    style={winner ? {color: '#50A5B1'} : {color: '#F1600D'}}
+                  />
+                )}
+              </HStack>
+              <HStack>
+                <Text>{dateFinished}</Text>
+              </HStack>
             </VStack>
             <TouchableOpacity onPress={clickOpponentMap}>
               <VStack alignItems="center" my="1" style={{flex: 2}}>
@@ -200,39 +213,58 @@ export default function FinishedChallenges({
                   px="0.5"
                   my="3"
                   alignItems="center"
-                  style={byTime ? styles.fillBlueFinishedChallenges : styles.borderBlueFinishedChallenges}>
+                  style={
+                    byTime
+                      ? styles.fillBlueFinishedChallenges
+                      : styles.borderBlueFinishedChallenges
+                  }>
                   <MaterialCommunityIcons
                     name="timer-outline"
                     size={30}
-                    style={byTime ? styles.colorWhiteFinishedChallenges : styles.colorBlueFinishedChallenges}
+                    style={
+                      byTime
+                        ? styles.colorWhiteFinishedChallenges
+                        : styles.colorBlueFinishedChallenges
+                    }
                   />
                   <Text
                     px="1"
-                    style={byTime ? styles.colorWhiteFinishedChallenges : styles.colorBlueFinishedChallenges}>
+                    style={
+                      byTime
+                        ? styles.colorWhiteFinishedChallenges
+                        : styles.colorBlueFinishedChallenges
+                    }>
                     {RunTime}
                   </Text>
                 </HStack>
                 <HStack
                   alignItems="center"
-                  style={byTime ? styles.borderBlueFinishedChallenges : styles.fillBlueFinishedChallenges}>
+                  style={
+                    byTime
+                      ? styles.borderBlueFinishedChallenges
+                      : styles.fillBlueFinishedChallenges
+                  }>
                   <MaterialCommunityIcons
                     name="map-marker-distance"
                     size={30}
-                    style={byTime ? styles.colorBlueFinishedChallenges : styles.colorWhiteFinishedChallenges}
+                    style={
+                      byTime
+                        ? styles.colorBlueFinishedChallenges
+                        : styles.colorWhiteFinishedChallenges
+                    }
                   />
                   <Text
                     px="1"
-                    style={byTime ? styles.colorBlueFinishedChallenges : styles.colorWhiteFinishedChallenges}>
+                    style={
+                      byTime
+                        ? styles.colorBlueFinishedChallenges
+                        : styles.colorWhiteFinishedChallenges
+                    }>
                     {convOpponentKm}
                   </Text>
                 </HStack>
               </VStack>
             </TouchableOpacity>
-          </HStack>
-          <HStack justifyContent="center">
-            <Text style={styles.dateFinishedChallenges}>
-              {weekDay} {finalDateTime}
-            </Text>
           </HStack>
         </VStack>
       )}
@@ -243,7 +275,9 @@ export default function FinishedChallenges({
           overflow: 'hidden',
         }}>
         {userTime ? (
-          <TouchableOpacity key={key} style={styles.myMapStyleFinishedChallenges}>
+          <TouchableOpacity
+            key={key}
+            style={styles.myMapStyleFinishedChallenges}>
             <Text> THIS SHOULD BE MY MAP </Text>
             {userCoordinates ? (
               <View style={styles.containerMapFinishedChallenges}>
@@ -276,7 +310,9 @@ export default function FinishedChallenges({
           overflow: 'hidden',
         }}>
         {otherTime ? (
-          <TouchableOpacity key={key} style={styles.opponentMapStyleFinishedChallenges}>
+          <TouchableOpacity
+            key={key}
+            style={styles.opponentMapStyleFinishedChallenges}>
             <Text> OPPONENT MAP HERE </Text>
 
             {opponentCoordinates ? (

@@ -1,12 +1,7 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
-import { styles } from '../../styles/Style';
-import {NativeBaseProvider} from 'native-base';
+import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
+import {styles} from '../../styles/Style';
+import {NativeBaseProvider, Button, HStack, VStack} from 'native-base';
 import ChallengeItem from '../../components/ChallengeItem';
 import firestore from '@react-native-firebase/firestore';
 import {AppStateContext} from '../../../App';
@@ -20,7 +15,6 @@ export default function Home({navigation}) {
   const [selectedTab, setSelectedTab] = useState('received');
 
   const {user, run} = useContext(AppStateContext);
-
 
   const [userData, setUserData] = useState();
   useEffect(() => {
@@ -51,11 +45,10 @@ export default function Home({navigation}) {
     return () => user();
   };
 
-
   useEffect(() => {
     isChallengedDocument();
   }, [userData]);
-  
+
   const isChallengerDocument = async () => {
     firestore()
       .collection('challenger')
@@ -69,12 +62,9 @@ export default function Home({navigation}) {
     return () => user();
   };
 
-
   useEffect(() => {
     isChallengerDocument();
   }, [userData]);
-
-
 
   useEffect(() => {
     if (run?.finished === true) {
@@ -95,75 +85,60 @@ export default function Home({navigation}) {
         <View style={styles.topNavigationHome}>
           <TouchableOpacity
             onPress={onPressSent}
-            style={selectedTab === 'sent' ? styles.activeTabHome : styles.tabHome}>
+            style={
+              selectedTab === 'sent' ? styles.activeTabHome : styles.tabHome
+            }>
             <Text
               style={
-                selectedTab === 'sent' ? styles.activeTextHome : styles.textTabHome
+                selectedTab === 'sent'
+                  ? styles.activeTextHome
+                  : styles.textTabHome
               }>
               Sent
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={onPressReceived}
-            style={selectedTab === 'received' ? styles.activeTabHome : styles.tabHome}>
+            style={
+              selectedTab === 'received' ? styles.activeTabHome : styles.tabHome
+            }>
             <Text
               style={
-                selectedTab === 'received' ? styles.activeTextHome : styles.textTabHome
+                selectedTab === 'received'
+                  ? styles.activeTextHome
+                  : styles.textTabHome
               }>
               Received
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={onPressFinished}
-            style={selectedTab === 'finished' ? styles.activeTabHome : styles.tabHome}>
+            style={
+              selectedTab === 'finished' ? styles.activeTabHome : styles.tabHome
+            }>
             <Text
               style={
-                selectedTab === 'finished' ? styles.activeTextHome : styles.textTabHome
+                selectedTab === 'finished'
+                  ? styles.activeTextHome
+                  : styles.textTabHome
               }>
               Finished
             </Text>
           </TouchableOpacity>
         </View>
         {selectedTab === 'sent' && (
-          <ScrollView>
-            {challenger
-              .filter(character => !character.finished)
-              .map(item => (
-                <ChallengeItem
-                  key={item.category_name}
-                  item={item}
-                  title={'you challenged'}
-                  userTime={item.challenger_time}
-                  userKm={item.challenger_km}
-                  nameTile={item.challenged}
-                  userData={userData}
-                  sent={true}
-                  selectedTab={'sent'}
-                  byTime={item.byTime}
-                />
-              ))}
-          </ScrollView>
+          <SentView
+            challenger={challenger}
+            userData={userData}
+            navigation={navigation}
+          />
         )}
         {selectedTab === 'received' && (
-          <ScrollView>
-            {challenged
-              .filter(character => !character.finished)
-              .map((item, key) => (
-                <ChallengeItem
-                  key={item.category_name}
-                  item={item}
-                  title={'Challenged by'}
-                  otherTime={
-                    item.byTime === true ? item.challenger_time : '***'
-                  }
-                  otherKm={item.byTime === false ? item.challenger_km : '***'}
-                  selectedTab={'received'}
-                  navigation={navigation}
-                  nameTile={item.challenger}
-                  userData={userData}
-                />
-              ))}
-          </ScrollView>
+          <ReceivedView
+            challenged={challenged}
+            userData={userData}
+            navigation={navigation}
+          />
         )}
         {selectedTab === 'finished' && (
           <ScrollView>
@@ -220,5 +195,122 @@ export default function Home({navigation}) {
         )}
       </View>
     </NativeBaseProvider>
+  );
+}
+
+function SentView({challenger, userData, navigation}) {
+  const onGoingChallenges = challenger.filter(character => !character.finished);
+  return (
+    <ScrollView
+      contentContainerStyle={
+        onGoingChallenges.length
+          ? null
+          : {flexGrow: 1, justifyContent: 'center'}
+      }>
+      {onGoingChallenges.length ? (
+        challenger
+          .filter(character => !character.finished)
+          .map(item => (
+            <ChallengeItem
+              key={item.category_name}
+              item={item}
+              title={'you challenged'}
+              userTime={item.challenger_time}
+              userKm={item.challenger_km}
+              nameTile={item.challenged}
+              userData={userData}
+              sent={true}
+              selectedTab={'sent'}
+              byTime={item.byTime}
+            />
+          ))
+      ) : (
+        <View
+          py="5"
+          style={{
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <VStack>
+            <HStack justifyContent="center">
+              <Text style={styles.customTextHome}>
+                No pending sent challenges
+              </Text>
+            </HStack>
+            <HStack justifyContent="center" mb="5">
+              <Text style={styles.customTextHome}>
+                Search for someone to challenge
+              </Text>
+            </HStack>
+          </VStack>
+          <Button
+            colorScheme="warning"
+            onPress={() => {
+              navigation.navigate('Search');
+            }}>
+            Search
+          </Button>
+        </View>
+      )}
+    </ScrollView>
+  );
+}
+
+function ReceivedView({challenged, userData, navigation}) {
+  const onGoingChallenges = challenged.filter(character => !character.finished);
+  return (
+    <ScrollView
+      contentContainerStyle={
+        onGoingChallenges.length
+          ? null
+          : {flexGrow: 1, justifyContent: 'center'}
+      }>
+      {onGoingChallenges.length ? (
+        challenged
+          .filter(character => !character.finished)
+          .map((item, key) => (
+            <ChallengeItem
+              key={item.category_name}
+              item={item}
+              title={'Challenged by'}
+              otherTime={item.byTime === true ? item.challenger_time : '***'}
+              otherKm={item.byTime === false ? item.challenger_km : '***'}
+              selectedTab={'received'}
+              navigation={navigation}
+              nameTile={item.challenger}
+              userData={userData}
+            />
+          ))
+      ) : (
+        <View
+          py="5"
+          style={{
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <VStack>
+            <HStack justifyContent="center">
+              <Text style={styles.customTextHome}>
+                No pending received challenges
+              </Text>
+            </HStack>
+            <HStack justifyContent="center" mb="5">
+              <Text style={styles.customTextHome}>
+                Search for someone to challenge
+              </Text>
+            </HStack>
+          </VStack>
+          <Button
+            colorScheme="warning"
+            onPress={() => {
+              navigation.navigate('Search');
+            }}>
+            Search
+          </Button>
+        </View>
+      )}
+    </ScrollView>
   );
 }
