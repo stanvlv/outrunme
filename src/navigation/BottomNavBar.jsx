@@ -13,6 +13,7 @@ import {
   View,
   Box,
 } from 'native-base';
+import {Alert} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -27,6 +28,13 @@ const chart = 'Leaderboard';
 
 export default function BottomNavBar({user}) {
   const Tab = createBottomTabNavigator();
+
+  const createTwoButtonAlert = () =>
+    Alert.alert(
+      'Instructions',
+      'You can see the challenges you sent, received or finished in this screen.\nThe sword appears if you were the one to initiate the challenge, if you received the challenge you will see a shield.\nThe time or distance indicators will be colored blue, white or absent depending on the challenge type.\nIf you decline a challenge request, you will lose a challenge and your opponent will gain one.',
+      [{text: 'OK', onPress: () => console.log('OK Pressed')}],
+    );
 
   return (
     <Tab.Navigator
@@ -69,7 +77,7 @@ export default function BottomNavBar({user}) {
               <Ionicons
                 name="information-circle-outline"
                 size={30}
-                onPress={() => alert('This is a button!')}
+                onPress={createTwoButtonAlert}
                 title="Info"
                 color="#fff"
               />

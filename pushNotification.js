@@ -1,5 +1,5 @@
-import functions from '@react-native-firebase/functions'
-import firebase from '@react-native-firebase/app'
+import functions from '@react-native-firebase/functions';
+import firebase from '@react-native-firebase/app';
 
 const pushNotification = async (fcmToken) => {
     try {
@@ -23,4 +23,5 @@ const pushNotification = async (fcmToken) => {
     }
   };
 
-export { pushNotification}
+
+export {pushNotification};

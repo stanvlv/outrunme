@@ -1,5 +1,5 @@
 import MapView, {Polyline} from 'react-native-maps';
-import { styles } from '../styles/Style';
+import {styles} from '../styles/Style';
 import {View} from 'react-native';
 
 export default function ViewContainer({currentLocation, latlng}) {

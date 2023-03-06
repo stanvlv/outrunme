@@ -6,22 +6,20 @@ import {VStack, HStack, Text} from 'native-base';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function FinishedChallenges({
-    item,
-    userTime,
-    userKm,
-    otherTime,
-    otherKm,
-    nameTile,
-    selectedTab,
-    userData,
-    sent,
-    byTime,
-    winner,
-    userCoordinates,
-    opponentCoordinates
-
+  item,
+  userTime,
+  userKm,
+  otherTime,
+  otherKm,
+  nameTile,
+  selectedTab,
+  userData,
+  sent,
+  byTime,
+  winner,
+  userCoordinates,
+  opponentCoordinates,
 }) {
-
   const [myLayoutHeight, setMyLayoutHeight] = useState(0);
   const [opponentLayoutHeight, setOpponentLayoutHeight] = useState(0);
   const [opponentMapClick, setOpponentMapClick] = useState(false);
@@ -118,156 +116,161 @@ export default function FinishedChallenges({
   return (
     <View style={styles.headerFinishedChallenges}>
       {selectedTab === 'finished' && (
-        <VStack>
-          <HStack>
+        <HStack>
+          <VStack alignItems="center" my="1" style={{flex: 3}}>
             <TouchableOpacity onPress={clickMyMap} activeOpacity={0.8}>
-              <VStack alignItems="center" mt="1" style={{flex: 2}}>
-                <Text style={styles.headerTextFinishedChallenges} py="2">
-                  {userData}
+              <Text style={styles.headerTextFinishedChallenges} py="2">
+                {userData}
+              </Text>
+              <HStack
+                px="0.5"
+                my="3"
+                mx="auto"
+                alignItems="center"
+                style={
+                  byTime
+                    ? styles.fillBlueFinishedChallenges
+                    : styles.borderBlueFinishedChallenges
+                }>
+                <MaterialCommunityIcons
+                  name="timer-outline"
+                  size={30}
+                  style={
+                    byTime
+                      ? styles.colorWhiteFinishedChallenges
+                      : styles.colorBlueFinishedChallenges
+                  }
+                />
+                <Text
+                  px="1"
+                  style={
+                    byTime
+                      ? styles.colorWhiteFinishedChallenges
+                      : styles.colorBlueFinishedChallenges
+                  }>
+                  {convUserTime}
                 </Text>
-                <HStack
-                  px="0.5"
-                  my="3"
-                  alignItems="center"
+              </HStack>
+              <HStack
+                alignItems="center"
+                mx="auto"
+                style={
+                  byTime
+                    ? styles.borderBlueFinishedChallenges
+                    : styles.fillBlueFinishedChallenges
+                }>
+                <MaterialCommunityIcons
+                  name="map-marker-distance"
+                  size={30}
                   style={
                     byTime
-                      ? styles.fillBlueFinishedChallenges
-                      : styles.borderBlueFinishedChallenges
-                  }>
-                  <MaterialCommunityIcons
-                    name="timer-outline"
-                    size={30}
-                    style={
-                      byTime
-                        ? styles.colorWhiteFinishedChallenges
-                        : styles.colorBlueFinishedChallenges
-                    }
-                  />
-                  <Text
-                    px="1"
-                    style={
-                      byTime
-                        ? styles.colorWhiteFinishedChallenges
-                        : styles.colorBlueFinishedChallenges
-                    }>
-                    {convUserTime}
-                  </Text>
-                </HStack>
-                <HStack
-                  alignItems="center"
+                      ? styles.colorBlueFinishedChallenges
+                      : styles.colorWhiteFinishedChallenges
+                  }
+                />
+                <Text
+                  px="1"
                   style={
                     byTime
-                      ? styles.borderBlueFinishedChallenges
-                      : styles.fillBlueFinishedChallenges
+                      ? styles.colorBlueFinishedChallenges
+                      : styles.colorWhiteFinishedChallenges
                   }>
-                  <MaterialCommunityIcons
-                    name="map-marker-distance"
-                    size={30}
-                    style={
-                      byTime
-                        ? styles.colorBlueFinishedChallenges
-                        : styles.colorWhiteFinishedChallenges
-                    }
-                  />
-                  <Text
-                    px="1"
-                    style={
-                      byTime
-                        ? styles.colorBlueFinishedChallenges
-                        : styles.colorWhiteFinishedChallenges
-                    }>
-                    {convUserKm}
-                  </Text>
-                </HStack>
-              </VStack>
+                  {convUserKm}
+                </Text>
+              </HStack>
             </TouchableOpacity>
-            <VStack
-              style={{flex: 1}}
-              alignItems="center"
-              justifyContent="space-between">
-              <HStack></HStack>
-              <HStack>
-                {sent ? (
-                  <MaterialCommunityIcons
-                    name="sword-cross"
-                    size={60}
-                    style={winner ? {color: '#50A5B1'} : {color: '#F1600D'}}
-                  />
-                ) : (
-                  <MaterialCommunityIcons
-                    name="shield-sword"
-                    size={60}
-                    style={winner ? {color: '#50A5B1'} : {color: '#F1600D'}}
-                  />
-                )}
-              </HStack>
-              <HStack>
-                <Text>{dateFinished}</Text>
-              </HStack>
-            </VStack>
+          </VStack>
+          <VStack
+            style={{flex: 2}}
+            flexBasis={1}
+            alignItems="center"
+            justifyContent="space-between">
+            <HStack></HStack>
+            <HStack>
+              {sent ? (
+                <MaterialCommunityIcons
+                  name="sword-cross"
+                  size={60}
+                  style={winner ? {color: 'green'} : {color: '#FF0000'}}
+                />
+              ) : (
+                <MaterialCommunityIcons
+                  name="shield-sword"
+                  size={60}
+                  style={winner ? {color: 'green'} : {color: '#FF0000'}}
+                />
+              )}
+            </HStack>
+            <HStack>
+              <Text>{dateFinished}</Text>
+            </HStack>
+          </VStack>
+          <VStack alignItems="center" my="1" flexBasis={3} style={{flex: 3}}>
             <TouchableOpacity onPress={clickOpponentMap}>
-              <VStack alignItems="center" my="1" style={{flex: 2}}>
+              <HStack>
                 <Text style={styles.headerTextFinishedChallenges} py="2">
                   {nameTile}
                 </Text>
-                <HStack
-                  px="0.5"
-                  my="3"
-                  alignItems="center"
+              </HStack>
+              <HStack
+                px="0.5"
+                my="3"
+                mx="auto"
+                alignItems="center"
+                style={
+                  byTime
+                    ? styles.fillBlueFinishedChallenges
+                    : styles.borderBlueFinishedChallenges
+                }>
+                <MaterialCommunityIcons
+                  name="timer-outline"
+                  size={30}
                   style={
                     byTime
-                      ? styles.fillBlueFinishedChallenges
-                      : styles.borderBlueFinishedChallenges
-                  }>
-                  <MaterialCommunityIcons
-                    name="timer-outline"
-                    size={30}
-                    style={
-                      byTime
-                        ? styles.colorWhiteFinishedChallenges
-                        : styles.colorBlueFinishedChallenges
-                    }
-                  />
-                  <Text
-                    px="1"
-                    style={
-                      byTime
-                        ? styles.colorWhiteFinishedChallenges
-                        : styles.colorBlueFinishedChallenges
-                    }>
-                    {RunTime}
-                  </Text>
-                </HStack>
-                <HStack
-                  alignItems="center"
+                      ? styles.colorWhiteFinishedChallenges
+                      : styles.colorBlueFinishedChallenges
+                  }
+                />
+                <Text
+                  px="1"
                   style={
                     byTime
-                      ? styles.borderBlueFinishedChallenges
-                      : styles.fillBlueFinishedChallenges
+                      ? styles.colorWhiteFinishedChallenges
+                      : styles.colorBlueFinishedChallenges
                   }>
-                  <MaterialCommunityIcons
-                    name="map-marker-distance"
-                    size={30}
-                    style={
-                      byTime
-                        ? styles.colorBlueFinishedChallenges
-                        : styles.colorWhiteFinishedChallenges
-                    }
-                  />
-                  <Text
-                    px="1"
-                    style={
-                      byTime
-                        ? styles.colorBlueFinishedChallenges
-                        : styles.colorWhiteFinishedChallenges
-                    }>
-                    {convOpponentKm}
-                  </Text>
-                </HStack>
-              </VStack>
+                  {RunTime}
+                </Text>
+              </HStack>
+              <HStack
+                alignItems="center"
+                mx="auto"
+                style={
+                  byTime
+                    ? styles.borderBlueFinishedChallenges
+                    : styles.fillBlueFinishedChallenges
+                }>
+                <MaterialCommunityIcons
+                  name="map-marker-distance"
+                  size={30}
+                  style={
+                    byTime
+                      ? styles.colorBlueFinishedChallenges
+                      : styles.colorWhiteFinishedChallenges
+                  }
+                />
+                <Text
+                  px="1"
+                  style={
+                    byTime
+                      ? styles.colorBlueFinishedChallenges
+                      : styles.colorWhiteFinishedChallenges
+                  }>
+                  {convOpponentKm}
+                </Text>
+              </HStack>
             </TouchableOpacity>
-          </HStack>
-        </VStack>
+          </VStack>
+        </HStack>
       )}
 
       <View
@@ -276,9 +279,9 @@ export default function FinishedChallenges({
           overflow: 'hidden',
         }}>
         {userTime ? (
-          <TouchableOpacity  style={styles.myMapStyleFinishedChallenges}>
+          <TouchableOpacity style={styles.myMapStyleFinishedChallenges}>
             <Text>{userData}`s run map:</Text>
-            {userCoordinates ? (
+            {userCoordinates.length ? (
               <View style={styles.containerMapFinishedChallenges}>
                 <MapView
                   // showsUserLocation={true} this is to show the gps point where we are at the moment
@@ -309,9 +312,9 @@ export default function FinishedChallenges({
           overflow: 'hidden',
         }}>
         {otherTime ? (
-          <TouchableOpacity  style={styles.opponentMapStyleFinishedChallenges}>
+          <TouchableOpacity style={styles.opponentMapStyleFinishedChallenges}>
             <Text>{nameTile}`s run map:</Text>
-            {opponentCoordinates ? (
+            {opponentCoordinates.length ? (
               <View style={styles.containerMapFinishedChallenges}>
                 <MapView
                   // showsUserLocation={true} this is to show the gps point where we are at the moment

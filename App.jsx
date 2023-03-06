@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import { Alert } from 'react-native';
+import {Alert} from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 import {NavigationContainer} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
@@ -34,36 +34,35 @@ export default function App() {
     if (initializing) setInitializing(false);
   }
 
-
   // sending alert when receiving a notification
-  useEffect(() => {
-    const unsubscribe = messaging().onMessage(async remoteMessage => {
-      Alert.alert('You have been challenged!', `Put your running shoes on, it is time to prove yourself`);
-    });
-    //  Check whether an initial notification is available
-    messaging()
-      .getInitialNotification()
-      .then(remoteMessage => {
-        if (remoteMessage) {
-          console.log(
-            'Notification caused app to open from quit state:',
-            remoteMessage.notification,
-          );
-          setInitialRoute(remoteMessage.data.type); // e.g. "Settings"
-        }
-      });
-    return unsubscribe;
-  }, []);
+  // useEffect(() => {
+  //   const unsubscribe = messaging().onMessage(async remoteMessage => {
+  //     Alert.alert(
+  //       'You have been challenged!',
+  //       `Put your running shoes on, it is time to prove yourself`,
+  //     );
+  //   });
+  //  Check whether an initial notification is available
+  //   messaging()
+  //     .getInitialNotification()
+  //     .then(remoteMessage => {
+  //       if (remoteMessage) {
+  //         console.log(
+  //           'Notification caused app to open from quit state:',
+  //           remoteMessage.notification,
+  //         );
+  //         setInitialRoute(remoteMessage.data.type); // e.g. "Settings"
+  //       }
+  //     });
+  //   return unsubscribe;
+  // }, []);
 
-  // 
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
     return subscriber; // unsubscribe on unmount
   }, []);
 
   if (initializing) return null;
-
-  
 
   return (
     <NativeBaseProvider>

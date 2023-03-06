@@ -49,7 +49,7 @@ export default function Leaderboard({navigation}) {
     }
   }
   setRanks(leaderBoardUser);
- 
+
   return (
     <NativeBaseProvider>
       {leaderBoardUser ? (
@@ -61,8 +61,8 @@ export default function Leaderboard({navigation}) {
             backgroundColor="#F1600D">
             <VStack flex={3}>
               <HStack space={3} alignItems="center">
-                <Text style={styles.HeaderText}>#</Text>
-                <Text style={styles.HeaderText}>username</Text>
+                <Text style={styles.HeaderTextLeaderboard}>#</Text>
+                <Text style={styles.HeaderTextLeaderboard}>username</Text>
               </HStack>
             </VStack>
             <VStack flex={3}>
@@ -81,7 +81,7 @@ export default function Leaderboard({navigation}) {
           <ScrollView>
             {leaderBoardUser?.map((user, index) => (
               <LeaderboardItem
-              key={user.id}
+                key={user.id}
                 index={index + 1}
                 wins={user.challenges_won}
                 losses={user.challenges_lost}

@@ -1,14 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import firestore from '@react-native-firebase/firestore';
-import {
-  HStack,
-  VStack,
-  Box,
-} from 'native-base';
+import {HStack, VStack, Box} from 'native-base';
 
 import {Text} from 'react-native';
-import { styles } from '../styles/Style';
-
+import {styles} from '../styles/Style';
 
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useContext} from 'react';
@@ -56,7 +51,7 @@ export default function LeaderboardItem({
         <VStack flex={3}>
           <HStack>
             <Box style={styles.rankBoxLeaderboardItem} justifyContent="center">
-              <Text style={styles.rankTextLeaderboardItem}>{index}.</Text>
+              <Text style={styles.pointsLeaderboardItem}>{index}. </Text>
             </Box>
             <HStack>
               <Text style={styles.pointsLeaderboardItem}>{username}</Text>
@@ -64,7 +59,9 @@ export default function LeaderboardItem({
                 <HStack>
                   <MaterialIcons name="fire" size={25} color="#F1600D" />
                   <Box ml="-1">
-                    <Text style={styles.colorOrangeLeaderboardItem}>{streak}</Text>
+                    <Text style={styles.colorOrangeLeaderboardItem}>
+                      {streak}
+                    </Text>
                   </Box>
                 </HStack>
               ) : null}
@@ -96,6 +93,4 @@ export default function LeaderboardItem({
       </HStack>
     </VStack>
   );
-
 }
-
