@@ -38,7 +38,7 @@ export default function App() {
   // sending alert when receiving a notification
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
-      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+      Alert.alert('You have been challenged!', `Put your running shoes on, it is time to prove yourself`);
     });
     //  Check whether an initial notification is available
     messaging()

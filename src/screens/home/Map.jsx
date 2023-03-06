@@ -24,7 +24,6 @@ import {useContext} from 'react';
 import {AppStateContext} from '../../../App';
 import TimerItem from '../../components/TimerItem';
 import DistanceItem from '../../components/DistanceItem';
-import {firebase} from '@react-native-firebase/functions';
 import { pushNotification } from '../../../pushNotification';
 
 
@@ -323,8 +322,7 @@ export default function Map({navigation}) {
         setLatlng([]);
         setRun({showMap: false});
         pushNotification(run.challenged_fcmToken)
-          
-
+        
       })
       .catch(err => console.log(err + ' from outside'));
   };
@@ -366,9 +364,16 @@ export default function Map({navigation}) {
         setDistance(0);
         setLatlng([]);
         setRun({showMap: false});
+        pushNotification(run.challenged_fcmToken)
       })
       .catch(err => console.log(err + ' from outside'));
   };
+
+
+
+
+
+
   const handleClickForRun = () => {
     if (isRunning) {
       onStopWatching();

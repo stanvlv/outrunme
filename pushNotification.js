@@ -1,5 +1,5 @@
 import functions from '@react-native-firebase/functions'
-
+import firebase from '@react-native-firebase/app'
 
 const pushNotification = async (fcmToken) => {
     try {
@@ -11,7 +11,7 @@ const pushNotification = async (fcmToken) => {
           `${fcmToken}`,
         data: {
           title: 'Someone challenged you',
-          text: 'Put your running shoes on - You have been challenged',
+          body: 'Put your running shoes on, it is time to prove yourself',
         },
       });
       console.log(response);
