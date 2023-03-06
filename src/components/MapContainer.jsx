@@ -3,9 +3,8 @@ import {styles} from '../styles/Style';
 import {View} from 'react-native';
 
 export default function ViewContainer({currentLocation, latlng}) {
-  console.log(latlng);
-  return (
-    <View style={styles.containerMapMapContainer}>
+  return (<View>
+    {currentLocation ? (   <View style={styles.containerMapMapContainer}>
       <MapView
         showsUserLocation={true}
         style={styles.mapMapContainer}
@@ -22,6 +21,7 @@ export default function ViewContainer({currentLocation, latlng}) {
           strokeWidth={8}
         />
       </MapView>
+    </View>) : (<Text>This challenge  was rejected</Text>)}
     </View>
   );
 }
