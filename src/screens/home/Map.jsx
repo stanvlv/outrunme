@@ -17,6 +17,8 @@ import {useContext} from 'react';
 import {AppStateContext} from '../../../App';
 import TimerItem from '../../components/TimerItem';
 import DistanceItem from '../../components/DistanceItem';
+import { pushNotification } from '../../../pushNotification';
+
 
 const LOCATION_UPDATE_INTERVAL = 5000; // 15 seconds
 
@@ -35,6 +37,7 @@ export default function Map({navigation}) {
   const [challenged, setChallenged] = useState('');
 
   const {user, run, setRun} = useContext(AppStateContext);
+
 
   const [userData, setUserData] = useState();
 
@@ -317,6 +320,8 @@ export default function Map({navigation}) {
         setDistance(0);
         setLatlng([]);
         setRun({showMap: false});
+        pushNotification(run.challenged_fcmToken)
+        
       })
 
       .catch(err => console.log(err + ' from outside'));
@@ -365,9 +370,16 @@ export default function Map({navigation}) {
         setDistance(0);
         setLatlng([]);
         setRun({showMap: false});
+        pushNotification(run.challenged_fcmToken)
       })
       .catch(err => console.log(err + ' from outside'));
   };
+
+
+
+
+
+
   const handleClickForRun = () => {
     if (isRunning) {
       onStopWatching();
@@ -413,6 +425,11 @@ export default function Map({navigation}) {
       setIsRunning(false);
     }
   }, [progressionTime, progressionDistance]);
+
+
+
+
+
 
   return (
     <View style={styles.containerMap}>

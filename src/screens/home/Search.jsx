@@ -40,6 +40,7 @@ export default function Search({navigation}) {
     setRun({
       challenger: userData.username,
       challenged: secondUser.username,
+      challenged_fcmToken: secondUser.fcmToken
     });
 
     setSecondUser({});
