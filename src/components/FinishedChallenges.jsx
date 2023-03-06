@@ -29,7 +29,7 @@ export default function FinishedChallenges({
   const [opponentLayoutHeight, setOpponentLayoutHeight] = useState(0);
   const [opponentMapClick, setOpponentMapClick] = useState(false);
   const [myMapClick, setMyMapClick] = useState(false);
-
+console.log(item)
   const clickOpponentMap = () => {
     if (myMapClick) {
       setMyMapClick(!myMapClick);
