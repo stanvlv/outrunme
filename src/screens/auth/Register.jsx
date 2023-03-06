@@ -24,26 +24,22 @@ export default function Register({navigation}) {
   const [passwordRepeat, setPasswordRepeat] = React.useState('');
   const [errors, setErrors] = React.useState({});
 
-
   // create user with email and password
   const createUser = async () => {
     console.log(password.name + ' from createUser');
     console.log(passwordRepeat.name + ' from createUser');
 
     if (password.name !== passwordRepeat.name) {
-
-      return alert(`Passwords don't match`)
-
+      return alert(`Passwords don't match`);
     }
 
-   const token = await messaging().getToken();
-   console.log(token)
-    
+    const token = await messaging().getToken();
+    console.log(token);
 
     auth()
       .createUserWithEmailAndPassword(`${email.name}`, `${password.name}`)
       .then(userCredential => {
-         console.log('User account created & signed in!');
+        console.log('User account created & signed in!');
 
         // take the uid from the reg and get the users collection to make first post
         const {uid} = userCredential.user;
@@ -57,13 +53,13 @@ export default function Register({navigation}) {
 
           userRef
             .set({
-              username: username.name,
+              username: username.name.toLowerCase(),
               challenges_won: 0,
               challenges_lost: 0,
               runs: 0,
               points: 0,
+              streak: 0,
               fcmToken: token,
-
             })
             .then(() => {
               console.log('User data added to Firestore!');
@@ -76,9 +72,9 @@ export default function Register({navigation}) {
       })
       .catch(error => {
         if (error.code === 'auth/email-already-in-use') {
-           alert('That email address is already in use!');
+          alert('That email address is already in use!');
         } else if (error.code === 'auth/invalid-email') {
-           alert('That email address is invalid!');
+          alert('That email address is invalid!');
         }
         console.error(error);
       });

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { View, TouchableOpacity} from 'react-native';
+import {View, TouchableOpacity} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import {
   VStack,
@@ -12,7 +12,7 @@ import {
   Text,
   Center,
 } from 'native-base';
-import { styles } from '../styles/Style';
+import {styles} from '../styles/Style';
 import {useContext} from 'react';
 import {AppStateContext} from '../../App';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -59,6 +59,7 @@ export default function ChallengeItem({
   };
 
   const PostRejected = () => {
+    //post on user run in DB that he lost
     firestore()
       .collection('challenged')
       .doc(`${userData}`)
@@ -66,6 +67,25 @@ export default function ChallengeItem({
       .doc(`${item.id}`)
       .update({
         accepted: false,
+        winner: false,
+        challenged_date: Date.now(),
+        challenged_km: 0,
+        challenged_time: 0,
+        finished: true,
+      });
+    //post on challenger run in DB that he won
+    firestore()
+      .collection('challenger')
+      .doc(`${nameTile}`)
+      .collection('challenges')
+      .doc(`${item.id}`)
+      .update({
+        accepted: false,
+        winner: true,
+        challenged_date: Date.now(),
+        challenged_km: 0,
+        challenged_time: 0,
+        finished: true,
       });
     // Add a lost challenge on user profile
     const increment = firestore.FieldValue.increment(1);
@@ -79,7 +99,6 @@ export default function ChallengeItem({
     firestore().collection('users').doc(item.challenger_id).update({
       challenges_won: increment,
       points: increment,
-      runs: increment,
       streak: increment,
     });
   };
@@ -199,7 +218,10 @@ export default function ChallengeItem({
 
             <HStack justifyContent="space-between" alignItems="flex-end">
               {otherKm === '***' && (
-                <HStack p="0.5" alignItems="center" style={styles.fillBlueChallengeItem}>
+                <HStack
+                  p="0.5"
+                  alignItems="center"
+                  style={styles.fillBlueChallengeItem}>
                   <MaterialCommunityIcons
                     name="timer-outline"
                     size={32}
@@ -211,7 +233,10 @@ export default function ChallengeItem({
                 </HStack>
               )}
               {otherTime === '***' && (
-                <HStack alignItems="center" style={styles.fillBlueChallengeItem} py="0.5">
+                <HStack
+                  alignItems="center"
+                  style={styles.fillBlueChallengeItem}
+                  py="0.5">
                   <MaterialCommunityIcons
                     name="map-marker-distance"
                     size={32}
@@ -225,10 +250,15 @@ export default function ChallengeItem({
 
               {selectedTab === 'received' && item.accepted !== false && (
                 <HStack>
-                  <Button mx="5" style={styles.buttonAcceptChallengeItem} onPress={onClick}>
+                  <Button
+                    mx="5"
+                    style={styles.buttonAcceptChallengeItem}
+                    onPress={onClick}>
                     <Text style={styles.colorBlueChallengeItem}>Accept</Text>
                   </Button>
-                  <Button style={styles.buttonDeclineChallengeItem} onPress={PostRejected}>
+                  <Button
+                    style={styles.buttonDeclineChallengeItem}
+                    onPress={PostRejected}>
                     <Text style={styles.colorOrangeChallengeItem}>Decline</Text>
                   </Button>
                 </HStack>
@@ -244,36 +274,62 @@ export default function ChallengeItem({
                 p="0.5"
                 mr="2"
                 alignItems="center"
-                style={byTime ? styles.fillBlueChallengeItem : styles.borderBlueChallengeItem}>
+                style={
+                  byTime
+                    ? styles.fillBlueChallengeItem
+                    : styles.borderBlueChallengeItem
+                }>
                 <MaterialCommunityIcons
                   name="timer-outline"
                   size={32}
-                  style={byTime ? styles.colorWhiteChallengeItem : styles.colorBlueChallengeItem}
+                  style={
+                    byTime
+                      ? styles.colorWhiteChallengeItem
+                      : styles.colorBlueChallengeItem
+                  }
                 />
                 <Text
                   px="1"
-                  style={byTime ? styles.colorWhiteChallengeItem : styles.colorBlueChallengeItem}>
+                  style={
+                    byTime
+                      ? styles.colorWhiteChallengeItem
+                      : styles.colorBlueChallengeItem
+                  }>
                   {convUserTime}
                 </Text>
               </HStack>
               <HStack
                 mx="2"
                 alignItems="center"
-                style={byTime ? styles.borderBlueChallengeItem : styles.fillBlueChallengeItem}>
+                style={
+                  byTime
+                    ? styles.borderBlueChallengeItem
+                    : styles.fillBlueChallengeItem
+                }>
                 <MaterialCommunityIcons
                   name="map-marker-distance"
                   size={32}
-                  style={byTime ? styles.colorBlueChallengeItem : styles.colorWhiteChallengeItem}
+                  style={
+                    byTime
+                      ? styles.colorBlueChallengeItem
+                      : styles.colorWhiteChallengeItem
+                  }
                 />
                 <Text
                   px="1"
-                  style={byTime ? styles.colorBlueChallengeItem : styles.colorWhiteChallengeItem}>
+                  style={
+                    byTime
+                      ? styles.colorBlueChallengeItem
+                      : styles.colorWhiteChallengeItem
+                  }>
                   {convUserKm}
                 </Text>
               </HStack>
             </HStack>
             <HStack>
-              <Button style={styles.buttonDeclineChallengeItem} onPress={DeleteSent}>
+              <Button
+                style={styles.buttonDeclineChallengeItem}
+                onPress={DeleteSent}>
                 <Text style={styles.colorOrangeChallengeItem}>Delete</Text>
               </Button>
             </HStack>
