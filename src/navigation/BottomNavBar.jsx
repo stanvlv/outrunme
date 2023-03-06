@@ -4,10 +4,18 @@ import FirebaseDatabase from '../screens/home/Profile';
 import Map from '../screens/home/Map';
 import Search from '../screens/home/Search';
 import Leaderboard from '../screens/home/Leaderboard';
-
-
+import {
+  VStack,
+  Input,
+  NativeBaseProvider,
+  Button,
+  Text,
+  View,
+  Box,
+} from 'native-base';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+
 // take the icons from https://oblador.github.io/react-native-vector-icons/
 
 // screen names
@@ -15,10 +23,11 @@ const homeName = 'Challenges';
 const firebase = 'Profile';
 const map = 'Map';
 const search = 'Search';
-const chart = 'Leaderboard'
+const chart = 'Leaderboard';
 
 export default function BottomNavBar({user}) {
   const Tab = createBottomTabNavigator();
+
   return (
     <Tab.Navigator
       initialRouteName={homeName}
@@ -43,16 +52,32 @@ export default function BottomNavBar({user}) {
           } else if (rn === map) {
             iconName = focused ? 'map' : 'map-outline';
           } else if (rn === chart) {
-            iconName = focused ? 'trophy' : 'trophy-outline'
+            iconName = focused ? 'trophy' : 'trophy-outline';
           } else if (rn === search) {
-            iconName = focused ? 'search' : 'search-outline'
+            iconName = focused ? 'search' : 'search-outline';
           }
           return <Ionicons name={iconName} size={30} color="#F1600D" />;
         },
       })}>
-      <Tab.Screen name={homeName} user={user} component={Home} />
-      
-     
+      <Tab.Screen
+        name={homeName}
+        user={user}
+        component={Home}
+        options={{
+          headerRight: () => (
+            <Box m="2">
+              <Ionicons
+                name="information-circle-outline"
+                size={30}
+                onPress={() => alert('This is a button!')}
+                title="Info"
+                color="#fff"
+              />
+            </Box>
+          ),
+        }}
+      />
+
       <Tab.Screen name={search} user={user} component={Search} />
       <Tab.Screen name={map} user={user} component={Map} />
       <Tab.Screen name={chart} component={Leaderboard} />

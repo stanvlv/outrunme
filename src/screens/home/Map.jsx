@@ -7,19 +7,12 @@ import {
   View,
   Text,
 } from 'react-native';
-import {
-  VStack,
-  Button,
-  Box,
-  HStack,
-  Center,
-  Progress,
-} from 'native-base';
+import {VStack, Button, Box, HStack, Center, Progress} from 'native-base';
 import Geolocation from 'react-native-geolocation-service';
 import ViewContainer from '../../components/MapContainer';
 import firestore from '@react-native-firebase/firestore';
 import {getDistance} from 'geolib';
-import { styles } from '../../styles/Style';
+import {styles} from '../../styles/Style';
 import {useContext} from 'react';
 import {AppStateContext} from '../../../App';
 import TimerItem from '../../components/TimerItem';
@@ -42,11 +35,8 @@ export default function Map({navigation}) {
 
   const [challenger, setChallenger] = useState('');
   const [challenged, setChallenged] = useState('');
-  const [userWinner, setUserWinner] = useState(true);
 
   const {user, run, setRun} = useContext(AppStateContext);
-
-  
 
 
   const [userData, setUserData] = useState();
@@ -107,7 +97,6 @@ export default function Map({navigation}) {
                     },
                   ];
                 });
-             
               },
               error => {
                 console.log(error);
@@ -187,30 +176,35 @@ export default function Map({navigation}) {
     if (challenger === userData.username) {
       setShowChoice(true);
     } else if (challenged === userData.username) {
+      console.log('step1');
       // Check if the user lost
       const velocityChallenger = run.challenger_km / run.challenger_time;
       const velocityChallenged = distance / timer;
+      let userWinner = true;
+      // console.log(userWinner + 'user winner');
       // console.log(velocityChallenged + 'challenged velocity');
       // console.log(distance + 'challenged distance');
       // console.log(timer + 'challenged timer');
       // console.log(velocityChallenger + 'challenger velocity');
       // console.log(run.challenger_km + 'challenger distance');
       // console.log(run.challenger_time + 'challenger timer');
+      // console.log(run.byTime + 'is the run by time?');
       if (run.byTime === true) {
         if (
           velocityChallenger >= velocityChallenged ||
           timer < run.challenger_time
         ) {
-          setUserWinner(false);
+          userWinner = false;
         }
       } else {
         if (
           velocityChallenger >= velocityChallenged ||
           distance < run.challenger_km
         ) {
-          setUserWinner(false);
+          userWinner = false;
         }
       }
+      // console.log(userWinner + 'user winner after adjust');
       firestore()
         .collection('challenger')
         .doc(challenger)
@@ -223,10 +217,10 @@ export default function Map({navigation}) {
           challenged_time: timer,
           finished: true,
           challenged_coordinates: latlng,
-          winner: !userWinner,
+          winner: userWinner,
         })
         .then(() => {
-          console.log('I accepted a challenge');
+          // console.log(!userWinner + 'other winner posting');
         });
 
       firestore()
@@ -244,6 +238,7 @@ export default function Map({navigation}) {
           winner: userWinner,
         })
         .then(() => {
+          console.log(userWinner + 'us winner posting');
           const increment = firestore.FieldValue.increment(1);
 
           if (userWinner === false) {
@@ -255,7 +250,6 @@ export default function Map({navigation}) {
             loseOnePoint(user.uid);
             firestore().collection('users').doc(run.challenger_id).update({
               challenges_won: increment,
-              runs: increment,
               points: increment,
               streak: increment,
             });
@@ -268,7 +262,6 @@ export default function Map({navigation}) {
             });
             firestore().collection('users').doc(run.challenger_id).update({
               challenges_lost: increment,
-              runs: increment,
               streak: 0,
             });
             loseOnePoint(run.challenger_id);
@@ -314,6 +307,12 @@ export default function Map({navigation}) {
           })
           .then(res => console.log(res))
           .catch(err => console.log(err));
+        firestore()
+          .collection('users')
+          .doc(user.uid)
+          .update({
+            runs: firestore.FieldValue.increment(1),
+          });
         setRun({sent: true});
         navigation.navigate('Challenges');
         setShowChoice(false);
@@ -324,6 +323,7 @@ export default function Map({navigation}) {
         pushNotification(run.challenged_fcmToken)
         
       })
+
       .catch(err => console.log(err + ' from outside'));
   };
 
@@ -357,6 +357,12 @@ export default function Map({navigation}) {
           })
           .then(res => console.log(res))
           .catch(err => console.log(err));
+        firestore()
+          .collection('users')
+          .doc(user.uid)
+          .update({
+            runs: firestore.FieldValue.increment(1),
+          });
         setRun({sent: true});
         navigation.navigate('Challenges');
         setShowChoice(false);
@@ -392,7 +398,6 @@ export default function Map({navigation}) {
     const secondsStr = String(remainingSeconds).padStart(2, '0');
     return `${hoursStr}:${minutesStr}:${secondsStr}`;
   };
-
 
   const formatDistance = distance => {
     const km = Math.floor(distance / 1000); // get km
@@ -560,5 +565,4 @@ export default function Map({navigation}) {
       )}
     </View>
   );
-
 }

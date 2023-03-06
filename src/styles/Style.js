@@ -1,6 +1,7 @@
 import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
+
     appColor: {
         lightBlue: '#50A5B1',
         orange: '#F1600D',
@@ -627,6 +628,11 @@ const styles = StyleSheet.create({
         fontSize: 50,
         color: 'white',
       },
+        customTextHome: {
+    color: '#1A265A',
+    fontSize: 17,
+    fontWeight: '300',
+  },
       
       
 })
