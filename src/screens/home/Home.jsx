@@ -7,7 +7,6 @@ import firestore from '@react-native-firebase/firestore';
 import {AppStateContext} from '../../../App';
 import FinishedChallenges from '../../components/FinishedChallenges';
 
-
 // Fetch Data
 
 export default function Home({navigation}) {
@@ -78,8 +77,6 @@ export default function Home({navigation}) {
   const onPressSent = () => setSelectedTab('sent');
   const onPressReceived = () => setSelectedTab('received');
   const onPressFinished = () => setSelectedTab('finished');
-  
-
 
   return (
     <NativeBaseProvider>
@@ -153,8 +150,7 @@ export default function Home({navigation}) {
                   new Date(b.challenged_date) - new Date(a.challenged_date)
                 );
               })
-              .map((item, index)=> (
-               
+              .map((item, index) => (
                 <FinishedChallenges
                   key={index}
                   userData={userData}
@@ -192,6 +188,7 @@ export default function Home({navigation}) {
                   nameTile={item.challenger ? item.challenger : item.challenged}
                   sent={item.challenger ? false : true}
                   selectedTab={'finished'}
+                  cena={item.challenger}
                 />
               ))}
           </ScrollView>
@@ -215,7 +212,7 @@ function SentView({challenger, userData, navigation}) {
           .filter(character => !character.finished)
           .map(item => (
             <ChallengeItem
-              key={item.category_name}
+              key={item.id}
               item={item}
               title={'you challenged'}
               userTime={item.challenger_time}
@@ -274,7 +271,7 @@ function ReceivedView({challenged, userData, navigation}) {
           .filter(character => !character.finished)
           .map((item, key) => (
             <ChallengeItem
-              key={item.category_name}
+              key={item.id}
               item={item}
               title={'Challenged by'}
               otherTime={item.byTime === true ? item.challenger_time : '***'}
