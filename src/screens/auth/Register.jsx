@@ -59,6 +59,8 @@ export default function Register({navigation}) {
               runs: 0,
               points: 0,
               streak: 0,
+              totalKm: 0,
+              totalTime: 0,
               fcmToken: token,
             })
             .then(() => {

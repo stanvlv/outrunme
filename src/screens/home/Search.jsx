@@ -8,6 +8,8 @@ import {
   Button,
   Text,
   View,
+  HStack,
+  ScrollView,
 } from 'native-base';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useContext} from 'react';
@@ -40,7 +42,7 @@ export default function Search({navigation}) {
     setRun({
       challenger: userData.username,
       challenged: secondUser.username,
-      challenged_fcmToken: secondUser.fcmToken
+      challenged_fcmToken: secondUser.fcmToken,
     });
 
     setSecondUser({});
@@ -81,20 +83,20 @@ export default function Search({navigation}) {
           />
         </VStack>
         {secondUser.username && (
-          <ProfileItem
-            username={secondUser.username}
-            runs={secondUser.runs}
-            challenges_won={secondUser.challenges_won}
-            challenges_lost={secondUser.challenges_lost}
-          />
-        )}
-        {secondUser.username && (
-          <View alignSelf="center" my="5">
-            {/* style={styles.challengeButton} */}
-            <Button onPress={onClick} colorScheme="warning">
-              <Text style={styles.buttonText}>Challenge</Text>
-            </Button>
-          </View>
+          <ScrollView>
+            <ProfileItem
+              username={secondUser.username}
+              runs={secondUser.runs}
+              challenges_won={secondUser.challenges_won}
+              challenges_lost={secondUser.challenges_lost}
+            />
+            <HStack alignSelf="center" my="5">
+              {/* style={styles.challengeButton} */}
+              <Button onPress={onClick} colorScheme="warning">
+                <Text style={styles.buttonText}>Challenge</Text>
+              </Button>
+            </HStack>
+          </ScrollView>
         )}
       </View>
     </NativeBaseProvider>

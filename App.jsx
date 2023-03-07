@@ -14,7 +14,16 @@ const AppStateProvider = props => {
   const {user} = props;
   const [isChallenged, setIsChallenged] = useState(false);
   const [run, setRun] = useState({showMap: false});
-  const contextValue = {user, run, isChallenged, setIsChallenged, setRun};
+  const [rank, setRank] = useState(1);
+  const contextValue = {
+    user,
+    run,
+    isChallenged,
+    setIsChallenged,
+    setRun,
+    rank,
+    setRank,
+  };
 
   return (
     <AppStateContext.Provider value={contextValue}>
@@ -34,7 +43,7 @@ export default function App() {
     if (initializing) setInitializing(false);
   }
 
- // sending alert when receiving a notification
+  // sending alert when receiving a notification
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
       Alert.alert(
@@ -42,7 +51,7 @@ export default function App() {
         `Put your running shoes on, it is time to prove yourself`,
       );
     });
-  // Check whether an initial notification is available
+    // Check whether an initial notification is available
     messaging()
       .getInitialNotification()
       .then(remoteMessage => {

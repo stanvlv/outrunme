@@ -18,8 +18,9 @@ export default function LeaderboardItem({
   index,
   streak,
 }) {
-  const {user} = useContext(AppStateContext);
+  const {user, setRank} = useContext(AppStateContext);
   const [userData, setUserData] = useState();
+
   useEffect(() => {
     const userRef = firestore().collection('users').doc(user.uid);
 
@@ -33,6 +34,11 @@ export default function LeaderboardItem({
         }
       })
       .catch(err => console.log(err));
+  }, [user.uid]);
+  useEffect(() => {
+    if (username === userData?.username) {
+      setRank(index);
+    }
   }, [user.uid]);
 
   return (
