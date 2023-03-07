@@ -50,7 +50,7 @@ export default function Search({navigation}) {
     navigation.navigate('Map');
   };
 
-  // searching for a user by username in the database from the input field
+  // searching for user by username in the database from the input field
   useEffect(() => {
     const userRef = firestore().collection('users');
 
