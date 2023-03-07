@@ -89,6 +89,8 @@ export default function Search({navigation}) {
               runs={secondUser.runs}
               challenges_won={secondUser.challenges_won}
               challenges_lost={secondUser.challenges_lost}
+              totalKm={secondUser.totalKm}
+              totalTime={secondUser.totalTime}
             />
             <HStack alignSelf="center" my="5">
               {/* style={styles.challengeButton} */}
