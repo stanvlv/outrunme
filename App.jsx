@@ -14,7 +14,7 @@ const AppStateProvider = props => {
   const {user} = props;
   const [isChallenged, setIsChallenged] = useState(false);
   const [run, setRun] = useState({showMap: false});
-  const [rank, setRank] = useState(1);
+  const [rank, setRank] = useState();
   const contextValue = {
     user,
     run,

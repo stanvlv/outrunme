@@ -18,7 +18,7 @@ export default function LeaderboardItem({
   index,
   streak,
 }) {
-  const {user, setRank} = useContext(AppStateContext);
+  const {user, rank, setRank} = useContext(AppStateContext);
   const [userData, setUserData] = useState();
 
   useEffect(() => {
@@ -35,12 +35,11 @@ export default function LeaderboardItem({
       })
       .catch(err => console.log(err));
   }, [user.uid]);
-
   useEffect(() => {
     if (username === userData?.username) {
       setRank(index);
     }
-  }, [user.uid, index]);
+  }, [userData?.username]);
 
   return (
     <VStack
