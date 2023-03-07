@@ -14,7 +14,16 @@ const AppStateProvider = props => {
   const {user} = props;
   const [isChallenged, setIsChallenged] = useState(false);
   const [run, setRun] = useState({showMap: false});
-  const contextValue = {user, run, isChallenged, setIsChallenged, setRun};
+  const [rank, setRank] = useState(1);
+  const contextValue = {
+    user,
+    run,
+    isChallenged,
+    setIsChallenged,
+    setRun,
+    rank,
+    setRank,
+  };
 
   return (
     <AppStateContext.Provider value={contextValue}>
@@ -35,27 +44,27 @@ export default function App() {
   }
 
   // sending alert when receiving a notification
-  // useEffect(() => {
-  //   const unsubscribe = messaging().onMessage(async remoteMessage => {
-  //     Alert.alert(
-  //       'You have been challenged!',
-  //       `Put your running shoes on, it is time to prove yourself`,
-  //     );
-  //   });
-  //  Check whether an initial notification is available
-  //   messaging()
-  //     .getInitialNotification()
-  //     .then(remoteMessage => {
-  //       if (remoteMessage) {
-  //         console.log(
-  //           'Notification caused app to open from quit state:',
-  //           remoteMessage.notification,
-  //         );
-  //         setInitialRoute(remoteMessage.data.type); // e.g. "Settings"
-  //       }
-  //     });
-  //   return unsubscribe;
-  // }, []);
+  useEffect(() => {
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      Alert.alert(
+        'You have been challenged!',
+        `Put your running shoes on, it is time to prove yourself`,
+      );
+    });
+    //  Check whether an initial notification is available
+    messaging()
+      .getInitialNotification()
+      .then(remoteMessage => {
+        if (remoteMessage) {
+          console.log(
+            'Notification caused app to open from quit state:',
+            remoteMessage.notification,
+          );
+          setInitialRoute(remoteMessage.data.type); // e.g. "Settings"
+        }
+      });
+    return unsubscribe;
+  }, []);
 
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);

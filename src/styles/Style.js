@@ -39,7 +39,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#FEF6ED',
   },
   logoutButton: {
-    backgroundColor: '#50A5B1',
     width: 120,
   },
   buttonView: {
@@ -470,11 +469,7 @@ const styles = StyleSheet.create({
     color: '#1A265A',
     padding: 10,
   },
-  myMapStyleFinishedChallenges: {
-    borderWidth: 5,
-    borderColor: '#blue',
-    backgroundColor: '#FEF6ED',
-  },
+
   opponentMapStyleFinishedChallenges: {
     backgroundColor: '#FEF6ED',
   },

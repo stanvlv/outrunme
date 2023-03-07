@@ -9,7 +9,7 @@ import {styles} from '../../styles/Style';
 import {ActivityIndicator} from 'react-native';
 
 export default function FirebaseDatabase() {
-  const {user} = useContext(AppStateContext);
+  const {user, rank} = useContext(AppStateContext);
 
   const [userData, setUserData] = useState();
 
@@ -44,6 +44,9 @@ export default function FirebaseDatabase() {
             runs={userData?.runs}
             challenges_won={userData?.challenges_won}
             challenges_lost={userData?.challenges_lost}
+            totalKm={userData?.totalKm}
+            totalTime={userData?.totalTime}
+            rank={rank}
           />
           <View style={{alignItems: 'center', marginBottom: 20}}>
             <Button colorScheme="warning" onPress={logout}>

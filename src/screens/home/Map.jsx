@@ -17,8 +17,7 @@ import {useContext} from 'react';
 import {AppStateContext} from '../../../App';
 import TimerItem from '../../components/TimerItem';
 import DistanceItem from '../../components/DistanceItem';
-import { pushNotification } from '../../../pushNotification';
-
+import {pushNotification} from '../../../pushNotification';
 
 const LOCATION_UPDATE_INTERVAL = 5000; // 15 seconds
 
@@ -37,7 +36,6 @@ export default function Map({navigation}) {
   const [challenged, setChallenged] = useState('');
 
   const {user, run, setRun} = useContext(AppStateContext);
-
 
   const [userData, setUserData] = useState();
 
@@ -240,12 +238,16 @@ export default function Map({navigation}) {
         .then(() => {
           console.log(userWinner + 'us winner posting');
           const increment = firestore.FieldValue.increment(1);
+          const addKm = firestore.FieldValue.increment(distance);
+          const addTime = firestore.FieldValue.increment(timer);
 
           if (userWinner === false) {
             firestore().collection('users').doc(user.uid).update({
               challenges_lost: increment,
               runs: increment,
               streak: 0,
+              totalKm: addKm,
+              totalTime: addTime,
             });
             loseOnePoint(user.uid);
             firestore().collection('users').doc(run.challenger_id).update({
@@ -259,6 +261,8 @@ export default function Map({navigation}) {
               runs: increment,
               points: increment,
               streak: increment,
+              totalKm: addKm,
+              totalTime: addTime,
             });
             firestore().collection('users').doc(run.challenger_id).update({
               challenges_lost: increment,
@@ -312,6 +316,8 @@ export default function Map({navigation}) {
           .doc(user.uid)
           .update({
             runs: firestore.FieldValue.increment(1),
+            totalKm: firestore.FieldValue.increment(distance),
+            totalTime: firestore.FieldValue.increment(timer),
           });
         setRun({sent: true});
         navigation.navigate('Challenges');
@@ -320,8 +326,7 @@ export default function Map({navigation}) {
         setDistance(0);
         setLatlng([]);
         setRun({showMap: false});
-        pushNotification(run.challenged_fcmToken)
-        
+        pushNotification(run.challenged_fcmToken);
       })
 
       .catch(err => console.log(err + ' from outside'));
@@ -362,6 +367,8 @@ export default function Map({navigation}) {
           .doc(user.uid)
           .update({
             runs: firestore.FieldValue.increment(1),
+            totalKm: firestore.FieldValue.increment(distance),
+            totalTime: firestore.FieldValue.increment(timer),
           });
         setRun({sent: true});
         navigation.navigate('Challenges');
@@ -370,15 +377,10 @@ export default function Map({navigation}) {
         setDistance(0);
         setLatlng([]);
         setRun({showMap: false});
-        pushNotification(run.challenged_fcmToken)
+        pushNotification(run.challenged_fcmToken);
       })
       .catch(err => console.log(err + ' from outside'));
   };
-
-
-
-
-
 
   const handleClickForRun = () => {
     if (isRunning) {
@@ -425,11 +427,6 @@ export default function Map({navigation}) {
       setIsRunning(false);
     }
   }, [progressionTime, progressionDistance]);
-
-
-
-
-
 
   return (
     <View style={styles.containerMap}>
@@ -498,7 +495,7 @@ export default function Map({navigation}) {
                         py="1"
                         justifyContent="flex-end">
                         <Text style={styles.TextMiniWhiteMap}>
-                          {`${convChallengerKm} Km`}
+                          {convChallengerKm}
                         </Text>
                       </HStack>
                     </Box>

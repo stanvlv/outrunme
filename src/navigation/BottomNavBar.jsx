@@ -29,10 +29,17 @@ const chart = 'Leaderboard';
 export default function BottomNavBar({user}) {
   const Tab = createBottomTabNavigator();
 
-  const createTwoButtonAlert = () =>
+  const homeInfo = () =>
     Alert.alert(
       'Instructions',
-      'You can see the challenges you sent, received or finished in this screen.\nThe sword appears if you were the one to initiate the challenge, if you received the challenge you will see a shield.\nThe time or distance indicators will be colored blue, white or absent depending on the challenge type.\nIf you decline a challenge request, you will lose a challenge and your opponent will gain one.',
+      'You can see the challenges you sent, received or finished in this screen.\nThe sword appears if you were the one to initiate the challenge, if you received the challenge you will see a shield.\nThe time or distance indicators will be colored blue, white or absent depending on the challenge type.\nYou have 1 week to respond to a challenge request. If you fail to respond or if you decline one, you will lose the challenge and your opponent will win.\nWhen the run is finished, if the icon is red you lost the challenge, if it is green you are the winner.',
+      [{text: 'OK', onPress: () => console.log('OK Pressed')}],
+    );
+
+  const leaderboardInfo = () =>
+    Alert.alert(
+      'Instructions',
+      'In the Leaderboard you can get to know the competition!\nHere you can find your opponents won and lost challenges and their total number of runs.\nThe star represents the score of each player. For each win a point is added to your score, for each loss a point is subtracted. The minimum score is zero.\nIf 2 users have the same score, the user with more wins will be on top.\nA fire icon and a number will appear next to the username if the player won 3 or more challenges in a row.',
       [{text: 'OK', onPress: () => console.log('OK Pressed')}],
     );
 
@@ -77,7 +84,7 @@ export default function BottomNavBar({user}) {
               <Ionicons
                 name="information-circle-outline"
                 size={30}
-                onPress={createTwoButtonAlert}
+                onPress={homeInfo}
                 title="Info"
                 color="#fff"
               />
@@ -88,7 +95,23 @@ export default function BottomNavBar({user}) {
 
       <Tab.Screen name={search} user={user} component={Search} />
       <Tab.Screen name={map} user={user} component={Map} />
-      <Tab.Screen name={chart} component={Leaderboard} />
+      <Tab.Screen
+        name={chart}
+        component={Leaderboard}
+        options={{
+          headerRight: () => (
+            <Box m="2">
+              <Ionicons
+                name="information-circle-outline"
+                size={30}
+                onPress={leaderboardInfo}
+                title="Info"
+                color="#fff"
+              />
+            </Box>
+          ),
+        }}
+      />
       <Tab.Screen name={firebase} user={user} component={FirebaseDatabase} />
     </Tab.Navigator>
   );
