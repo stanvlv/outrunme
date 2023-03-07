@@ -39,13 +39,15 @@ export default function ProfileItem({
         <Box style={{padding: 20}}>
           <HStack justifyContent="center">
             <VStack space={4}>
-              <Image
-                size={100}
-                borderRadius={50}
-                source={{uri: 'https://wallpaperaccess.com/full/317501.jpg'}}
-                alt="Avatar"
-              />
-              <HStack>
+              <HStack justifyContent="center">
+                <Image
+                  size={100}
+                  borderRadius={50}
+                  source={{uri: 'https://wallpaperaccess.com/full/317501.jpg'}}
+                  alt="Avatar"
+                />
+              </HStack>
+              <HStack justifyContent="center">
                 {rank && (
                   <Text
                     style={{

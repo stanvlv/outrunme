@@ -35,11 +35,12 @@ export default function LeaderboardItem({
       })
       .catch(err => console.log(err));
   }, [user.uid]);
+
   useEffect(() => {
     if (username === userData?.username) {
       setRank(index);
     }
-  }, [user.uid]);
+  }, [user.uid, index]);
 
   return (
     <VStack
