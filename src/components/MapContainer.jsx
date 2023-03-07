@@ -3,7 +3,7 @@ import {styles} from '../styles/Style';
 import {View} from 'react-native';
 
 export default function ViewContainer({currentLocation, latlng}) {
-  console.log(latlng);
+  // console.log(latlng);
   return (
     <View style={styles.containerMapMapContainer}>
       <MapView
