@@ -51,7 +51,7 @@ export default function App() {
         `Put your running shoes on, it is time to prove yourself`,
       );
     });
-    //  Check whether an initial notification is available
+    // Check whether an initial notification is available
     messaging()
       .getInitialNotification()
       .then(remoteMessage => {

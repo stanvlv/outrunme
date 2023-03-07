@@ -90,8 +90,8 @@ export default function Map({navigation}) {
                   return [
                     ...prevLocation,
                     {
-                      latitude: position.coords.latitude,
-                      longitude: position.coords.longitude,
+                      latitude: position?.coords.latitude,
+                      longitude: position?.coords.longitude,
                     },
                   ];
                 });
