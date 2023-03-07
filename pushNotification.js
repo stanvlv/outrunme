@@ -9,11 +9,8 @@ const pushNotification = async (fcmToken) => {
       const response = await sendNotification({
         token: `${fcmToken}`,
         data: {
-          notification: {
             title: 'Someone challenged you',
             body: 'Put your running shoes on, it is time to prove yourself',
-          }
-          
         },
      
     });
