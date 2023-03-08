@@ -215,7 +215,7 @@ export default function Map({navigation}) {
           challenged_time: timer,
           finished: true,
           challenged_coordinates: latlng,
-          winner: userWinner,
+          winner: !userWinner,
         })
         .then(() => {
           // console.log(!userWinner + 'other winner posting');
